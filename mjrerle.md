@@ -1,7 +1,7 @@
 1. Matt Erle
 1. ISTP
-1. Question | Answer
------------ | ---------
+Question | Answer
+-------- | ---------
 Given the choice, I would rather work alone than work with others. | Disagree
 I prefer solitude over social interactions with acquaintances. | Disagree
 For me, working with others poses a threat to my success.	| Disagree
