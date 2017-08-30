@@ -9,12 +9,12 @@
          </properties>
 
          <modelVersion>4.0.0</modelVersion>
-         <groupId>edu.csu2017fa314.DTR29</groupId>
-         <artifactId>DTR29</artifactId>
+         <groupId>edu.csu2017fa314.T29</groupId>
+         <artifactId>T29</artifactId>
          <packaging>jar</packaging>
          <version>0.0.1-SNAPSHOT</version>
-         <name>DTR29</name>
-         <url>https://github.com/csu2017fa314/DTR-29/</url>
+         <name>T29</name>
+         <url>https://github.com/csu2017fa314/T29/</url>
          <build>
                   <plugins>
                            <plugin>
@@ -25,7 +25,7 @@
                                              <archive>
                                                       <manifest>
                                                                <addClasspath>true</addClasspath>
-                                                               <mainClass>edu.csu2017fa314.DTR29</mainClass>
+                                                               <mainClass>edu.csu2017fa314.T29</mainClass>
                                                       </manifest>
                                              </archive>
                                     </configuration>
