@@ -1,4 +1,4 @@
-package edu.csu2017fa314.DTR29.Model;
+package edu.csu2017fa314.T29.Model;
 public class Model
 {
    private int[] numbers;
