@@ -1,8 +1,12 @@
-# DTR-29
+# DTR-29 - SPB
 
 * Elliott Roberts, ejrober, ejrober
+* Matt Erle, mjrerle, mjrerle
 
 Sprint # | Model - Data | Model - Itinerary | View - Server | View - Client
 -------- | ------------ | ----------------- | ------------- | -------------
-Content from cell 1 | Content from cell 2
-Content in the first column | Content in the second column
+1 | | | |
+2 | | | |
+3 | | | | 
+4 | | | |
+5 | | | |
