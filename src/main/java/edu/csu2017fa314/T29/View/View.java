@@ -43,7 +43,7 @@ public class View
    @SuppressWarnings("unchecked")
    void writeFile() throws IOException{
       try{
-         PrintWriter writer = new PrintWriter("C:\\Users\\matte\\workspace\\cs314\\T29\\data\\out\\itinerary.json");
+         PrintWriter writer = new PrintWriter("data/out/itinerary.json");
          writer.print(list.toString());
          writer.close();
       }
