@@ -36,7 +36,7 @@ public class TestView
     @Test
     public void testWriteFile() throws IOException{
         assertTrue(v.getList()!=null);
-        v.readFile("data/test/test.csv");
+        v.readFile("data/test/test2.csv");
         v.writeFile();
     }
 
