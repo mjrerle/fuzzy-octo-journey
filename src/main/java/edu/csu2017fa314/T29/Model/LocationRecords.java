@@ -5,14 +5,17 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+// LocationRecords is an object with an ArrayList that holds all the Locations in a csv file.
 public class LocationRecords {
+    // Empty ArrayList to hold Location objects.
     ArrayList<Location> locations = new ArrayList<>();
 
-
+    // Constructor simply reads the csv file.
     public LocationRecords(String filename){
         readFile(filename);
     }
 
+    // Each line of the file is parsed into a Location Object that contains id(S), name(S), city(S), latitude(D), longitude(D), elevation(D)
     public void readFile(String file){
         try{
             File filename = new File(file);
@@ -22,9 +25,9 @@ public class LocationRecords {
                 String id = line[0];
                 String name = line[1];
                 String city = line[2];
-                String latitude = line[3]; // Will be changed to double
-                String longitude = line[4];
-                String elevation = line[5];
+                String latitude = line[3]; // Changed to double in Location.java
+                String longitude = line[4]; // Changed to double in Location.java
+                String elevation = line[5]; // Changed to double in Location.java
                 Location next = new Location(id, name, city, latitude, longitude, elevation);
                 locations.add(next);
             }
