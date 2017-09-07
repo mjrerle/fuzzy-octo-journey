@@ -15,6 +15,23 @@ public class LocationRecords {
         readFile(filename);
     }
 
+    public ArrayList<Location> getLocations() {
+        return this.locations;
+    }
+
+    public String toString(){
+        String line = "";
+        for(int i = 0; i < locations.size(); i ++){
+            line.concat(locations.get(i).getId() + ", ");
+            line.concat(locations.get(i).getName() + ", ");
+            line.concat(locations.get(i).getCity() + ", ");
+            line.concat(Double.toString(locations.get(i).getLatitude())+ ", ");
+            line.concat(Double.toString(locations.get(i).getLongitude()) + ", ");
+            line.concat(Double.toString(locations.get(i).getElevation()) + "\n");
+        }
+        return line;
+    }
+
     // Each line of the file is parsed into a Location Object that contains id(S), name(S), city(S), latitude(D), longitude(D), elevation(D)
     public void readFile(String file){
         try{
