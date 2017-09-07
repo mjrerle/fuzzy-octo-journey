@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 public class View
 {
@@ -17,62 +16,52 @@ public class View
 
    private JSONArray list;
    //provided by the JSON-simple library
+   private String[][] iti;
 
-   public View(){
+   public View(String[][] iti){
       list = new JSONArray();
       //init list
+      this.iti = iti;
+      //set up 2d array
       totalDistance =0;
       //housekeeping
    }
    @SuppressWarnings("unchecked")
-   void readFile(String file){
+   void parseItinerary(){
 
       try{
-
          Map map = new LinkedHashMap<String,String>();
          //map for keeping json object ordered
-         Scanner in = new Scanner(new File(file));
-         String line;
-         while(in.hasNext()){
-             //expects a csv in the format <start>,<end>,<distance>
-            line = in.nextLine();
-            String[] array = line.split(",");
-            //create array out of the line
-            if(array.length!=3){
-                //checks line format
-                throw new Exception();
+
+         for (String[] anIti : iti) {
+            for (int j = 0; j < anIti.length; j++) {
+               map.put("start", anIti[0]);
+               map.put("end", anIti[1]);
+               map.put("distance", anIti[2]);
+               //add elements in ordered fashion
             }
-            map.put("start", array[0]);
-            map.put("end", array[1]);
-            map.put("distance", array[2]);
-            //add elements in ordered fashion
             list.add(new JSONObject(map));
             //the first element will look like [{"key":"value"}], thankfully the library will handle the heavy lifting
             //make a new JSONObject with the given map and put that into the JSONArray
-            totalDistance+= Double.parseDouble(array[2]);
+            totalDistance += Double.parseDouble(anIti[2]);
             //keep track of the distance
          }
-         in.close();
-         //no leaks please
       }
-      catch(IOException e){
-         e.printStackTrace();
-      }
+
       catch (Exception e) {
-          System.out.println("Line length is not equal to 3, this is bad data");
           e.printStackTrace();
       }
    }
 
    @SuppressWarnings("unchecked")
-   void writeFile() throws IOException{
+   void writeFile(String file) throws IOException{
 
       try{
          if(list.isEmpty()){
             System.out.println();
             throw new Exception();
          }
-         PrintWriter writer = new PrintWriter("data/out/itinerary.json");
+         PrintWriter writer = new PrintWriter(new File(file));
          //writes to a specific filepath
          Gson gson = new GsonBuilder().setPrettyPrinting().create();
          //gson allows for pretty printing (not available with just json-simple)
