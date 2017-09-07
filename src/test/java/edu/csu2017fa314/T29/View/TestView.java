@@ -5,18 +5,29 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 
 public class TestView
 {
     private View v;
-    public static void print(Object object){
+    private static String[][] array = {{"test1","test2","100"},{"test2","test3","100"}, {"test3","test4","100"}};
+    private static void print(Object object){
         System.out.println(object);
     }
+
+    public static void printArray(){
+        for (String[] anArray : array) {
+            for (String anAnArray : anArray) {
+                print(anAnArray);
+            }
+        }
+    }
+
     @Before
-    public void setUp() throws Exception 
+    public void setUp()
     {
-        v = new View();
+        v = new View(array);
         assertTrue(v.getTotalDistance()==0);
     }
 
@@ -30,56 +41,27 @@ public class TestView
     }
 
     @Test
-    public void testReadFile() throws IOException{
-        v.readFile("data/test/test.csv");
-        assertTrue(v.getList()!=null);
+    public void testParseItinerary(){
+        setUp();
+        v.parseItinerary();
     }
 
     @Test
-    public void testWriteFile() throws IOException{
-        assertTrue(v.getList()!=null);
-        v.readFile("data/test/test.csv");
-        v.writeFile();
-    }
-
-    @Test
-    public void testBadFile() throws IOException{
-        v.readFile("data/test/test2.csv");
-    }
-
-    @Test
-    public void testMisuse1() throws IOException{
-        v.writeFile();
-        v.readFile("data/test/test.csv");
-    }
-
-    @Test
-    public void testMisuse2() throws IOException{
-        v.readFile("data/test/evil.csv");
-        v.writeFile();
-    }
-
-    @Test
-    public void testOverflow() throws IOException{
-        v.setTotalDistance(999999999);
-        v.readFile("data/test/overflow.csv");
-        v.writeFile();
-        System.out.println(v.getTotalDistance());
-    }
-
-
-    @Test
-    public void testUnderflow() throws IOException{
-        v.setTotalDistance(-999999999);
-        v.readFile("data/test/underflow.csv");
-        v.writeFile();
-        System.out.println(v.getTotalDistance());
+    public void testWriteFile(){
+        setUp();
+        v.parseItinerary();
+        try {
+            v.writeFile("data/out/itinerary.json");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testTotalDistance() throws IOException{
-        v.readFile("data/test/test.csv");
-        v.writeFile();
+        setUp();
+        v.parseItinerary();
+        v.writeFile("data/out/itinerary.json");
         print(v.getTotalDistance());
     }
 }
