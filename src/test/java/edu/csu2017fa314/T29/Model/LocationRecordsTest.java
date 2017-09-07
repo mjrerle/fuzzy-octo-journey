@@ -11,8 +11,8 @@ public class LocationRecordsTest{
     @Test
     public void testLocationRecords(){
         LocationRecords testObject = new LocationRecords("data/first-5.csv"); // Only first-5.csv should work.
-        /*assertNotNull(testObject);
-        ArrayList<Location> locationList = testObject.getLocations();
+        assertNotNull(testObject);
+        /*ArrayList<Location> locationList = testObject.getLocations();
         // testObject should have 5 locations
         assertTrue(locationList.size() == 5); // assert testObject.locations.size() == 5;
         // Each Location should have id, name, city, latitude, longitude, elevation.
