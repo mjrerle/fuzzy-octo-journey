@@ -1,0 +1,17 @@
+[
+  {
+    "start": "test1",
+    "end": "test2",
+    "distance": "100"
+  },
+  {
+    "start": "test2",
+    "end": "test3",
+    "distance": "100"
+  },
+  {
+    "start": "test3",
+    "end": "test4",
+    "distance": "100"
+  }
+]

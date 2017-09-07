@@ -50,7 +50,7 @@ public class TestView
     public void testWriteFile(){
         setUp();
         v.parseItinerary();
-        v.writeFile("data/out/itinerary.json");
+        v.writeFile("itinerary.json");
 
     }
 
@@ -58,7 +58,7 @@ public class TestView
     public void testTotalDistance() throws IOException{
         setUp();
         v.parseItinerary();
-        v.writeFile("data/out/itinerary.json");
+        v.writeFile("itinerary.json");
         print(v.getTotalDistance());
     }
 }
