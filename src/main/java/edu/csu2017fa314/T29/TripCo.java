@@ -35,7 +35,7 @@ public class TripCo
 
       System.out.println("Welcome to TripCo");
       LocationRecords records = new LocationRecords("");
-      DistanceCalculator transform = new DistanceCalculator();
+      DistanceCalculator transform = new DistanceCalculator(records.getLocations());
    }
 
 }
