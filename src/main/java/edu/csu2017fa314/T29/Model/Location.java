@@ -66,7 +66,8 @@ public class Location {
     // Takes a String of Latitude or Longitude and returns it in degrees as a double!
     public double coordinatesToDouble(String latLong){
         // Parsing on °, ", ', " ", should provide degrees then minutes, then seconds, then direction.
-        String delimiters = "°|\"|\'| ";
+        latLong.replaceAll("\\s+", "");
+        String delimiters = "°|\"|\'|\\s+ ";
         String[] coordinate = latLong.split(delimiters);
         String degrees = coordinate[0];
         String minutes = coordinate[1];
@@ -82,9 +83,9 @@ public class Location {
         // Concatenate everything as a double.
         double result = dDegrees + dMinutes + dSeconds;
         // If South or West make negative!
-        if(direction.equalsIgnoreCase("S") || direction.equalsIgnoreCase("W")){
+        if(direction.equalsIgnoreCase(" S") || direction.equalsIgnoreCase(" W")){
             result  *= -1.0;
-        } else if(direction.equalsIgnoreCase("N") || direction.equalsIgnoreCase("E")){
+        } else if(direction.equalsIgnoreCase(" N") || direction.equalsIgnoreCase(" E")){
             // Do nothing, keep positive!
         } else {
             System.out.println("Direction not in correct format!");
