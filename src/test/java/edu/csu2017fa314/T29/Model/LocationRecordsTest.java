@@ -12,9 +12,9 @@ public class LocationRecordsTest{
     public void testLocationRecords(){
         LocationRecords testObject = new LocationRecords("data/first-5.csv"); // Only first-5.csv should work.
         assertNotNull(testObject);
-        /*ArrayList<Location> locationList = testObject.getLocations();
+        ArrayList<Location> locationList = testObject.getLocations();
         // testObject should have 5 locations
-        assertTrue(locationList.size() == 5); // assert testObject.locations.size() == 5;
+        /*assertTrue(locationList.size() == 5); // assert testObject.locations.size() == 5;
         // Each Location should have id, name, city, latitude, longitude, elevation.
         String firstId = "abee";
         assertTrue(firstId.equals(locationList.get(0).getId()));
