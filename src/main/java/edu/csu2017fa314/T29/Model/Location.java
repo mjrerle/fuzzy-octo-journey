@@ -8,12 +8,59 @@ public class Location {
     double elevation;
 
     public Location(String id, String name, String city, String latitude, String longitude, String elevation){
+        setId(id); // this.id = id;
+        setName(name); // this.name = name;
+        setCity(city); // this.city = city;
+        setLatitude(latitude); // this.latitude = coordinatesToDouble(latitude);
+        setLongitude(longitude); // this.longitude = coordinatesToDouble(longitude);
+        setElevation(elevation); // this.elevation = Double.parseDouble(elevation);
+    }
+
+    public void setId(String id){
         this.id = id;
+    }
+
+    public void setName(String name){
         this.name = name;
+    }
+
+    public void setCity(String city){
         this.city = city;
+    }
+
+    public void setLatitude(String latitude){
         this.latitude = coordinatesToDouble(latitude);
+    }
+
+    public void setLongitude(String longitude){
         this.longitude = coordinatesToDouble(longitude);
+    }
+
+    public void setElevation(String elevation){
         this.elevation = Double.parseDouble(elevation);
+    }
+    public String getId(){
+        return this.id;
+    }
+
+    public String getName(){
+        return this.name;
+    }
+
+    public String getCity(){
+        return this.city;
+    }
+
+    public double getLatitude(){
+        return this.latitude;
+    }
+
+    public double getLongitude(){
+        return this.longitude;
+    }
+
+    public double getElevation(){
+        return this.elevation;
     }
 
     // Takes a String of Latitude or Longitude and returns it in degrees as a double!
@@ -37,8 +84,10 @@ public class Location {
         // If South or West make negative!
         if(direction.equalsIgnoreCase("S") || direction.equalsIgnoreCase("W")){
             result  *= -1.0;
-        } else {
+        } else if(direction.equalsIgnoreCase("N") || direction.equalsIgnoreCase("E")){
             // Do nothing, keep positive!
+        } else {
+            System.out.println("Direction not in correct format!");
         }
         return result;
     }
