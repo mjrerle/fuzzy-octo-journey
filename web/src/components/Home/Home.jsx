@@ -5,11 +5,15 @@ class Home extends React.Component {
     render() {
         let total = 0; //update the total here
 
-        //this fucking ridiculous way of accessing the dist property from Home
+        let objectArray = this.props.pairs; //assigned it to a variable to make it easier to read, still insane
 
-       for(var i = 0; i < this.props.pairs.length;i++){ //this = Home it helps to print it to the console to see it
+       for(var i = 0; i < objectArray.length;i++){ //parsing through objects and adding distances together
 
-           total += this.props.pairs[i].props.dist; //pairs is an array of objects tht have props. dist distance
+           total *= 100000;
+
+           total += (objectArray[i].props.dist *100000);
+
+           total /= 100000; //because why would floating-point addition work at all without this
        }
        
         return <div className="home-container">
@@ -20,10 +24,16 @@ class Home extends React.Component {
                     <button>Open JSON File</button>
                 </Dropzone>
                 <table className="pair-table">
+                    <tr>
+                        <td><h4>Start</h4></td>
+                        <td><h4>End</h4></td>
+                        <td><h4>Distance (mi)</h4></td>
+                        <td><h4>Running Total (mi)</h4></td>
+                    </tr>
                     {this.props.pairs}
                     <tbody>
                         <tr>
-                            <td colSpan="2">Total:</td>
+                            <td colSpan="3"><h3>Total miles:</h3></td>
                             <td>{total}</td>
                         </tr>
                     </tbody>
