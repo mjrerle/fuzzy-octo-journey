@@ -50,11 +50,8 @@ public class TestView
     public void testWriteFile(){
         setUp();
         v.parseItinerary();
-        try {
-            v.writeFile("data/out/itinerary.json");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        v.writeFile("data/out/itinerary.json");
+
     }
 
     @Test

@@ -27,7 +27,7 @@ public class View
       //housekeeping
    }
    @SuppressWarnings("unchecked")
-   void parseItinerary(){
+   public void parseItinerary(){
 
       try{
          Map map = new LinkedHashMap<String,String>();
@@ -54,14 +54,14 @@ public class View
    }
 
    @SuppressWarnings("unchecked")
-   void writeFile(String file) throws IOException{
-
+   public void writeFile(String file){
+      String folder = "data/";
       try{
          if(list.isEmpty()){
             System.out.println();
             throw new Exception();
          }
-         PrintWriter writer = new PrintWriter(new File(file));
+         PrintWriter writer = new PrintWriter(new File(folder+file));
          //writes to a specific filepath
          Gson gson = new GsonBuilder().setPrettyPrinting().create();
          //gson allows for pretty printing (not available with just json-simple)
