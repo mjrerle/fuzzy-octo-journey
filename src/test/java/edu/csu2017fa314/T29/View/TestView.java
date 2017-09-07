@@ -50,18 +50,15 @@ public class TestView
     public void testWriteFile(){
         setUp();
         v.parseItinerary();
-        try {
-            v.writeFile("data/out/itinerary.json");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        v.writeFile("itinerary.json");
+
     }
 
     @Test
     public void testTotalDistance() throws IOException{
         setUp();
         v.parseItinerary();
-        v.writeFile("data/out/itinerary.json");
+        v.writeFile("itinerary.json");
         print(v.getTotalDistance());
     }
 }
