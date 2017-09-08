@@ -49,9 +49,10 @@ public class LocationRecords {
                 Location next = new Location(id, name, city, latitude, longitude, elevation);
                 locations.add(next);
             }
+            scan.close();
         } catch(FileNotFoundException e){
             // Some kind of exception handling
-
+            System.out.println("File not found! "+ file);
         }
 
     }
