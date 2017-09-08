@@ -37,6 +37,7 @@ public class LocationRecords {
         try{
             File filename = new File(file);
             Scanner scan = new Scanner(filename);
+            scan.nextLine();
             while(scan.hasNextLine()){
                 String[] line = scan.nextLine().split(",");
                 String id = line[0];
@@ -48,9 +49,10 @@ public class LocationRecords {
                 Location next = new Location(id, name, city, latitude, longitude, elevation);
                 locations.add(next);
             }
+            scan.close();
         } catch(FileNotFoundException e){
             // Some kind of exception handling
-
+            System.out.println("File not found! "+ file);
         }
 
     }
