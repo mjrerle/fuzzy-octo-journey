@@ -44,14 +44,38 @@ public class Location {
     // Takes a String of Latitude or Longitude and returns it in degrees as a double!
     public double coordinatesToDouble(String latLong){
         // Parsing on °, ", ', " ", should provide degrees then minutes, then seconds, then direction.
-        latLong = latLong.replaceAll("\\s+", "");
-        String delimiters = "°|\"|\'|”|’|\\s";
+        latLong = latLong.replaceAll("\\s+|\\t+", "");
+
+        String north = "N";
+        String east = "E";
+        String south = "S";
+        String west = "W";
+
+        if(!(latLong.contains(north) || latLong.contains(east) || latLong.contains(south) || latLong.contains(west))) {
+            return Double.parseDouble(latLong);
+        }
+
+        String delimiters = "°|\"|\'|”|’|\\.";
         String[] coordinate = latLong.split(delimiters);
 
-        String degrees = coordinate[0];
-        String minutes = coordinate[1];
-        String seconds = coordinate[2];
-        String direction = coordinate[3].replaceAll("\\s", "");
+        String degrees = "0";
+        String minutes = "0";
+        String seconds = "0";
+
+        switch(coordinate.length) {
+            case 4:
+                seconds = coordinate[2];
+            case 3:
+                minutes = coordinate[1];
+            case 2:
+                degrees = coordinate[0];
+                break;
+            default:
+                System.out.println("Da fuq?!?!?!");
+                break;
+        }
+
+        String direction = coordinate[coordinate.length - 1].replaceAll("\\s", "");
 
             // Use direction to decide if pos. or neg.
         // Degrees should be the same number but as a double

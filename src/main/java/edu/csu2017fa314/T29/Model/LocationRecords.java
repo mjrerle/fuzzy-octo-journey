@@ -3,6 +3,7 @@ package edu.csu2017fa314.T29.Model;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 // LocationRecords is an object with an ArrayList that holds all the Locations in a csv file.
@@ -38,7 +39,9 @@ public class LocationRecords {
             File filename = new File(file);
             Scanner scan = new Scanner(filename);
 
-            String[] order = scan.nextLine().split(",");
+            String orderString = scan.nextLine();
+            orderString = orderString.replaceAll("\\t+|\\s+", "");
+            String[] order = orderString.split(",");
 
             for(int i = 0; i < order.length; i++) {
                 if(order[i].equalsIgnoreCase("ID")) {
@@ -54,6 +57,7 @@ public class LocationRecords {
 
             while(scan.hasNextLine()){
                 String[] line = scan.nextLine().split(",");
+
                 if (line.length != 0) {
                     String id = line[indexID];
                     //String name = line[indexName];
