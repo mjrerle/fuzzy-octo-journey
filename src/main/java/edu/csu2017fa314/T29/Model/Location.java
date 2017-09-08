@@ -1,4 +1,7 @@
 package edu.csu2017fa314.T29.Model;
+
+import java.util.Arrays;
+
 public class Location {
     String id;
     String name;
@@ -66,14 +69,15 @@ public class Location {
     // Takes a String of Latitude or Longitude and returns it in degrees as a double!
     public double coordinatesToDouble(String latLong){
         // Parsing on °, ", ', " ", should provide degrees then minutes, then seconds, then direction.
-        latLong.replaceAll("\\s+", "");
-        String delimiters = "°|\"|\'|\\s+ ";
+        latLong = latLong.replaceAll("\\s+", "");
+        String delimiters = "°|\"|\'|”|’";
         String[] coordinate = latLong.split(delimiters);
         String degrees = coordinate[0];
         String minutes = coordinate[1];
         String seconds = coordinate[2];
         String direction = coordinate[3];
-        // Use direction to decide if pos. or neg.
+
+            // Use direction to decide if pos. or neg.
         // Degrees should be the same number but as a double
         // Minutes and seconds will be divided by 60 and 3600 respectively, and concatenated together with degrees, for final double!
         // Decimal Degrees = degrees + (minutes/60) + (seconds/3600)
@@ -83,9 +87,9 @@ public class Location {
         // Concatenate everything as a double.
         double result = dDegrees + dMinutes + dSeconds;
         // If South or West make negative!
-        if(direction.equalsIgnoreCase(" S") || direction.equalsIgnoreCase(" W")){
+        if(direction.equalsIgnoreCase("S") || direction.equalsIgnoreCase("W")){
             result  *= -1.0;
-        } else if(direction.equalsIgnoreCase(" N") || direction.equalsIgnoreCase(" E")){
+        } else if(direction.equalsIgnoreCase("N") || direction.equalsIgnoreCase("E")){
             // Do nothing, keep positive!
         } else {
             System.out.println("Direction not in correct format!");

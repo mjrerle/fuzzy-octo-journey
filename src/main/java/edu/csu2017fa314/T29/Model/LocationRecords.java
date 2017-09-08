@@ -37,6 +37,7 @@ public class LocationRecords {
         try{
             File filename = new File(file);
             Scanner scan = new Scanner(filename);
+            scan.nextLine();
             while(scan.hasNextLine()){
                 String[] line = scan.nextLine().split(",");
                 String id = line[0];
