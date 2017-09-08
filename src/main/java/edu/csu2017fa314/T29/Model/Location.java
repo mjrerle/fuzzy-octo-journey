@@ -61,8 +61,16 @@ public class Location {
         String degrees = "0";
         String minutes = "0";
         String seconds = "0";
+        String extraPrecision = "0";
 
         switch(coordinate.length) {
+            case 5:
+                degrees = coordinate[0];
+                minutes = coordinate[1];
+                seconds = coordinate[2];
+                extraPrecision = coordinate[3];
+                break;
+
             case 4:
                 seconds = coordinate[2];
             case 3:
@@ -84,8 +92,9 @@ public class Location {
         double dDegrees = Double.parseDouble(degrees);
         double dMinutes = Double.parseDouble(minutes)/60.0;
         double dSeconds = Double.parseDouble(seconds)/3600.0;
+        double dExtraPrecision = Double.parseDouble(extraPrecision)/3600.0;
         // Concatenate everything as a double.
-        double result = dDegrees + dMinutes + dSeconds;
+        double result = dDegrees + dMinutes + dSeconds + dExtraPrecision;
         // If South or West make negative!
         if(direction.equalsIgnoreCase("S") || direction.equalsIgnoreCase("W")){
             result  *= -1.0;
