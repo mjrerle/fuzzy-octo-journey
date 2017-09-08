@@ -36,8 +36,8 @@ export default class App extends React.Component {
             let start = file[i].start; //get start from file i
             let end = file[i].end; //get end from file i
             let dist = file[i].distance;
-            let runningDist = (runDist *100000 + dist * 100000)/100000; //floating points suck in JS
-            runDist += dist;//gotta keep that running distance running
+            let runningDist = (runDist + parseInt(dist) ); //floating points suck in JS
+            runDist += parseInt(dist);//gotta keep that running distance running
             let p = { //create object with start, end, and dist variable
                 start: start,
                 end: end,
