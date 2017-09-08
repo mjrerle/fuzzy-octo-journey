@@ -9,6 +9,29 @@ import static org.junit.Assert.*;
 public class LocationRecordsTest{
 
     @Test
+    public void testInstantiation() {
+        LocationRecords locationRecords = new LocationRecords("data/test/first-5.csv");
+        assertNotNull(locationRecords);
+        System.out.println("Instantiation Test Passed");
+    }
+
+    @Test
+    public void testCorrectParsing() {
+        LocationRecords locationRecords = new LocationRecords("data/test/first-5.csv");
+
+        ArrayList<Location> locations = locationRecords.getLocations();
+
+        String ID = "abee";
+        double latitude = 39.63527778;
+        double longitude = -104.75888889;
+
+        assertEquals(ID, locations.get(0).getId());
+        assertEquals(latitude, locations.get(0).getLatitude(), 1);
+        assertEquals(longitude, locations.get(0).getLongitude(), 1);
+
+    }
+
+    @Test
     public void testLocationRecords(){
         LocationRecords testObject = new LocationRecords("data/first-5.csv"); // Only first-5.csv should work.
         assertNotNull(testObject);

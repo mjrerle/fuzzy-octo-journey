@@ -9,6 +9,9 @@ import java.util.Scanner;
 public class LocationRecords {
     // Empty ArrayList to hold Location objects.
     ArrayList<Location> locations = new ArrayList<>();
+    int indexID;
+    int indexLatitude;
+    int indexLongitude;
 
     // Constructor simply reads the csv file.
     public LocationRecords(String filename){
@@ -23,11 +26,8 @@ public class LocationRecords {
         String line = "";
         for(int i = 0; i < locations.size(); i ++){
             line.concat(locations.get(i).getId() + ", ");
-            line.concat(locations.get(i).getName() + ", ");
-            line.concat(locations.get(i).getCity() + ", ");
             line.concat(Double.toString(locations.get(i).getLatitude())+ ", ");
             line.concat(Double.toString(locations.get(i).getLongitude()) + ", ");
-            line.concat(Double.toString(locations.get(i).getElevation()) + "\n");
         }
         return line;
     }
@@ -37,17 +37,35 @@ public class LocationRecords {
         try{
             File filename = new File(file);
             Scanner scan = new Scanner(filename);
-            scan.nextLine();
+
+            String[] order = scan.nextLine().split(",");
+
+            for(int i = 0; i < order.length; i++) {
+                if(order[i].equalsIgnoreCase("ID")) {
+                    indexID = i;
+                }
+                else if(order[i].equalsIgnoreCase("Latitude")) {
+                    indexLatitude = i;
+                }
+                else if(order[i].equalsIgnoreCase("Longitude")) {
+                    indexLongitude = i;
+                }
+            }
+
             while(scan.hasNextLine()){
                 String[] line = scan.nextLine().split(",");
-                String id = line[0];
-                String name = line[1];
-                String city = line[2];
-                String latitude = line[3]; // Changed to double in Location.java
-                String longitude = line[4]; // Changed to double in Location.java
-                String elevation = line[5]; // Changed to double in Location.java
-                Location next = new Location(id, name, city, latitude, longitude, elevation);
-                locations.add(next);
+                if (line.length != 0) {
+                    String id = line[indexID];
+                    //String name = line[indexName];
+                    //String city = line[indexCity];
+                    String latitude = line[indexLatitude]; // Changed to double in Location.java
+                    String longitude = line[indexLongitude]; // Changed to double in Location.java
+                    //String elevation = line[indexElevation]; // Changed to double in Location.java
+                    Location next = new Location(id, latitude, longitude);
+                    locations.add(next);
+                } else{
+                    //Do Nothing
+                }
             }
             scan.close();
         } catch(FileNotFoundException e){

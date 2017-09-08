@@ -4,54 +4,33 @@ import java.util.Arrays;
 
 public class Location {
     String id;
-    String name;
-    String city;
+    //String name;
+    //String city;
     double latitude;
     double longitude;
-    double elevation;
+    //double elevation;
 
-    public Location(String id, String name, String city, String latitude, String longitude, String elevation){
+    public Location(String id, String latitude, String longitude){
         setId(id); // this.id = id;
-        setName(name); // this.name = name;
-        setCity(city); // this.city = city;
+        //setName(name); // this.name = name;
+        //setCity(city); // this.city = city;
         setLatitude(latitude); // this.latitude = coordinatesToDouble(latitude);
         setLongitude(longitude); // this.longitude = coordinatesToDouble(longitude);
-        setElevation(elevation); // this.elevation = Double.parseDouble(elevation);
+        //setElevation(elevation); // this.elevation = Double.parseDouble(elevation);
     }
 
     public void setId(String id){
         this.id = id;
     }
 
-    public void setName(String name){
-        this.name = name;
-    }
-
-    public void setCity(String city){
-        this.city = city;
-    }
-
-    public void setLatitude(String latitude){
-        this.latitude = coordinatesToDouble(latitude);
-    }
+    public void setLatitude(String latitude){this.latitude = coordinatesToDouble(latitude); }
 
     public void setLongitude(String longitude){
         this.longitude = coordinatesToDouble(longitude);
     }
 
-    public void setElevation(String elevation){
-        this.elevation = Double.parseDouble(elevation);
-    }
     public String getId(){
         return this.id;
-    }
-
-    public String getName(){
-        return this.name;
-    }
-
-    public String getCity(){
-        return this.city;
     }
 
     public double getLatitude(){
@@ -62,20 +41,17 @@ public class Location {
         return this.longitude;
     }
 
-    public double getElevation(){
-        return this.elevation;
-    }
-
     // Takes a String of Latitude or Longitude and returns it in degrees as a double!
     public double coordinatesToDouble(String latLong){
         // Parsing on °, ", ', " ", should provide degrees then minutes, then seconds, then direction.
         latLong = latLong.replaceAll("\\s+", "");
-        String delimiters = "°|\"|\'|”|’";
+        String delimiters = "°|\"|\'|”|’|\\s";
         String[] coordinate = latLong.split(delimiters);
+
         String degrees = coordinate[0];
         String minutes = coordinate[1];
         String seconds = coordinate[2];
-        String direction = coordinate[3];
+        String direction = coordinate[3].replaceAll("\\s", "");
 
             // Use direction to decide if pos. or neg.
         // Degrees should be the same number but as a double

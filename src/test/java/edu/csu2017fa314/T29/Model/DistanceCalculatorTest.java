@@ -1,10 +1,7 @@
 package edu.csu2017fa314.T29.Model;
 
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -22,9 +19,9 @@ public class DistanceCalculatorTest {
 
     ArrayList<Location> locations = new ArrayList<Location>();
 
-    Location brewery1 = new Location("abee" , "Two22 Brew" , "Centennial ", "39°38'07\" N", "104°45'32\" W" ,"5872");
-    Location brewery2 = new Location("abellend" ,"Mad Jacks Mountain Brewery","Bailey","39°24'05\" N", "105°28'37\" W","9580");
-    Location brewery3 = new Location("acwatson","Equinox Brewing","Fort Collins","40°35'17\" N", "105°4'26\" W", "4988");
+    Location brewery1 = new Location("abee", "39°38'07\" N", "104°45'32\" W" );
+    Location brewery2 = new Location("abellend" ,"39°24'05\" N", "105°28'37\" W");
+    Location brewery3 = new Location("acwatson","40°35'17\" N", "105°4'26\" W");
 
     @Test
     public void testInstantiation() {
@@ -37,9 +34,10 @@ public class DistanceCalculatorTest {
 
     @Test
     public void testCalculateGreatCircleDistance() {
-        LocationRecords testObject = new LocationRecords("first-5.csv"); // Only first-5.csv should work.
+        //LocationRecords testObject = new LocationRecords("data/test/first-5.csv"); // Only first-5.csv should work.
 
-        ArrayList<Location> locations = testObject.getLocations();
+
+        //ArrayList<Location> locations = testObject.getLocations();
 
         DistanceCalculator distanceCalculator = new DistanceCalculator(locations);
         int distance = distanceCalculator.calculateGreatCircleDistance(distanceCalculator.degreeToRadian(foCoLatitude),
