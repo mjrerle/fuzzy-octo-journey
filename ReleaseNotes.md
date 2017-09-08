@@ -13,17 +13,17 @@ No outstanding issues currently
 ### Installation and Deployment
 1: Download the jar file at the bottom of this page
 
-2: In the command line run java -jar [name-of-jar] [csv filename]
+2: In the command line run java -cp [name-of-jar] edu.csu2017fa314.T29.TripCo [csv filename]
 
-3: Fork a copy of the repo
+3: Download the source zip or tar and unpack it
 
 4: Navigate to the web folder in a commandline
 
-5: Run "yarn install"
+5: Run "yarn install" or "npm install"
 
-6: Run "yarn run dev"
+6: Run "yarn run dev" or "npm run dev"
 
-7: Open the json file with the open json button and enjoy
+7: Open the json file with the open json button in the browser and enjoy
 
 ### Dependencies
 Json-simple
@@ -32,4 +32,10 @@ gson
 
 ### Downloads
 
-<a href ="https://github.com/csu2017fa314/T29/raw/master/T29-0.0.1-SNAPSHOT.jar">download jar</a>
+<a href ="https://github.com/csu2017fa314/T29/raw/master/T29-0.0.1-SNAPSHOT.jar">Jar</a>
+
+<a href="https://github.com/csu2017fa314/T29/raw/master/T29.zip">Source zip</a>
+
+<a href="https://github.com/csu2017fa314/T29/raw/master/T29.tar.xz"> Source tar</a>
+
+
