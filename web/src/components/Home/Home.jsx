@@ -18,7 +18,7 @@ class Home extends React.Component {
        
         return <div className="home-container">
             <div className="inner">
-                <h2>Team 29</h2>
+                <h2>Team 29 - SPB</h2>
                 <h3>Itinerary</h3>
                 <Dropzone className="dropzone-style" onDrop={this.drop.bind(this)}>
                     <button>Open JSON File</button>
