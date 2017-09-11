@@ -34,10 +34,6 @@ public class DistanceCalculatorTest {
 
     @Test
     public void testCalculateGreatCircleDistance() {
-        //LocationRecords testObject = new LocationRecords("data/test/first-5.csv"); // Only first-5.csv should work.
-
-
-        //ArrayList<Location> locations = testObject.getLocations();
 
         DistanceCalculator distanceCalculator = new DistanceCalculator(locations);
         int distance = distanceCalculator.calculateGreatCircleDistance(distanceCalculator.degreeToRadian(foCoLatitude),
@@ -46,9 +42,22 @@ public class DistanceCalculatorTest {
                                                                         distanceCalculator.degreeToRadian(boraBoraLongitude));
 
         assertEquals(4949, distance, 2);
-        System.out.println("Test Passed, calculated value was: " + Integer.toString(distance) + ", which is within a delta of 2 of 4949");
+        System.out.println("Great Circle Distance Test Passed, calculated value was: " + Integer.toString(distance) + ", which is within a delta of 2 of 4949");
     }
 
+    @Test
+    public void testTotalDistance() {
+        LocationRecords testObject = new LocationRecords("data/test/rand25.csv"); // Only first-5.csv should work.
+        locations = testObject.getLocations();
+        DistanceCalculator distanceCalculator = new DistanceCalculator(locations);
+
+        String[][] infoArray = distanceCalculator.calculateDistances();
+
+        int totalDistance = distanceCalculator.totalDistance(infoArray);
+
+        assertEquals(4283, totalDistance);
+        System.out.println("Total Distance Test Passed, calculated value was: " + totalDistance + ", and expected value was 4283 (RAND25 TEST)");
+    }
     /* THIS DOES NOT ACTUALLY HAVE A TEST BECAUSE THERE IS NO ASSERTION TEST FOR 2D ARRAYS!!
      * We will have to come back to this and make our on assertion test that iterates through the 2d array have
      * have it call equals() on each element of the array */

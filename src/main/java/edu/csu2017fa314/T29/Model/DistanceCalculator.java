@@ -91,6 +91,20 @@ public class DistanceCalculator {
         return Math.toRadians(degree);
 
     }
+
+    //////////////////////////////////////////////////////////
+    // Adds all distances in the 3rd column of the 2D array //
+    // that we create so we know the total distance of an   //
+    // Itinerary                                            //
+    //////////////////////////////////////////////////////////
+
+    public int totalDistance(String[][] array) {
+        int totalDistance = 0;
+        for(int i = 0; i < array.length; i++) {
+            totalDistance += Integer.parseInt(array[i][2]);
+        }
+        return totalDistance;
+    }
 }
 
 
