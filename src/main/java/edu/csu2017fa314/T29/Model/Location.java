@@ -49,7 +49,7 @@ public class Location {
             return Double.parseDouble(latLong);
         }
 
-        String delimiters = "°|\"|\'|”|’|\\.";
+        String delimiters = "°|\"|\'|”|’";
         String[] coordinate = latLong.split(delimiters);
 
         String degrees = "0";
@@ -77,7 +77,7 @@ public class Location {
         *  the direction is within the coordinate array. However, we do know it is always the last element in
         *  a Latitude or Longitude
         */
-        String direction = coordinate[coordinate.length - 1].replaceAll("\\s", "");
+        String direction = coordinate[coordinate.length - 1];
 
         // Use direction to decide if pos. or neg.
         // Degrees should be the same number but as a double
@@ -86,7 +86,7 @@ public class Location {
         double dDegrees = Double.parseDouble(degrees);
         double dMinutes = Double.parseDouble(minutes)/60.0;
         double dSeconds = Double.parseDouble(seconds)/3600.0;
-        double dExtraPrecision = Double.parseDouble(extraPrecision)/216000.0;
+        double dExtraPrecision = Double.parseDouble(extraPrecision)/1000*3600;
         // Concatenate everything as a double.
         double result = dDegrees + dMinutes + dSeconds + dExtraPrecision;
         // If South or West make negative!

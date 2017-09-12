@@ -7,7 +7,9 @@ import java.util.ArrayList;
  */
 public class DistanceCalculator {
     private static final double EARTH_RADIUS = 6371.0088; //In Kilometers
-    private static final double KILOMETER_TO_MILES = 0.621371; //How many miles in one kilometer
+    private static final double EARTH_RADIUS_MILES = 3958.7613; //In Kilometers
+
+    private static final double KILOMETER_TO_MILES = EARTH_RADIUS_MILES/EARTH_RADIUS; //How many miles in one kilometer
 
     protected ArrayList<Location> locations = new ArrayList<Location>();
     protected String[][] calculatedDistances;
@@ -67,17 +69,14 @@ public class DistanceCalculator {
     public int calculateGreatCircleDistance(double startLat, double startLong, double endLat, double endLong) {
         double deltaLambda = Math.abs(startLong - endLong);
 
-        double arg1 = Math.pow(Math.cos(endLat) * Math.sin(deltaLambda), 2);
-        double arg2 = Math.pow((Math.cos(startLat) * Math.sin(endLat)) -
-                                (Math.sin(startLat) * Math.cos(endLat) * Math.cos(deltaLambda)), 2);
-
-        double numerator = Math.sqrt(arg1 + arg2);
+        double numerator = Math.pow((( Math.pow(Math.cos(endLat) * Math.sin(deltaLambda), 2)) + (Math.pow((Math.cos(startLat) * Math.sin(endLat)) -
+                (Math.sin(startLat) * Math.cos(endLat) * Math.cos(deltaLambda)), 2))),0.5);
         double denominator = (Math.sin(startLat) * Math.sin(endLat)) +
                              (Math.cos(startLat) * Math.cos(endLat) * Math.cos(deltaLambda));
 
         double deltaSigma = Math.atan2(numerator, denominator);
 
-        return (int)Math.round(deltaSigma * EARTH_RADIUS * KILOMETER_TO_MILES); //This calculation is done with Kilometers.
+        return Math.round((float)(deltaSigma * EARTH_RADIUS * KILOMETER_TO_MILES)); //This calculation is done with Kilometers.
                                                                            //then multiplied to be converted into miles
                                                                            //and rounds it to the nearest whole number
     }
