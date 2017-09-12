@@ -1,122 +1,542 @@
 [
   {
-    "start": "1",
-    "end": "2",
-    "distance": "327"
+    "start": "abee",
+    "end": "abellend",
+    "distance": "42"
   },
   {
-    "start": "2",
-    "end": "3",
-    "distance": "311"
+    "start": "abellend",
+    "end": "acwatson",
+    "distance": "85"
   },
   {
-    "start": "3",
-    "end": "4",
+    "start": "acwatson",
+    "end": "acyaeger",
+    "distance": "152"
+  },
+  {
+    "start": "acyaeger",
+    "end": "adamep3",
     "distance": "125"
   },
   {
-    "start": "4",
-    "end": "5",
-    "distance": "178"
+    "start": "adamep3",
+    "end": "adnewman",
+    "distance": "16"
   },
   {
-    "start": "5",
-    "end": "6",
-    "distance": "204"
+    "start": "adnewman",
+    "end": "adolan5",
+    "distance": "106"
   },
   {
-    "start": "6",
-    "end": "7",
-    "distance": "49"
+    "start": "adolan5",
+    "end": "afinnman",
+    "distance": "150"
   },
   {
-    "start": "7",
-    "end": "8",
-    "distance": "111"
+    "start": "afinnman",
+    "end": "alnolte",
+    "distance": "256"
   },
   {
-    "start": "8",
-    "end": "9",
-    "distance": "97"
+    "start": "alnolte",
+    "end": "andrewpj",
+    "distance": "236"
   },
   {
-    "start": "9",
-    "end": "10",
-    "distance": "202"
+    "start": "andrewpj",
+    "end": "anewlon",
+    "distance": "60"
   },
   {
-    "start": "10",
-    "end": "11",
-    "distance": "211"
+    "start": "anewlon",
+    "end": "apmiller",
+    "distance": "59"
   },
   {
-    "start": "11",
-    "end": "12",
-    "distance": "228"
+    "start": "apmiller",
+    "end": "arielliu",
+    "distance": "59"
   },
   {
-    "start": "12",
-    "end": "13",
-    "distance": "113"
+    "start": "arielliu",
+    "end": "arivacca",
+    "distance": "56"
   },
   {
-    "start": "13",
-    "end": "14",
-    "distance": "73"
+    "start": "arivacca",
+    "end": "ashellum",
+    "distance": "173"
   },
   {
-    "start": "14",
-    "end": "15",
-    "distance": "182"
-  },
-  {
-    "start": "15",
-    "end": "16",
-    "distance": "189"
-  },
-  {
-    "start": "16",
-    "end": "17",
-    "distance": "66"
-  },
-  {
-    "start": "17",
-    "end": "18",
-    "distance": "104"
-  },
-  {
-    "start": "18",
-    "end": "19",
-    "distance": "281"
-  },
-  {
-    "start": "19",
-    "end": "20",
-    "distance": "46"
-  },
-  {
-    "start": "20",
-    "end": "21",
+    "start": "ashellum",
+    "end": "awdennis",
     "distance": "233"
   },
   {
-    "start": "21",
-    "end": "22",
-    "distance": "234"
+    "start": "awdennis",
+    "end": "bjwellsi",
+    "distance": "53"
   },
   {
-    "start": "22",
-    "end": "23",
-    "distance": "297"
+    "start": "bjwellsi",
+    "end": "bkkammer",
+    "distance": "29"
   },
   {
-    "start": "23",
-    "end": "24",
-    "distance": "151"
+    "start": "bkkammer",
+    "end": "burtar",
+    "distance": "30"
   },
   {
-    "start": "24",
-    "end": "25",
-    "distance": "271"
+    "start": "burtar",
+    "end": "bwhua",
+    "distance": "137"
+  },
+  {
+    "start": "bwhua",
+    "end": "ccclark",
+    "distance": "147"
+  },
+  {
+    "start": "ccclark",
+    "end": "cjschaff",
+    "distance": "49"
+  },
+  {
+    "start": "cjschaff",
+    "end": "cluark",
+    "distance": "24"
+  },
+  {
+    "start": "cluark",
+    "end": "codyp424",
+    "distance": "56"
+  },
+  {
+    "start": "codyp424",
+    "end": "ctunnell",
+    "distance": "55"
+  },
+  {
+    "start": "ctunnell",
+    "end": "cwesterm",
+    "distance": "23"
+  },
+  {
+    "start": "cwesterm",
+    "end": "cwlarson",
+    "distance": "19"
+  },
+  {
+    "start": "cwlarson",
+    "end": "dcanby",
+    "distance": "10"
+  },
+  {
+    "start": "dcanby",
+    "end": "dmod",
+    "distance": "59"
+  },
+  {
+    "start": "dmod",
+    "end": "drewjj",
+    "distance": "10"
+  },
+  {
+    "start": "drewjj",
+    "end": "eajohns",
+    "distance": "156"
+  },
+  {
+    "start": "eajohns",
+    "end": "eholmgre",
+    "distance": "46"
+  },
+  {
+    "start": "eholmgre",
+    "end": "ejrober",
+    "distance": "77"
+  },
+  {
+    "start": "ejrober",
+    "end": "emcintos",
+    "distance": "48"
+  },
+  {
+    "start": "emcintos",
+    "end": "erinmfaw",
+    "distance": "17"
+  },
+  {
+    "start": "erinmfaw",
+    "end": "evansalz",
+    "distance": "19"
+  },
+  {
+    "start": "evansalz",
+    "end": "gd1035",
+    "distance": "15"
+  },
+  {
+    "start": "gd1035",
+    "end": "granchho",
+    "distance": "57"
+  },
+  {
+    "start": "granchho",
+    "end": "habeeb",
+    "distance": "55"
+  },
+  {
+    "start": "habeeb",
+    "end": "haynes21",
+    "distance": "176"
+  },
+  {
+    "start": "haynes21",
+    "end": "hkgomoll",
+    "distance": "206"
+  },
+  {
+    "start": "hkgomoll",
+    "end": "idkirk",
+    "distance": "63"
+  },
+  {
+    "start": "idkirk",
+    "end": "jbcarter",
+    "distance": "57"
+  },
+  {
+    "start": "jbcarter",
+    "end": "jdepoiii",
+    "distance": "65"
+  },
+  {
+    "start": "jdepoiii",
+    "end": "jdix",
+    "distance": "20"
+  },
+  {
+    "start": "jdix",
+    "end": "jdorcey",
+    "distance": "31"
+  },
+  {
+    "start": "jdorcey",
+    "end": "jewett",
+    "distance": "24"
+  },
+  {
+    "start": "jewett",
+    "end": "jflack",
+    "distance": "140"
+  },
+  {
+    "start": "jflack",
+    "end": "jhornbak",
+    "distance": "115"
+  },
+  {
+    "start": "jhornbak",
+    "end": "jhpokors",
+    "distance": "184"
+  },
+  {
+    "start": "jhpokors",
+    "end": "jjmau14",
+    "distance": "185"
+  },
+  {
+    "start": "jjmau14",
+    "end": "jllewis",
+    "distance": "13"
+  },
+  {
+    "start": "jllewis",
+    "end": "joshlutz",
+    "distance": "202"
+  },
+  {
+    "start": "joshlutz",
+    "end": "josiahm",
+    "distance": "172"
+  },
+  {
+    "start": "josiahm",
+    "end": "jtgreen",
+    "distance": "178"
+  },
+  {
+    "start": "jtgreen",
+    "end": "jweidenf",
+    "distance": "190"
+  },
+  {
+    "start": "jweidenf",
+    "end": "kegan21",
+    "distance": "61"
+  },
+  {
+    "start": "kegan21",
+    "end": "kenhicks",
+    "distance": "9"
+  },
+  {
+    "start": "kenhicks",
+    "end": "kevall",
+    "distance": "185"
+  },
+  {
+    "start": "kevall",
+    "end": "kevincb",
+    "distance": "201"
+  },
+  {
+    "start": "kevincb",
+    "end": "kiram15",
+    "distance": "22"
+  },
+  {
+    "start": "kiram15",
+    "end": "kjo124",
+    "distance": "223"
+  },
+  {
+    "start": "kjo124",
+    "end": "koti",
+    "distance": "160"
+  },
+  {
+    "start": "koti",
+    "end": "ktgrifin",
+    "distance": "116"
+  },
+  {
+    "start": "ktgrifin",
+    "end": "lexgarr",
+    "distance": "24"
+  },
+  {
+    "start": "lexgarr",
+    "end": "ltfurst",
+    "distance": "37"
+  },
+  {
+    "start": "ltfurst",
+    "end": "luhan",
+    "distance": "10"
+  },
+  {
+    "start": "luhan",
+    "end": "lyzhu",
+    "distance": "132"
+  },
+  {
+    "start": "lyzhu",
+    "end": "maloneml",
+    "distance": "91"
+  },
+  {
+    "start": "maloneml",
+    "end": "malsip",
+    "distance": "6"
+  },
+  {
+    "start": "malsip",
+    "end": "markss",
+    "distance": "59"
+  },
+  {
+    "start": "markss",
+    "end": "mattheil",
+    "distance": "16"
+  },
+  {
+    "start": "mattheil",
+    "end": "maxsatt",
+    "distance": "63"
+  },
+  {
+    "start": "maxsatt",
+    "end": "mazziac",
+    "distance": "59"
+  },
+  {
+    "start": "mazziac",
+    "end": "mcpher19",
+    "distance": "99"
+  },
+  {
+    "start": "mcpher19",
+    "end": "mikelynn",
+    "distance": "1"
+  },
+  {
+    "start": "mikelynn",
+    "end": "milowang",
+    "distance": "14"
+  },
+  {
+    "start": "milowang",
+    "end": "mj259",
+    "distance": "69"
+  },
+  {
+    "start": "mj259",
+    "end": "mjgaffne",
+    "distance": "41"
+  },
+  {
+    "start": "mjgaffne",
+    "end": "mjrerle",
+    "distance": "37"
+  },
+  {
+    "start": "mjrerle",
+    "end": "mlwells",
+    "distance": "111"
+  },
+  {
+    "start": "mlwells",
+    "end": "mlyonsru",
+    "distance": "228"
+  },
+  {
+    "start": "mlyonsru",
+    "end": "mrouault",
+    "distance": "269"
+  },
+  {
+    "start": "mrouault",
+    "end": "myou",
+    "distance": "17"
+  },
+  {
+    "start": "myou",
+    "end": "ndbart",
+    "distance": "10"
+  },
+  {
+    "start": "ndbart",
+    "end": "nguyenkd",
+    "distance": "31"
+  },
+  {
+    "start": "nguyenkd",
+    "end": "nkacirek",
+    "distance": "60"
+  },
+  {
+    "start": "nkacirek",
+    "end": "nsunny",
+    "distance": "199"
+  },
+  {
+    "start": "nsunny",
+    "end": "pbivrell",
+    "distance": "192"
+  },
+  {
+    "start": "pbivrell",
+    "end": "plhager",
+    "distance": "39"
+  },
+  {
+    "start": "plhager",
+    "end": "powhound",
+    "distance": "63"
+  },
+  {
+    "start": "powhound",
+    "end": "rcox",
+    "distance": "89"
+  },
+  {
+    "start": "rcox",
+    "end": "retzlaff",
+    "distance": "295"
+  },
+  {
+    "start": "retzlaff",
+    "end": "rfigue",
+    "distance": "229"
+  },
+  {
+    "start": "rfigue",
+    "end": "rmwillia",
+    "distance": "13"
+  },
+  {
+    "start": "rmwillia",
+    "end": "rschlac",
+    "distance": "69"
+  },
+  {
+    "start": "rschlac",
+    "end": "sahandri",
+    "distance": "20"
+  },
+  {
+    "start": "sahandri",
+    "end": "shawtm",
+    "distance": "60"
+  },
+  {
+    "start": "shawtm",
+    "end": "skunberg",
+    "distance": "56"
+  },
+  {
+    "start": "skunberg",
+    "end": "smithza",
+    "distance": "57"
+  },
+  {
+    "start": "smithza",
+    "end": "sporsche",
+    "distance": "1"
+  },
+  {
+    "start": "sporsche",
+    "end": "sstobbs",
+    "distance": "14"
+  },
+  {
+    "start": "sstobbs",
+    "end": "tanishk",
+    "distance": "13"
+  },
+  {
+    "start": "tanishk",
+    "end": "treslar",
+    "distance": "19"
+  },
+  {
+    "start": "treslar",
+    "end": "treyyu28",
+    "distance": "72"
+  },
+  {
+    "start": "treyyu28",
+    "end": "tstroup",
+    "distance": "83"
+  },
+  {
+    "start": "tstroup",
+    "end": "twe",
+    "distance": "41"
+  },
+  {
+    "start": "twe",
+    "end": "vicweeks",
+    "distance": "65"
+  },
+  {
+    "start": "vicweeks",
+    "end": "waterc55",
+    "distance": "150"
   }
 ]

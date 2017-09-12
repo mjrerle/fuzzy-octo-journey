@@ -47,7 +47,7 @@ public class DistanceCalculatorTest {
 
     @Test
     public void testTotalDistance() {
-        LocationRecords testObject = new LocationRecords("data/test/rand25.csv"); // Only first-5.csv should work.
+        LocationRecords testObject = new LocationRecords("data/test/FullTest.csv"); // Only first-5.csv should work.
         locations = testObject.getLocations();
         DistanceCalculator distanceCalculator = new DistanceCalculator(locations);
 
@@ -55,7 +55,7 @@ public class DistanceCalculatorTest {
 
         int totalDistance = distanceCalculator.totalDistance(infoArray);
 
-        assertEquals(4283, totalDistance);
+        assertEquals(9319, totalDistance);
         System.out.println("Total Distance Test Passed, calculated value was: " + totalDistance + ", and expected value was 4283 (RAND25 TEST)");
     }
     /* THIS DOES NOT ACTUALLY HAVE A TEST BECAUSE THERE IS NO ASSERTION TEST FOR 2D ARRAYS!!
