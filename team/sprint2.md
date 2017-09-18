@@ -44,7 +44,7 @@ Total planned tasks / issues in the Sprint Backlog: **
 Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 :--- | :--- | :--- | :--- | :---
  9/15/2017 | None | #118, #123, #126, #128 | None | High
- | | | | 
+ 9/18/2017 | None | #118, #123, #126, #128 | None | High 
  | | | | 
 
 ## Review
