@@ -26,14 +26,24 @@
 ## Plan 
 
 User stories (epics) in the Sprint Backlog: 
+(#127) json view assignment, 
+(#124) model data assignment, 
+(#114) Cumulative distances, 
+(#115) useful information in itinerary, 
+(#119) shorter trip, 
+(#120) basic map with itinerary
 
 Total planned tasks / issues in the Sprint Backlog: ** 
+(#118) compute 1 nearest neighbor, 
+(#123) find out how many columns, 
+(#126) make json creation more dynamic, 
+(#128) create checkboxes
 
 ## Daily Scrums
 
 Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 :--- | :--- | :--- | :--- | :---
- | | | |
+ 9/15/2017 | None | #118, #123, #126, #128 | None | High
  | | | | 
  | | | | 
 
