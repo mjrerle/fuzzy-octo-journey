@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -19,9 +21,12 @@ public class DistanceCalculatorTest {
 
     ArrayList<Location> locations = new ArrayList<Location>();
 
-    Location brewery1 = new Location("abee", "39°38'07\" N", "104°45'32\" W" );
-    Location brewery2 = new Location("abellend" ,"39°24'05\" N", "105°28'37\" W");
-    Location brewery3 = new Location("acwatson","40°35'17\" N", "105°4'26\" W");
+    Map<String,String> extraInfo = new HashMap<String,String>();
+
+
+    Location brewery1 = new Location("abee", "Two22 Brew","39°38'07\" N", "104°45'32\" W", extraInfo);
+    Location brewery2 = new Location("abellend" ,"Mad Jacks Mountain Brewery","39°24'05\" N", "105°28'37\" W",extraInfo);
+    Location brewery3 = new Location("acwatson","Equinox Brewing","40°35'17\" N", "105°4'26\" W",extraInfo);
 
     @Test
     public void testInstantiation() {
