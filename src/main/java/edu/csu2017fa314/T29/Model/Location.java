@@ -1,24 +1,32 @@
 package edu.csu2017fa314.T29.Model;
+import java.util.Map;
+import java.util.HashMap;
 
 public class Location {
     String id;
-    //String name;
-    //String city;
+    String name;
     double latitude;
     double longitude;
-    //double elevation;
 
-    public Location(String id, String latitude, String longitude){
+    Map<String,String> extraInfo = new HashMap<String,String>();
+
+
+    public Location(String id,String name, String latitude, String longitude, Map<String,String> extraInfo){
         setId(id); // this.id = id;
-        //setName(name); // this.name = name;
+        setName(name); // this.name = name;
         //setCity(city); // this.city = city;
         setLatitude(latitude); // this.latitude = coordinatesToDouble(latitude);
         setLongitude(longitude); // this.longitude = coordinatesToDouble(longitude);
         //setElevation(elevation); // this.elevation = Double.parseDouble(elevation);
+        setExtraInfo(extraInfo); //this.extraInfo.putAll(extraInfo) copies values into this map
     }
 
     public void setId(String id){
         this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setLatitude(String latitude){this.latitude = coordinatesToDouble(latitude); }
@@ -26,6 +34,8 @@ public class Location {
     public void setLongitude(String longitude){
         this.longitude = coordinatesToDouble(longitude);
     }
+
+    public void setExtraInfo(Map<String,String> extraInfo){ this.extraInfo.putAll(extraInfo);}
 
     public String getId(){
         return this.id;
@@ -99,6 +109,7 @@ public class Location {
         }
         return result;
     }
+
 
 
 }

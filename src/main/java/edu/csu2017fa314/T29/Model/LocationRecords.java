@@ -3,8 +3,9 @@ package edu.csu2017fa314.T29.Model;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
+import java.util.Map;
+import java.util.HashMap;
 
 // LocationRecords is an object with an ArrayList that holds all the Locations in a csv file.
 public class LocationRecords {
@@ -13,6 +14,9 @@ public class LocationRecords {
     int indexID;
     int indexLatitude;
     int indexLongitude;
+    int indexName;
+
+    Map<String,String> columnIndex = new HashMap<String,String>();
 
     // Constructor simply reads the csv file.
     public LocationRecords(String filename){
@@ -53,6 +57,12 @@ public class LocationRecords {
                 else if(order[i].equalsIgnoreCase("Longitude")) {
                     indexLongitude = i;
                 }
+                else if(order[i].equalsIgnoreCase("Name")){
+                    indexName = i;
+                }
+                else{
+                    columnIndex.put(order[i],Integer.toString(i));
+                }
             }
 
             while(scan.hasNextLine()){
@@ -60,12 +70,16 @@ public class LocationRecords {
 
                 if (line.length != 0) {
                     String id = line[indexID];
-                    //String name = line[indexName];
+                    String name = line[indexName];
                     //String city = line[indexCity];
                     String latitude = line[indexLatitude]; // Changed to double in Location.java
                     String longitude = line[indexLongitude]; // Changed to double in Location.java
                     //String elevation = line[indexElevation]; // Changed to double in Location.java
-                    Location next = new Location(id, latitude, longitude);
+                    Map<String,String> extraInfo = new HashMap<String,String>();
+                    for(String key: columnIndex.keySet()){
+                        extraInfo.put(key,line[Integer.parseInt(columnIndex.get(key))]);
+                    }
+                    Location next = new Location(id, name, latitude, longitude, extraInfo);
                     locations.add(next);
                 } else{
                     //Do Nothing
