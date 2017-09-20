@@ -29,7 +29,7 @@ public class DistanceCalculator {
     public ArrayList<Location> getLocations () {return locations;}
     public void setLocations(ArrayList<Location> locations) {this.locations = locations;}
 
-    public String[][] getCalculatedDistances() {return calculateDistances();}
+    public String[][] getCalculatedDistances() {return calculateDistances(locations);}
     public void setCalculatedDistances(String[][] calculatedDistances) {this.calculatedDistances = calculatedDistances;}
 
     //////////////////////////////////////////////////////////
@@ -38,28 +38,59 @@ public class DistanceCalculator {
     // order in which the original CSV file is given in.    //
     //////////////////////////////////////////////////////////
 
-    public String[][] calculateDistances() {
-        String[][] arrayOfInfo = new String[locations.size() - 1][3];
+    public String[][] calculateDistances(ArrayList<Location> locs) {
+        String[][] arrayOfInfo = new String[locs.size() - 1][3];
 
-        for(int i = 0; i < locations.size() - 1; i++) { //We go to size() - 1 because say we have 3 locations, there
+        for(int i = 0; i < locs.size() - 1; i++) { //We go to size() - 1 because say we have 3 locations, there
                                                         //are only 2 trips between three locations
 
-            arrayOfInfo[i][0] = locations.get(i).getId(); //The 0 column contains the start id, thus only the first and
+            arrayOfInfo[i][0] = locs.get(i).getId(); //The 0 column contains the start id, thus only the first and
                                                           //second id are populated here
 
-            arrayOfInfo[i][1] = locations.get(i + 1).getId(); //The 1 column contains the end id, which is the next
+            arrayOfInfo[i][1] = locs.get(i + 1).getId(); //The 1 column contains the end id, which is the next
                                                               //location after the start id
 
             //Its a shit show, I know, we'll have to see if we can make this prettier later
-            double distance = calculateGreatCircleDistance(degreeToRadian(locations.get(i).getLatitude()),
-                                                           degreeToRadian(locations.get(i).getLongitude()),
-                                                           degreeToRadian(locations.get(i + 1).getLatitude()),
-                                                           degreeToRadian(locations.get(i + 1).getLongitude()));
+            double distance = calculateGreatCircleDistance(degreeToRadian(locs.get(i).getLatitude()),
+                                                           degreeToRadian(locs.get(i).getLongitude()),
+                                                           degreeToRadian(locs.get(i + 1).getLatitude()),
+                                                           degreeToRadian(locs.get(i + 1).getLongitude()));
 
             arrayOfInfo[i][2] = Integer.toString((int)distance);
         }
 
         return arrayOfInfo;
+    }
+
+
+    private int findMinimum(ArrayList<Integer> permutations){
+        int small = Integer.MAX_VALUE;
+        int index=0;
+        for(int i=0;i<permutations.size();i++){
+//            System.out.println(permutations.get(i)+" "+small+" "+index+" "+i);
+            if(permutations.get(i)!=0 && permutations.get(i)<small){
+//                System.out.println(small);
+                small=permutations.get(i);
+                index=i;
+            }
+        }
+        return index;
+    }
+    public Location computeNearestNeighbor(Location node, ArrayList<Location> locs){
+        ArrayList<Integer> permutations= new ArrayList<>();
+        for(int i=0;i<locs.size();i++){
+            int distance = calculateGreatCircleDistance(degreeToRadian(node.getLatitude()),degreeToRadian(node.getLongitude()), degreeToRadian(locs.get(i).getLatitude()),degreeToRadian(locs.get(i).getLongitude()));
+            //System.out.printf("%.2f\t\t%.2f\t\t%.2f\t\t%.2f\t\t%d\t%d\n",degreeToRadian(node.getLatitude()),degreeToRadian(node.getLongitude()),degreeToRadian(locs.get(i).getLatitude()), degreeToRadian(locs.get(i).getLongitude()),distance,i);
+                permutations.add(distance);
+        }
+        int index=findMinimum(permutations);
+//        System.out.println();
+//        System.out.println("index: "+index);
+//        System.out.println();
+
+//        System.out.println(node.getLatitude()+": "+node.getLongitude());
+//        System.out.println(locs.get(index).getLatitude()+": "+ locs.get(index).getLongitude());
+        return locs.get(index);
     }
 
     //////////////////////////////////////////////////////////
