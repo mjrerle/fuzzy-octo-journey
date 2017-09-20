@@ -57,7 +57,7 @@ public class TripCo
       //load records
       DistanceCalculator transform = new DistanceCalculator(records.getLocations());
       //transform data
-      View json = new View(transform.calculateDistances());
+      View json = new View(transform.getCalculatedDistances());
       //create view object
       json.parseItinerary();
       //read transformed data
