@@ -44,10 +44,10 @@ public class DistanceCalculator {
         for(int i = 0; i < locs.size() - 1; i++) { //We go to size() - 1 because say we have 3 locations, there
                                                         //are only 2 trips between three locations
 
-            arrayOfInfo[i][0] = locs.get(i).extraInfo.get("id"); //The 0 column contains the start id, thus only the first and
+            arrayOfInfo[i][0] = locs.get(i).getId(); //The 0 column contains the start id, thus only the first and
                                                           //second id are populated here
 
-            arrayOfInfo[i][1] = locs.get(i + 1).extraInfo.get("id"); //The 1 column contains the end id, which is the next
+            arrayOfInfo[i][1] = locs.get(i + 1).getId(); //The 1 column contains the end id, which is the next
                                                               //location after the start id
 
             //Its a shit show, I know, we'll have to see if we can make this prettier later
