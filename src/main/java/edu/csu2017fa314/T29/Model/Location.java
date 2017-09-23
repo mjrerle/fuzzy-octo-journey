@@ -3,8 +3,10 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class Location {
-    double latitude;
-    double longitude;
+    private double latitude;
+    private double longitude;
+
+    private int distance;
 
     Map<String,String> extraInfo = new HashMap<String,String>();
 
@@ -21,7 +23,9 @@ public class Location {
         this.longitude = coordinatesToDouble(longitude);
     }
 
-    public void setExtraInfo(Map<String,String> extraInfo){ this.extraInfo.putAll(extraInfo);}
+    private void setExtraInfo(Map<String,String> extraInfo){ this.extraInfo.putAll(extraInfo);}
+
+    public void setDistance(int distance){ this.distance = distance;}
 
     public String getId(){ return extraInfo.get("id");}
 
@@ -32,6 +36,9 @@ public class Location {
     public double getLongitude(){
         return this.longitude;
     }
+
+    public int getDistance(){return this.distance;}
+
 
     // Takes a String of Latitude or Longitude and returns it in degrees as a double!
     public double coordinatesToDouble(String latLong){
