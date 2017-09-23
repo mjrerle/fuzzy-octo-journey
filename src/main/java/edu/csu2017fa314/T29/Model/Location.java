@@ -29,6 +29,16 @@ public class Location {
 
     public String getId(){ return extraInfo.get("id");}
 
+    public String getColumn(String columName){
+        columName = columName.toLowerCase();
+        if(extraInfo.containsKey(columName)){
+            return extraInfo.get(columName);
+        }
+        else{
+            return "Column not found";
+        }
+    }
+
     public double getLatitude(){
         return this.latitude;
     }
