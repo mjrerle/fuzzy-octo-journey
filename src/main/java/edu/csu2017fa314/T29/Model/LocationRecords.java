@@ -11,12 +11,8 @@ import java.util.HashMap;
 public class LocationRecords {
     // Empty ArrayList to hold Location objects.
     ArrayList<Location> locations = new ArrayList<>();
-    int indexID;
-    int indexLatitude;
-    int indexLongitude;
-    int indexName;
 
-    Map<String,String> columnIndex = new HashMap<String,String>();
+    Map<String,String> columnIndex = new HashMap<>();
 
     // Constructor simply reads the csv file.
     public LocationRecords(String filename){
@@ -30,7 +26,7 @@ public class LocationRecords {
     public String toString(){
         String line = "";
         for(int i = 0; i < locations.size(); i ++){
-            line.concat(locations.get(i).getId() + ", ");
+            line.concat(locations.get(i).getId());
             line.concat(Double.toString(locations.get(i).getLatitude())+ ", ");
             line.concat(Double.toString(locations.get(i).getLongitude()) + ", ");
         }
@@ -48,38 +44,18 @@ public class LocationRecords {
             String[] order = orderString.split(",");
 
             for(int i = 0; i < order.length; i++) {
-                if(order[i].equalsIgnoreCase("ID")) {
-                    indexID = i;
-                }
-                else if(order[i].equalsIgnoreCase("Latitude")) {
-                    indexLatitude = i;
-                }
-                else if(order[i].equalsIgnoreCase("Longitude")) {
-                    indexLongitude = i;
-                }
-                else if(order[i].equalsIgnoreCase("Name")){
-                    indexName = i;
-                }
-                else{
-                    columnIndex.put(order[i],Integer.toString(i));
-                }
+                    columnIndex.put(order[i].toLowerCase(),Integer.toString(i));
             }
 
             while(scan.hasNextLine()){
                 String[] line = scan.nextLine().split(",");
 
                 if (line.length != 0) {
-                    String id = line[indexID];
-                    String name = line[indexName];
-                    //String city = line[indexCity];
-                    String latitude = line[indexLatitude]; // Changed to double in Location.java
-                    String longitude = line[indexLongitude]; // Changed to double in Location.java
-                    //String elevation = line[indexElevation]; // Changed to double in Location.java
                     Map<String,String> extraInfo = new HashMap<String,String>();
                     for(String key: columnIndex.keySet()){
                         extraInfo.put(key,line[Integer.parseInt(columnIndex.get(key))]);
                     }
-                    Location next = new Location(id, name, latitude, longitude, extraInfo);
+                    Location next = new Location(extraInfo);
                     locations.add(next);
                 } else{
                     //Do Nothing
