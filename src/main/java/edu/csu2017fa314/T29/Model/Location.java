@@ -3,30 +3,18 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class Location {
-    String id;
-    String name;
-    double latitude;
-    double longitude;
+    private double latitude;
+    private double longitude;
+
+    private int distance;
 
     Map<String,String> extraInfo = new HashMap<String,String>();
 
 
-    public Location(String id,String name, String latitude, String longitude, Map<String,String> extraInfo){
-        setId(id); // this.id = id;
-        setName(name); // this.name = name;
-        //setCity(city); // this.city = city;
-        setLatitude(latitude); // this.latitude = coordinatesToDouble(latitude);
-        setLongitude(longitude); // this.longitude = coordinatesToDouble(longitude);
-        //setElevation(elevation); // this.elevation = Double.parseDouble(elevation);
+    public Location(Map<String,String> extraInfo){
         setExtraInfo(extraInfo); //this.extraInfo.putAll(extraInfo) copies values into this map
-    }
-
-    public void setId(String id){
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        setLatitude(extraInfo.get("latitude"));
+        setLongitude(extraInfo.get("longitude"));
     }
 
     public void setLatitude(String latitude){this.latitude = coordinatesToDouble(latitude); }
@@ -35,10 +23,20 @@ public class Location {
         this.longitude = coordinatesToDouble(longitude);
     }
 
-    public void setExtraInfo(Map<String,String> extraInfo){ this.extraInfo.putAll(extraInfo);}
+    private void setExtraInfo(Map<String,String> extraInfo){ this.extraInfo.putAll(extraInfo);}
 
-    public String getId(){
-        return this.id;
+    public void setDistance(int distance){ this.distance = distance;}
+
+    public String getId(){ return extraInfo.get("id");}
+
+    public String getColumn(String columName){
+        columName = columName.toLowerCase();
+        if(extraInfo.containsKey(columName)){
+            return extraInfo.get(columName);
+        }
+        else{
+            return "Column not found";
+        }
     }
 
     public double getLatitude(){
@@ -48,6 +46,9 @@ public class Location {
     public double getLongitude(){
         return this.longitude;
     }
+
+    public int getDistance(){return this.distance;}
+
 
     // Takes a String of Latitude or Longitude and returns it in degrees as a double!
     public double coordinatesToDouble(String latLong){

@@ -1,5 +1,6 @@
 package edu.csu2017fa314.T29.Model;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -22,13 +23,81 @@ public class DistanceCalculatorTest {
     ArrayList<Location> locations = new ArrayList<Location>();
 
     Map<String,String> extraInfo = new HashMap<String,String>();
+    Location brewery1;
+    Location brewery2;
+    Location brewery3;
+    Location t1;Location t2;Location t3; Location t4; Location t5;Location t6; Location t7;
+    Location t8; Location t9; Location t01; Location t02; Location t03;
+
+    @Before
+    public void setUp(){
+        extraInfo.put("id","abee");
+        extraInfo.put("name","Two22 Brew");
+        extraInfo.put("latitude","39°38'07\" N");
+        extraInfo.put("longitude","104°45'32\" W");
+        brewery1 = new Location(extraInfo);
+        extraInfo.put("id","abellend");
+        extraInfo.put("name","Mad Jacks Mountain Brewery");
+        extraInfo.put("latitude","39°24'05\" N");
+        extraInfo.put("longitude","105°28'37\" W");
+        brewery2 =new Location(extraInfo);
+        extraInfo.put("id","acwatson");
+        extraInfo.put("name","Equinox Brewing");
+        extraInfo.put("latitude","40°35'17\" N");
+        extraInfo.put("longitude","105°4'26\" W");
+        brewery3 = new Location(extraInfo);
+        extraInfo.put("id","a");
+        extraInfo.put("latitude","0");
+        extraInfo.put("longitude","0");
+        t1 = new Location(extraInfo);
+        extraInfo.put("id","b");
+        extraInfo.put("latitude","0");
+        extraInfo.put("longitude","1");
+        t2 = new Location(extraInfo);
+        extraInfo.put("id","c");
+        extraInfo.put("latitude","1");
+        extraInfo.put("longitude","0");
+        t3 = new Location(extraInfo);
+        extraInfo.put("id","d");
+        extraInfo.put("latitude","1");
+        extraInfo.put("longitude","1");
+        t4 = new Location(extraInfo);
+        extraInfo.put("id","e");
+        extraInfo.put("latitude","1");
+        extraInfo.put("longitude","2");
+        t5 = new Location(extraInfo);
+        extraInfo.put("id","f");
+        extraInfo.put("latitude","2");
+        extraInfo.put("longitude","1");
+        t6 = new Location(extraInfo);
+        extraInfo.put("id","g");
+        extraInfo.put("latitude","2");
+        extraInfo.put("longitude","2");
+        t7 = new Location(extraInfo);
+        extraInfo.put("id","a1");
+        extraInfo.put("latitude","0");
+        extraInfo.put("longitude","0");
+        t8 = new Location(extraInfo);
+        extraInfo.put("id","b1");
+        extraInfo.put("latitude","999");
+        extraInfo.put("longitude","999");
+        t9 = new Location(extraInfo);
+        extraInfo.put("id","c1");
+        extraInfo.put("latitude","-999");
+        extraInfo.put("longitude","-999");
+        t01 = new Location(extraInfo);
+        extraInfo.put("id","d1");
+        extraInfo.put("latitude","999");
+        extraInfo.put("longitude","-999");
+        t02 = new Location(extraInfo);
+        extraInfo.put("id","e1");
+        extraInfo.put("latitude","-999");
+        extraInfo.put("longitude","999");
+        t03 = new Location(extraInfo);
 
 
-    Location brewery1 = new Location("abee", "Two22 Brew","39°38'07\" N", "104°45'32\" W", extraInfo);
-    Location brewery2 = new Location("abellend" ,"Mad Jacks Mountain Brewery","39°24'05\" N", "105°28'37\" W",extraInfo);
-    Location brewery3 = new Location("acwatson","Equinox Brewing","40°35'17\" N", "105°4'26\" W",extraInfo);
-    Location loc1 = new Location("a","","40.854","-104.371",extraInfo);
-    Location loc2 = new Location("b","","40.972","-104.376",extraInfo);
+    }
+
 
     @Test
     public void testInstantiation() {
@@ -79,13 +148,13 @@ public class DistanceCalculatorTest {
         LocationRecords t = new LocationRecords("data/test/nn.csv");
         ArrayList<Location> locs = t.getLocations();
         DistanceCalculator dist = new DistanceCalculator(locs);
-        Location a = dist.computeNearestNeighbor(new Location("a","","0","0",extraInfo),locs);
-        Location b = dist.computeNearestNeighbor(new Location("b","","0","1",extraInfo),locs);
-        Location c = dist.computeNearestNeighbor(new Location("c","","1","0",extraInfo),locs);
-        Location d = dist.computeNearestNeighbor(new Location("d","","1","1",extraInfo),locs);
-        Location e = dist.computeNearestNeighbor(new Location("e","","1","2",extraInfo),locs);
-        Location f = dist.computeNearestNeighbor(new Location("f","","2","1",extraInfo),locs);
-        Location g = dist.computeNearestNeighbor(new Location("g","","2","2",extraInfo),locs);
+        Location a = dist.computeNearestNeighbor(t1,locs);
+        Location b = dist.computeNearestNeighbor(t2,locs);
+        Location c = dist.computeNearestNeighbor(t3,locs);
+        Location d = dist.computeNearestNeighbor(t4,locs);
+        Location e = dist.computeNearestNeighbor(t5,locs);
+        Location f = dist.computeNearestNeighbor(t6,locs);
+        Location g = dist.computeNearestNeighbor(t7,locs);
         System.out.println("  a\t   b \tc  \t d    e    f    g");
         System.out.print("a ");utilityCompute(a,a);        utilityCompute(a,b);        utilityCompute(a,c);        utilityCompute(a,d);        utilityCompute(a,e);        utilityCompute(a,f);        utilityCompute(a,g);
         System.out.println();
@@ -119,16 +188,16 @@ public class DistanceCalculatorTest {
         ArrayList<Location> locs = t.getLocations();
         DistanceCalculator dist = new DistanceCalculator(locs);
 
-        Location a = dist.computeNearestNeighbor(new Location("a","","0","0",extraInfo),locs);
-        Location b = dist.computeNearestNeighbor(new Location("b","","999","999",extraInfo),locs);
-        Location c = dist.computeNearestNeighbor(new Location("c","","-999","-999",extraInfo),locs);
-        Location d = dist.computeNearestNeighbor(new Location("d","","999","-999",extraInfo),locs);
-        Location e = dist.computeNearestNeighbor(new Location("e","","-999","999",extraInfo),locs);
-        assertEquals(a.getId(),"alnolte");
-        assertEquals(b.getId(), "alnolte");
-        assertEquals(c.getId(),"rcox");
-        assertEquals(d.getId(),"retzlaff");
-        assertEquals(e.getId(),"rcox");
+        Location a1 = dist.computeNearestNeighbor(t8,locs);
+        Location b1 = dist.computeNearestNeighbor(t9,locs);
+        Location c1 = dist.computeNearestNeighbor(t01,locs);
+        Location d1 = dist.computeNearestNeighbor(t02,locs);
+        Location e1 = dist.computeNearestNeighbor(t03,locs);
+        assertEquals(a1.getId(),"alnolte");
+        assertEquals(b1.getId(), "alnolte");
+        assertEquals(c1.getId(),"rcox");
+        assertEquals(d1.getId(),"retzlaff");
+        assertEquals(e1.getId(),"rcox");
     }
     /* THIS DOES NOT ACTUALLY HAVE A TEST BECAUSE THERE IS NO ASSERTION TEST FOR 2D ARRAYS!!
      * We will have to come back to this and make our on assertion test that iterates through the 2d array have
