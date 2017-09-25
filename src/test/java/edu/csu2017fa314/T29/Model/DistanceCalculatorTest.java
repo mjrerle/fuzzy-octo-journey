@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -144,42 +145,79 @@ public class DistanceCalculatorTest {
     }
 
     @Test
-    public void testComputeNearestNeighborNN(){
-        LocationRecords t = new LocationRecords("data/test/nn.csv");
+    public void testComputeNearestNeighbor(){
+        LocationRecords t = new LocationRecords("data/test/FullTest.csv");
         ArrayList<Location> locs = t.getLocations();
         DistanceCalculator dist = new DistanceCalculator(locs);
-        Location a = dist.computeNearestNeighbor(t1,locs);
-        Location b = dist.computeNearestNeighbor(t2,locs);
-        Location c = dist.computeNearestNeighbor(t3,locs);
-        Location d = dist.computeNearestNeighbor(t4,locs);
-        Location e = dist.computeNearestNeighbor(t5,locs);
-        Location f = dist.computeNearestNeighbor(t6,locs);
-        Location g = dist.computeNearestNeighbor(t7,locs);
-        System.out.println("  a\t   b \tc  \t d    e    f    g");
-        System.out.print("a ");utilityCompute(a,a);        utilityCompute(a,b);        utilityCompute(a,c);        utilityCompute(a,d);        utilityCompute(a,e);        utilityCompute(a,f);        utilityCompute(a,g);
-        System.out.println();
-        System.out.print("b ");utilityCompute(b,a);        utilityCompute(b,b);        utilityCompute(b,c);        utilityCompute(b,d);        utilityCompute(b,e);        utilityCompute(b,f);        utilityCompute(b,g);
-        System.out.println();
-        System.out.print("c ");utilityCompute(c,a);        utilityCompute(c,b);        utilityCompute(c,c);        utilityCompute(c,d);        utilityCompute(c,e);        utilityCompute(c,f);        utilityCompute(c,g);
-        System.out.println();
-        System.out.print("d ");utilityCompute(d,a);        utilityCompute(d,b);        utilityCompute(d,c);        utilityCompute(d,d);        utilityCompute(d,e);        utilityCompute(d,f);        utilityCompute(d,g);
-        System.out.println();
-        System.out.print("e ");utilityCompute(e,a);        utilityCompute(e,b);        utilityCompute(e,c);        utilityCompute(e,d);        utilityCompute(e,e);        utilityCompute(e,f);        utilityCompute(e,g);
-        System.out.println();
-        System.out.print("f ");utilityCompute(f,a);        utilityCompute(f,b);        utilityCompute(f,c);        utilityCompute(f,d);        utilityCompute(f,e);        utilityCompute(f,f);        utilityCompute(f,g);
-        System.out.println();
-        System.out.print("g ");utilityCompute(g,a);        utilityCompute(g,b);        utilityCompute(g,c);        utilityCompute(g,d);        utilityCompute(g,e);        utilityCompute(g,f);        utilityCompute(g,g);
-        System.out.println();
+        DistanceCalculator.Pair ll1 = dist.computeNearestNeighbor(locs,locs.get(0));
+//        System.out.println();
+//        System.out.println("TEST result: ");
+//        for (int i=0;i<ll.getKey().size();i++){
+//            System.out.print(ll.getKey().get(i).getId()+" ");
+//            if(i%5==0){
+//                System.out.println();
+//            }
+//        }
+//        System.out.println();
+//        System.out.println("Size: "+ll.getKey().size());
+        assertNotNull(ll1);
+        assertEquals(ll1.getValue(),(Integer)1696);
+        assertEquals(ll1.getKey().getFirst(),locs.get(0));
+        assertNotEquals(ll1.getKey().get(1),locs.get(0));
+
+    }
+
+    @Test
+    public void testComputeNearestNeighborCO14ers() {
+        LocationRecords t = new LocationRecords("data/test/CO14ers.csv");
+        ArrayList<Location> locs = t.getLocations();
+        DistanceCalculator dist = new DistanceCalculator(locs);
+        LinkedList<Location> ll = dist.computeAllNearestNeighbors(locs);
+        int sum = 0;
+        for (int i = 0; i < ll.size(); i++) {
+            sum += ll.get(i).getDistance();
+        }
+        assertEquals(sum, 818);
+    }
+
+    @Test
+    public void testComputeNearestNeighborCOrand75() {
+        LocationRecords t = new LocationRecords("data/test/COrand75.csv");
+        ArrayList<Location> locs = t.getLocations();
+        DistanceCalculator dist = new DistanceCalculator(locs);
+        LinkedList<Location> ll = dist.computeAllNearestNeighbors(locs);
+        int sum = 0;
+        for (int i = 0; i < ll.size(); i++) {
+            sum += ll.get(i).getDistance();
+        }
+        assertEquals(sum, 2454);
+    }
+
+    @Test
+    public void testComputeNearestNeighborCOrand50() {
+        LocationRecords t = new LocationRecords("data/test/COrand50.csv");
+        ArrayList<Location> locs = t.getLocations();
+        DistanceCalculator dist = new DistanceCalculator(locs);
+        LinkedList<Location> ll = dist.computeAllNearestNeighbors(locs);
+        int sum = 0;
+        for (int i = 0; i < ll.size(); i++) {
+            sum += ll.get(i).getDistance();
+        }
+        assertEquals(sum, 1834);
+    }
 
 
-        assertEquals(a.getId(),"b");
-        assertEquals(b.getId(), "a");
-        assertEquals(c.getId(),"a");
-        assertEquals(d.getId(),"b");
-        assertEquals(e.getId(),"d");
-        assertEquals(f.getId(),"d");
-        assertEquals(g.getId(),"e");
-
+    @Test
+    public void testComputeNearestNeighborSki() {
+        LocationRecords t = new LocationRecords("data/test/ski.csv");
+        ArrayList<Location> locs = t.getLocations();
+        DistanceCalculator dist = new DistanceCalculator(locs);
+        LinkedList<Location> ll = dist.computeAllNearestNeighbors(locs);
+        int sum = 0;
+        for (int i = 0; i < ll.size(); i++) {
+            sum += ll.get(i).getDistance();
+        }
+        assertEquals(sum, 668);
     }
 
     @Test
@@ -187,21 +225,28 @@ public class DistanceCalculatorTest {
         LocationRecords t = new LocationRecords("data/test/FullTest.csv");
         ArrayList<Location> locs = t.getLocations();
         DistanceCalculator dist = new DistanceCalculator(locs);
-
-        Location a1 = dist.computeNearestNeighbor(t8,locs);
-        Location b1 = dist.computeNearestNeighbor(t9,locs);
-        Location c1 = dist.computeNearestNeighbor(t01,locs);
-        Location d1 = dist.computeNearestNeighbor(t02,locs);
-        Location e1 = dist.computeNearestNeighbor(t03,locs);
-        assertEquals(a1.getId(),"alnolte");
-        assertEquals(b1.getId(), "alnolte");
-        assertEquals(c1.getId(),"rcox");
-        assertEquals(d1.getId(),"retzlaff");
-        assertEquals(e1.getId(),"rcox");
+        LinkedList<Location> ll = dist.computeAllNearestNeighbors(locs);
+        int sum=0;
+        for (int i = 0; i < ll.size(); i++) {
+            sum+=ll.get(i).getDistance();
+        }
+        assertEquals(sum,1600);
+//        for (int i = 0; i < ll.size(); i++) {
+//            System.out.print(ll.get(i).getId()+" ");
+//            if(i%5==0){
+//                System.out.println();
+//            }
+//        }
+//        System.out.println();
+//        System.out.println("Size: "+ll.size());
     }
     /* THIS DOES NOT ACTUALLY HAVE A TEST BECAUSE THERE IS NO ASSERTION TEST FOR 2D ARRAYS!!
      * We will have to come back to this and make our on assertion test that iterates through the 2d array have
      * have it call equals() on each element of the array */
+
+
+
+
     @Test
     public void testCalculateDistance(){
         locations.add(brewery1);
