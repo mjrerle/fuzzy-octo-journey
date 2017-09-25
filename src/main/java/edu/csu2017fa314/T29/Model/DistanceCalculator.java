@@ -1,6 +1,8 @@
 package edu.csu2017fa314.T29.Model;
 
-import java.util.ArrayList;
+import sun.awt.image.ImageWatched;
+
+import java.util.*;
 
 /**
  * Created by Trey Yu on 9/2/2017.
@@ -11,8 +13,9 @@ public class DistanceCalculator {
 
     private static final double KILOMETER_TO_MILES = EARTH_RADIUS_MILES/EARTH_RADIUS; //How many miles in one kilometer
 
-    protected ArrayList<Location> locations = new ArrayList<Location>();
+    protected ArrayList<Location> locations = new ArrayList<>();
     protected String[][] calculatedDistances;
+
 
     //////////////////////////////////////////////////////////
     // Constructor                                          //
@@ -62,40 +65,124 @@ public class DistanceCalculator {
         return arrayOfInfo;
     }
 
+    public Pair computeNearestNeighbor(ArrayList<Location> locs, Location node){
+        //this will return a Pair... a pair is key value pair: LinkedList<Location> key, Integer value
+        ArrayList<Location> unvisited = (ArrayList<Location>) locs.clone();
+        //must have a local copy otherwise I will modify the given arraylist!
+        LinkedList<Location> visited = new LinkedList<>();
+        //fill this list
+        node.setDistance(0);
+        //set distance of first node equal to 0
+        visited.add(node);
+        //add first
+        unvisited.remove(node);
+        //remove node
+        int k=0;
+        int sum=0;
+        int size = unvisited.size();
+        while(k<size) {
+            //go through all nodes
+            ArrayList<Integer> distances = new ArrayList<>();
+            //keeps track of distances between nodes
+            for (int i = 0; i < unvisited.size(); i++) {
 
-    private int findMinimum(ArrayList<Integer> permutations){
-        int small = Integer.MAX_VALUE;
+                int distance = calculateGreatCircleDistance(unvisited.get(i),visited.getLast());
+                distances.add(distance);
+                //populate distances arraylist
+            }
+            //find edge lengths
+            int min = Integer.MAX_VALUE;
+            int index = 0;
+            for (int i = 0; i < distances.size(); i++) {
+                if (distances.get(i) < min) {
+                    //compare each intermediate distance to min
+                    min = distances.get(i);
+                    //set min equal to lowest distance
+                    index = i;
+                    //keep track of the index
+                }
+            }
+            //find min
+            sum+=min;
+            Location temp = new Location(unvisited.get(index).extraInfo);
+            //i make a new location so that I can play with a copy of the unvisited node... this seems to work
+            temp.setDistance(min);
+            //set distance of temp
+
+            visited.add(temp);
+            //add temp node to visited
+
+            unvisited.remove(unvisited.get(index));
+            //remove node from unvisited, i remove the actual node!
+
+            k++;
+        }
+        Location last = new Location(node.extraInfo);
+        //create last node to complete round trip
+        last.setDistance(calculateGreatCircleDistance(visited.getLast(),node));
+        //set distance equal to last node added to visited and the given node
+        visited.add(last);
+        //add the last node to the linkedlist
+        sum+=last.getDistance();
+        //add last distance
+//        System.out.println("Index: "+k + " Size: "+locs.size()+" Sum: "+sum);
+//        System.out.print("Visited: ");
+//        for (int i = 0; i < visited.size(); i++) {
+//            System.out.print("("+visited.get(i).getId()+", "+visited.get(i).getDistance()+") ");
+//            if(i%5==0){
+//                System.out.println();
+//            }
+//        }
+//        System.out.println();
+//        System.out.print("Unvisited: ");
+//        for (int i = 0; i < unvisited.size(); i++) {
+//            System.out.print(unvisited.get(i).getId());
+//            if(i%5==0){
+//                System.out.println();
+//            }
+//        }
+//        System.out.println();
+//        System.out.println();
+
+        return new Pair(visited,sum);
+        //associate the visited linkedlist and the total sum!
+    }
+
+    public LinkedList<Location> computeAllNearestNeighbors(ArrayList<Location> locs){
+        ArrayList<Pair> permutations = new ArrayList<>();
+        //list of lists
+        LinkedList<Location> shortest = new LinkedList<>();
+        //result
+        for (int i = 0; i < locs.size(); i++) {
+            permutations.add(computeNearestNeighbor(locs,locs.get(i)));
+            //add all possible starting points
+        }
+        int min = Integer.MAX_VALUE;
         int index=0;
-        for(int i=0;i<permutations.size();i++){
-//            System.out.println(permutations.get(i)+" "+small+" "+index+" "+i);
-            if(permutations.get(i)!=0 && permutations.get(i)<small){
-//                System.out.println(small);
-                small=permutations.get(i);
+        for (int i = 0; i < permutations.size(); i++) {
+            //find lowest cumulative distance
+            if(permutations.get(i).getValue()<min){
+                //finding the minimum
+                min=permutations.get(i).getValue();
                 index=i;
+                //keep track of the index
             }
         }
-        return index;
-    }
-    public Location computeNearestNeighbor(Location node, ArrayList<Location> locs){
-        ArrayList<Integer> permutations= new ArrayList<>();
-        for(int i=0;i<locs.size();i++){
-            int distance = calculateGreatCircleDistance(degreeToRadian(node.getLatitude()),degreeToRadian(node.getLongitude()), degreeToRadian(locs.get(i).getLatitude()),degreeToRadian(locs.get(i).getLongitude()));
-            //System.out.printf("%.2f\t\t%.2f\t\t%.2f\t\t%.2f\t\t%d\t%d\n",degreeToRadian(node.getLatitude()),degreeToRadian(node.getLongitude()),degreeToRadian(locs.get(i).getLatitude()), degreeToRadian(locs.get(i).getLongitude()),distance,i);
-                permutations.add(distance);
-        }
-        int index=findMinimum(permutations);
-//        System.out.println();
-//        System.out.println("index: "+index);
-//        System.out.println();
 
-//        System.out.println(node.getLatitude()+": "+node.getLongitude());
-//        System.out.println(locs.get(index).getLatitude()+": "+ locs.get(index).getLongitude());
-        return locs.get(index);
+//        System.out.println("min: "+min + " index: "+index);
+        shortest=permutations.get(index).getKey();
+        //set shortest equal to the path with lowest total distance
+
+        return shortest;
     }
+
 
     //////////////////////////////////////////////////////////
     // Great Circle Distance calculation                    //
     //////////////////////////////////////////////////////////
+    public int calculateGreatCircleDistance(Location node1, Location node2){
+        return calculateGreatCircleDistance(degreeToRadian(node1.getLatitude()),degreeToRadian(node1.getLongitude()),degreeToRadian(node2.getLatitude()),degreeToRadian(node2.getLongitude()));
+    }
 
     public int calculateGreatCircleDistance(double startLat, double startLong, double endLat, double endLong) {
         double deltaLambda = Math.abs(startLong - endLong);
@@ -134,6 +221,32 @@ public class DistanceCalculator {
             totalDistance += Integer.parseInt(array[i][2]);
         }
         return totalDistance;
+    }
+    public static class Pair{
+        //this is for keeping track of the total distance
+        private LinkedList<Location> key;
+        private Integer value;
+        public Pair(LinkedList<Location> key,Integer value){
+            this.key=key;
+            this.value=value;
+        }
+        public Pair(){
+            key=new LinkedList<>();
+            value=0;
+        }
+
+        public LinkedList<Location> getKey() {
+            return key;
+        }
+        public void setKey(LinkedList<Location> newkey){
+            this.key=newkey;
+        }
+        public Integer getValue() {
+            return value;
+        }
+        public void setValue( Integer newValue){
+            this.value=newValue;
+        }
     }
 }
 

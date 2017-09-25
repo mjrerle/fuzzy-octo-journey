@@ -5,6 +5,7 @@ import edu.csu2017fa314.T29.Model.LocationRecords;
 import edu.csu2017fa314.T29.View.View;
 
 import java.io.IOException;
+import java.util.LinkedList;
 
 public class TripCo
 {
