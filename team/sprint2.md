@@ -46,6 +46,7 @@ Date | Tasks done this time | Tasks done next time | Impediments | Confidence
  9/15/2017 | None | #118, #123, #126, #128 | None | High
  9/18/2017 | None | #118, #123, #126, #128 | None | High 
  9/20/2017 | #118 | #113, #123, #126, #128 | Nearest Neighbor Issues | High 
+ 9/25/2017 | #123 #114 | #118 #123 #126 #128 | JavaScript checkboxes Issues | High
 
 ## Review
 
