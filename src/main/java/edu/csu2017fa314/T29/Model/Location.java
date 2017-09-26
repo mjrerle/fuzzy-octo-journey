@@ -1,6 +1,7 @@
 package edu.csu2017fa314.T29.Model;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
 
 public class Location {
     private double latitude;
@@ -8,7 +9,7 @@ public class Location {
 
     private int distance;
 
-    Map<String,String> extraInfo = new HashMap<String,String>();
+    private Map<String,String> extraInfo = new HashMap<String,String>();
 
 
     public Location(Map<String,String> extraInfo){
@@ -29,14 +30,18 @@ public class Location {
 
     public String getId(){ return extraInfo.get("id");}
 
-    public String getColumn(String columName){
-        columName = columName.toLowerCase();
-        if(extraInfo.containsKey(columName)){
-            return extraInfo.get(columName);
+    public String getColumnValue(String columnName){
+        columnName = columnName.toLowerCase();
+        if(extraInfo.containsKey(columnName)){
+            return extraInfo.get(columnName);
         }
         else{
             return "Column not found";
         }
+    }
+
+    public Set<String> getColumnNames(){
+        return extraInfo.keySet();
     }
 
     public double getLatitude(){
