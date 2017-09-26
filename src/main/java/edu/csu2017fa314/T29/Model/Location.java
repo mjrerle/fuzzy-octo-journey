@@ -28,6 +28,10 @@ public class Location {
 
     public void setDistance(int distance){ this.distance = distance;}
 
+    public Map<String, String> getExtraInfo() {
+        return extraInfo;
+    }
+
     public String getId(){ return extraInfo.get("id");}
 
     public String getColumnValue(String columnName){
