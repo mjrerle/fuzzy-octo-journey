@@ -58,11 +58,11 @@ public class TripCo
       //load records
       DistanceCalculator transform = new DistanceCalculator(records.getLocations());
       //transform data
-      View json = new View(new String[0][0]);
+      //View json = new View(new String[0][0]);
       //create view object
-      json.parseItinerary();
+      //json.parseItinerary();
       //read transformed data
-      json.writeFile(to);
+      //json.writeFile(to);
       //write to specified file (this will always be in the data directory)
       System.out.println("Printed JSON file to data/"+to+" in main");
    }
