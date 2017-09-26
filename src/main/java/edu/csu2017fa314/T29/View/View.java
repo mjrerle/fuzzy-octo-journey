@@ -31,31 +31,45 @@ public class View
        this.iti = linkedList;
    }
 
+   public JSONObject createLocationInfo(Location location) {
+       Location firstLocation = iti.getFirst();
+       Map information = new LinkedHashMap<String,String>();
+       Set<String> columnNames = firstLocation.getColumnNames();
+
+       for(String columns : columnNames) {
+           information.put(columns, location.getColumnValue(columns));
+       }
+
+       JSONObject obj = new JSONObject(information);
+
+       return obj;
+   }
 
    public void createItinerary(){
-       Location firstLocation = iti.getFirst();
-       Map start = new LinkedHashMap<String,String>();
-       Map end = new LinkedHashMap<String, String>();
-       Set<String> columnNames = firstLocation.getColumnNames();
-       JSONObject startLocation = new JSONObject();
-       JSONObject endLocation = new JSONObject();
-       JSONArray pairLocation = new JSONArray();
+
+       JSONObject start;
+       JSONObject end;
 
        for (int i = 0; i < iti.size() - 1; i++) {
-           for (String columns : columnNames) {
-               start.put(columns, iti.get(i).getColumnValue(columns));
-               end.put(columns, iti.get(i + 1).getColumnValue(columns));
-           }
-           JSONObject startInfo = new JSONObject(start);
-           JSONObject endInfo = new JSONObject(end);
+           start = createLocationInfo(iti.get(i));
+           end = createLocationInfo(iti.get(i + 1));
 
-           startLocation.put("Start: ", startInfo);
-           endLocation.put("End: ", endInfo);
-           pairLocation.add(startLocation);
-           pairLocation.add(endLocation);
-           list.add("ADDING");
+           JSONArray pairLocation = new JSONArray();
+           JSONObject distance = new JSONObject();
+
+           String startMarker = "Start location #" + i;
+           String endMarker = "End location #" + i;
+           distance.put("Distance", iti.get(i + 1).getDistance());
+
+           pairLocation.add(startMarker);
+           pairLocation.add(start);
+           pairLocation.add(endMarker);
+           pairLocation.add(end);
+           pairLocation.add(distance);
+
            list.add(pairLocation);
        }
+
 
    }
 
