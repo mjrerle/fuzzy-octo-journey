@@ -28,9 +28,9 @@ public class DistanceCalculator {
 
 
 
-    public Pair computeNearestNeighbor(ArrayList<Location> locs, Location node){
+    public Pair computeNearestNeighbor(Location node){
         //this will return a Pair... a pair is key value pair: LinkedList<Location> key, Integer value
-        ArrayList<Location> unvisited = (ArrayList<Location>) locs.clone();
+        ArrayList<Location> unvisited = new ArrayList<>(locations);
         //must have a local copy otherwise I will modify the given arraylist!
         LinkedList<Location> visited = new LinkedList<>();
         //fill this list
@@ -88,36 +88,18 @@ public class DistanceCalculator {
         //add the last node to the linkedlist
         sum+=last.getDistance();
         //add last distance
-//        System.out.println("Index: "+k + " Size: "+locs.size()+" Sum: "+sum);
-//        System.out.print("Visited: ");
-//        for (int i = 0; i < visited.size(); i++) {
-//            System.out.print("("+visited.get(i).getId()+", "+visited.get(i).getDistance()+") ");
-//            if(i%5==0){
-//                System.out.println();
-//            }
-//        }
-//        System.out.println();
-//        System.out.print("Unvisited: ");
-//        for (int i = 0; i < unvisited.size(); i++) {
-//            System.out.print(unvisited.get(i).getId());
-//            if(i%5==0){
-//                System.out.println();
-//            }
-//        }
-//        System.out.println();
-//        System.out.println();
 
         return new Pair(visited,sum);
         //associate the visited linkedlist and the total sum!
     }
 
-    public LinkedList<Location> computeAllNearestNeighbors(ArrayList<Location> locs){
+    public LinkedList<Location> computeAllNearestNeighbors(){
         ArrayList<Pair> permutations = new ArrayList<>();
         //list of lists
-        LinkedList<Location> shortest = new LinkedList<>();
+        LinkedList<Location> shortest;
         //result
-        for (int i = 0; i < locs.size(); i++) {
-            permutations.add(computeNearestNeighbor(locs,locs.get(i)));
+        for (int i = 0; i < locations.size(); i++) {
+            permutations.add(computeNearestNeighbor(locations.get(i)));
             //add all possible starting points
         }
         int min = Integer.MAX_VALUE;
@@ -170,6 +152,15 @@ public class DistanceCalculator {
 
         return Math.toRadians(degree);
 
+    }
+
+    public int getTotal(LinkedList<Location> path){
+        int sum=0;
+        for (int i = 0; i < path.size(); i++) {
+            sum+=path.get(i).getDistance();
+        }
+        //this will get the distance total for a path (useful for testing purposes)
+        return sum;
     }
 
     //////////////////////////////////////////////////////////
