@@ -1,7 +1,5 @@
 package edu.csu2017fa314.T29.Model;
 
-import sun.awt.image.ImageWatched;
-
 import java.util.*;
 
 /**
@@ -14,7 +12,6 @@ public class DistanceCalculator {
     private static final double KILOMETER_TO_MILES = EARTH_RADIUS_MILES/EARTH_RADIUS; //How many miles in one kilometer
 
     protected ArrayList<Location> locations = new ArrayList<>();
-    protected String[][] calculatedDistances;
 
 
     //////////////////////////////////////////////////////////
@@ -25,45 +22,11 @@ public class DistanceCalculator {
         this.locations = locations;
     }
 
-    //////////////////////////////////////////////////////////
-    // Some Getter and Setter for shits and giggles         //
-    //////////////////////////////////////////////////////////
 
     public ArrayList<Location> getLocations () {return locations;}
     public void setLocations(ArrayList<Location> locations) {this.locations = locations;}
 
-    public String[][] getCalculatedDistances() {return calculateDistances(locations);}
-    public void setCalculatedDistances(String[][] calculatedDistances) {this.calculatedDistances = calculatedDistances;}
 
-    //////////////////////////////////////////////////////////
-    // Create 2D array that has start location, end location//
-    // and distance between them. This is processed in the  //
-    // order in which the original CSV file is given in.    //
-    //////////////////////////////////////////////////////////
-
-    public String[][] calculateDistances(ArrayList<Location> locs) {
-        String[][] arrayOfInfo = new String[locs.size() - 1][3];
-
-        for(int i = 0; i < locs.size() - 1; i++) { //We go to size() - 1 because say we have 3 locations, there
-                                                        //are only 2 trips between three locations
-
-            arrayOfInfo[i][0] = locs.get(i).getId(); //The 0 column contains the start id, thus only the first and
-                                                          //second id are populated here
-
-            arrayOfInfo[i][1] = locs.get(i + 1).getId(); //The 1 column contains the end id, which is the next
-                                                              //location after the start id
-
-            //Its a shit show, I know, we'll have to see if we can make this prettier later
-            double distance = calculateGreatCircleDistance(degreeToRadian(locs.get(i).getLatitude()),
-                                                           degreeToRadian(locs.get(i).getLongitude()),
-                                                           degreeToRadian(locs.get(i + 1).getLatitude()),
-                                                           degreeToRadian(locs.get(i + 1).getLongitude()));
-
-            arrayOfInfo[i][2] = Integer.toString((int)distance);
-        }
-
-        return arrayOfInfo;
-    }
 
     public Pair computeNearestNeighbor(ArrayList<Location> locs, Location node){
         //this will return a Pair... a pair is key value pair: LinkedList<Location> key, Integer value
@@ -215,13 +178,7 @@ public class DistanceCalculator {
     // Itinerary                                            //
     //////////////////////////////////////////////////////////
 
-    public int totalDistance(String[][] array) {
-        int totalDistance = 0;
-        for(int i = 0; i < array.length; i++) {
-            totalDistance += Integer.parseInt(array[i][2]);
-        }
-        return totalDistance;
-    }
+
     public static class Pair{
         //this is for keeping track of the total distance
         private LinkedList<Location> key;
