@@ -104,7 +104,7 @@ public class DistanceCalculator {
             }
             //find min
             sum+=min;
-            Location temp = new Location(unvisited.get(index).extraInfo);
+            Location temp = new Location(unvisited.get(index).getExtraInfo());
             //i make a new location so that I can play with a copy of the unvisited node... this seems to work
             temp.setDistance(min);
             //set distance of temp
@@ -117,7 +117,7 @@ public class DistanceCalculator {
 
             k++;
         }
-        Location last = new Location(node.extraInfo);
+        Location last = new Location(node.getExtraInfo());
         //create last node to complete round trip
         last.setDistance(calculateGreatCircleDistance(visited.getLast(),node));
         //set distance equal to last node added to visited and the given node
