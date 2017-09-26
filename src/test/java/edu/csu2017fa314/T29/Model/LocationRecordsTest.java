@@ -4,6 +4,9 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+import java.util.Set;
+
+import java.util.HashSet;
 import static org.junit.Assert.*;
 
 public class LocationRecordsTest{
@@ -29,6 +32,53 @@ public class LocationRecordsTest{
         assertEquals(latitude, locations.get(0).getLatitude(), 1);
         assertEquals(longitude, locations.get(0).getLongitude(), 1);
 
+    }
+
+    @Test
+    public void testHashMapReading(){
+        LocationRecords locationRecords = new LocationRecords("data/test/first-5.csv");
+
+        ArrayList<Location> locations = locationRecords.getLocations();
+
+        assertEquals(locations.get(0).getId(),"abee");
+        assertEquals(locations.get(1).getId(),"abellend");
+        assertEquals(locations.get(2).getId(),"acwatson");
+        assertEquals(locations.get(3).getId(),"acyaeger");
+        assertEquals(locations.get(4).getId(),"adamep3");
+
+        assertEquals(locations.get(0).getColumnValue("name"),"Two22 Brew");
+        assertEquals(locations.get(1).getColumnValue("name"),"Mad Jacks Mountain Brewery");
+        assertEquals(locations.get(2).getColumnValue("name"),"Equinox Brewing");
+        assertEquals(locations.get(3).getColumnValue("name"),"Elevation Beer Company");
+        assertEquals(locations.get(4).getColumnValue("name"),"Echo Brewing Company");
+
+        assertEquals(locations.get(0).getColumnValue("elevation"),"5872");
+        assertEquals(locations.get(1).getColumnValue("elevaTion"),"9580");
+        assertEquals(locations.get(2).getColumnValue("eLevation"),"4988");
+        assertEquals(locations.get(3).getColumnValue("ELEVATION"),"9317");
+        assertEquals(locations.get(4).getColumnValue("elevation"),"6791");
+
+        assertEquals(locations.get(0).getColumnValue("Test key not in map"),"Column not found");
+
+    }
+
+    @Test
+    public void testKeySet(){
+        LocationRecords locationRecords = new LocationRecords("data/test/first-5.csv");
+
+        ArrayList<Location> locations = locationRecords.getLocations();
+        Set<String> keys = new HashSet<>();
+        keys.add("name");
+        keys.add("id");
+        keys.add("city");
+        keys.add("latitude");
+        keys.add("longitude");
+        keys.add("elevation");
+        assertEquals(locations.get(0).getColumnNames(),keys);
+
+        keys.remove("name");
+
+        assertNotEquals(locations.get(0).getColumnNames(),keys);
     }
 
     @Test
