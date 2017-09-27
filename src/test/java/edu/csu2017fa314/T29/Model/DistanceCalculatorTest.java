@@ -137,7 +137,7 @@ public class DistanceCalculatorTest {
         LocationRecords t = new LocationRecords("data/test/FullTest.csv");
         ArrayList<Location> locs = t.getLocations();
         DistanceCalculator dist = new DistanceCalculator(locs);
-        DistanceCalculator.Pair ll1 = dist.computeNearestNeighbor(locs,locs.get(0));
+        DistanceCalculator.Pair ll1 = dist.computeNearestNeighbor(locs.get(0));
 //        System.out.println();
 //        System.out.println("TEST result: ");
 //        for (int i=0;i<ll.getKey().size();i++){
@@ -160,7 +160,7 @@ public class DistanceCalculatorTest {
         LocationRecords t = new LocationRecords("data/test/CO14ers.csv");
         ArrayList<Location> locs = t.getLocations();
         DistanceCalculator dist = new DistanceCalculator(locs);
-        LinkedList<Location> ll = dist.computeAllNearestNeighbors(locs);
+        LinkedList<Location> ll = dist.computeAllNearestNeighbors();
         int sum = 0;
         for (int i = 0; i < ll.size(); i++) {
             sum += ll.get(i).getDistance();
@@ -173,7 +173,7 @@ public class DistanceCalculatorTest {
         LocationRecords t = new LocationRecords("data/test/COrand75.csv");
         ArrayList<Location> locs = t.getLocations();
         DistanceCalculator dist = new DistanceCalculator(locs);
-        LinkedList<Location> ll = dist.computeAllNearestNeighbors(locs);
+        LinkedList<Location> ll = dist.computeAllNearestNeighbors();
         int sum = 0;
         for (int i = 0; i < ll.size(); i++) {
             sum += ll.get(i).getDistance();
@@ -186,7 +186,7 @@ public class DistanceCalculatorTest {
         LocationRecords t = new LocationRecords("data/test/COrand50.csv");
         ArrayList<Location> locs = t.getLocations();
         DistanceCalculator dist = new DistanceCalculator(locs);
-        LinkedList<Location> ll = dist.computeAllNearestNeighbors(locs);
+        LinkedList<Location> ll = dist.computeAllNearestNeighbors();
         int sum = 0;
         for (int i = 0; i < ll.size(); i++) {
             sum += ll.get(i).getDistance();
@@ -200,7 +200,7 @@ public class DistanceCalculatorTest {
         LocationRecords t = new LocationRecords("data/test/ski.csv");
         ArrayList<Location> locs = t.getLocations();
         DistanceCalculator dist = new DistanceCalculator(locs);
-        LinkedList<Location> ll = dist.computeAllNearestNeighbors(locs);
+        LinkedList<Location> ll = dist.computeAllNearestNeighbors();
         int sum = 0;
         for (int i = 0; i < ll.size(); i++) {
             sum += ll.get(i).getDistance();
@@ -213,7 +213,7 @@ public class DistanceCalculatorTest {
         LocationRecords t = new LocationRecords("data/test/FullTest.csv");
         ArrayList<Location> locs = t.getLocations();
         DistanceCalculator dist = new DistanceCalculator(locs);
-        LinkedList<Location> ll = dist.computeAllNearestNeighbors(locs);
+        LinkedList<Location> ll = dist.computeAllNearestNeighbors();
         int sum=0;
         for (int i = 0; i < ll.size(); i++) {
             sum+=ll.get(i).getDistance();
