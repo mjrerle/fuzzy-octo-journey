@@ -58,7 +58,7 @@ public class TestView
         locationArrayList.add(brewery3);
         distanceCalculator = new DistanceCalculator(locationArrayList);
 
-        linkedList = distanceCalculator.computeAllNearestNeighbors(distanceCalculator.getLocations());
+        linkedList = distanceCalculator.computeAllNearestNeighbors();
         view = new View(linkedList);
     }
 
