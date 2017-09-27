@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -56,27 +57,19 @@ public class TestView
         view = new View(distanceCalculator.computeAllNearestNeighbors(distanceCalculator.getLocations()));
     }
 
-    @Ignore
-    @Test 
-    public void testSetDistance() 
-    {
-        view.setTotalDistance(4);
-        assertTrue(view.getTotalDistance() == 4);
-        view.setTotalDistance(-4);
-        assertTrue(view.getTotalDistance() == -4);
-    }
-
-    @Ignore
-    @Test
-    public void testParseItinerary(){
-        view.createItinerary();
-
-    }
-
     @Test
     public void testWriteFile(){
         view.createItinerary();
         view.writeFile("itinerary.json");
+
+        try {
+            File itinerary = new File("data/itinerary.json");
+            Scanner fileReader = new Scanner(itinerary);
+            String file = fileReader.toString();
+            System.out.println(file);
+        } catch (Exception e){
+            System.out.println("Error caught: " + e.getMessage());
+        }
     }
 
     @Ignore
