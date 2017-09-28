@@ -46,7 +46,7 @@ public class SVGTest {
         distanceCalculator = new DistanceCalculator(locations);
         locationLinkedList = new LinkedList<Location>();
 
-        locationLinkedList = distanceCalculator.computeAllNearestNeighbors(locations);
+        locationLinkedList = distanceCalculator.computeAllNearestNeighbors();
     }
 
 
