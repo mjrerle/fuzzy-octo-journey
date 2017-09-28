@@ -60,25 +60,17 @@ public class View
     /////////////////////////////////////////////
     // This updates the class variable "list"  //
     // by adding an Object for every location. //
-    // The odd entries of this array will be   //
-    // the start locations of each trip, and   //
-    // the even entries will be the end        //
-    // locations of each trip.                 //
     /////////////////////////////////////////////
+
     public void createItinerary(){
 
        JSONObject start;
-       JSONObject end;
 
-       for (int i = 0; i < iti.size() - 1; i++) { // We go up to size -1 because we need to
-                                                  // grab the next location each time and
-                                                  // would get an index out of bounds error if
-                                                  // we went up to size
+       for (int i = 0; i < iti.size(); i++) {
+
            start = createLocationInfo(iti.get(i));
-           end = createLocationInfo(iti.get(i + 1));
 
            list.add(start);
-           list.add(end);
        }
    }
 
