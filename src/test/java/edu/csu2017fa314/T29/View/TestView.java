@@ -75,10 +75,6 @@ public class TestView
             JSONArray jsonArray = (JSONArray) obj;
             String file = jsonArray.toString();
 
-            //These test assert that the correct number of "pairs" of locations were created
-            assertTrue(file.contains("Start location #0"));
-            assertTrue(file.contains("End location #2"));
-
             //These test assert that the JSON will contain all the columns information provided
             assertTrue(file.contains("latitude"));
             assertTrue(file.contains("longitude"));
@@ -97,6 +93,7 @@ public class TestView
 
         tempMap.put("name", "Two22 Brew");
         tempMap.put("id", "abee");
+        tempMap.put("Distance", 0);
         tempMap.put("latitude", "39°38'07\" N");
         tempMap.put("longitude", "104°45'32\" W");
 

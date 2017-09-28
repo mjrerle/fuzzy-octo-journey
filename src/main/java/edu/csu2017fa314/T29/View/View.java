@@ -47,9 +47,9 @@ public class View
         Set<String> columnNames = firstLocation.getColumnNames(); // Get a Set of all possible information
                                                                   // IE: "Elevation" or "Latitude"
 
-
         for(String columns : columnNames) {
             information.put(columns, location.getColumnValue(columns));
+            information.put("Distance", location.getDistance());
         }
 
         JSONObject obj = new JSONObject(information);
@@ -58,15 +58,12 @@ public class View
     }
 
     /////////////////////////////////////////////
-    // The bread and butter of this class,     //
-    // this populates the "list" (JSON Array)  //
-    // variable with Arrays that contain 3     //
-    // objects, a "Start" Object, an "End"     //
-    // object, and a "Distance" object. The    //
-    // "Start and "End" object contain all of  //
-    // the information about their respective  //
-    // location. The "Distance" simply contains//
-    // the integer distance between the two    //
+    // This updates the class variable "list"  //
+    // by adding an Object for every location. //
+    // The odd entries of this array will be   //
+    // the start locations of each trip, and   //
+    // the even entries will be the end        //
+    // locations of each trip.                 //
     /////////////////////////////////////////////
     public void createItinerary(){
 
@@ -80,23 +77,9 @@ public class View
            start = createLocationInfo(iti.get(i));
            end = createLocationInfo(iti.get(i + 1));
 
-           JSONArray pairLocation = new JSONArray();
-           JSONObject distance = new JSONObject();
-
-           String startMarker = "Start location #" + i;
-           String endMarker = "End location #" + i;
-           distance.put("Distance", iti.get(i + 1).getDistance());
-
-           pairLocation.add(startMarker);
-           pairLocation.add(start);
-           pairLocation.add(endMarker);
-           pairLocation.add(end);
-           pairLocation.add(distance);
-
-           list.add(pairLocation);
+           list.add(start);
+           list.add(end);
        }
-
-
    }
 
 
