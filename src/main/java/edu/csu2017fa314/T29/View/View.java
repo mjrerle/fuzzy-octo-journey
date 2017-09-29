@@ -2,7 +2,6 @@ package edu.csu2017fa314.T29.View;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import edu.csu2017fa314.T29.Model.Location;
-import netscape.javascript.JSObject;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -49,7 +48,7 @@ public class View
 
         for(String columns : columnNames) {
             information.put(columns, location.getColumnValue(columns));
-            information.put("Distance", location.getDistance());
+            information.put("distance", location.getDistance());
         }
 
         JSONObject obj = new JSONObject(information);
@@ -76,13 +75,12 @@ public class View
 
 
    public void writeFile(String file){
-      String folder = "data/";
       try{
          if(list.isEmpty() || list == null){
             System.out.println();
             throw new Exception();
          }
-         PrintWriter writer = new PrintWriter(new File(folder+file));
+         PrintWriter writer = new PrintWriter(new File(file));
          //writes to a specific filepath
          Gson gson = new GsonBuilder().setPrettyPrinting().create();
          //gson allows for pretty printing (not available with just json-simple)
