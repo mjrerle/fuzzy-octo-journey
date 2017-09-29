@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Arrays;
 
 // LocationRecords is an object with an ArrayList that holds all the Locations in a csv file.
 public class LocationRecords {
@@ -53,7 +52,6 @@ public class LocationRecords {
                 line = line.replaceAll(",",", ");
                 line = " " + line;
                 String[] lines = line.split(",");
-                System.out.println(Arrays.toString(lines));
 
                 for(int i = 0 ; i < lines.length;i++){
                     if(!(lines[i].equals(" "))){
