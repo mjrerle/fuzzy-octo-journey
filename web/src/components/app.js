@@ -33,7 +33,7 @@ export default class App extends React.Component {
         let pairs = [];
         let runDist = 0; //new variable to keep track of running distance
         for (let i = 0; i < Object.values(file).length -1; i++) {
-            let dist = file[i+1].Distance;
+            let dist = file[i+1].distance;
             runDist += parseInt(dist);//gotta keep that running distance running
             let p = { //create object with start, end, and dist variable
                 startInfo: file[i],

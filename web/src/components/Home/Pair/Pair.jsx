@@ -30,7 +30,7 @@ class Pair extends React.Component {
 
 
             rows.push(<td><h4>{this.props.endInfo.name}</h4> {ends}</td>);
-            rows.push(<td><h4>{this.props.endInfo.Distance}</h4></td>);
+            rows.push(<td><h4>{this.props.endInfo.distance}</h4></td>);
             rows.push(<td><h4>{this.props.cumDist}</h4></td>);
 
         return <tbody className="Pair">
