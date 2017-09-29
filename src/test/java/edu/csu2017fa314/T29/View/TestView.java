@@ -93,7 +93,7 @@ public class TestView
 
         tempMap.put("name", "Two22 Brew");
         tempMap.put("id", "abee");
-        tempMap.put("Distance", 0);
+        tempMap.put("distance", 0);
         tempMap.put("latitude", "39°38'07\" N");
         tempMap.put("longitude", "104°45'32\" W");
 
