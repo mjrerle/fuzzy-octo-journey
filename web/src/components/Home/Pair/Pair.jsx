@@ -1,22 +1,29 @@
 import React, {Component} from 'react';
 //I added a new variable runningDist in order to output it
-let Pair = ({start, end, dist,runningDist}) => <tbody
-    className="pair">
-    <tr>
-        <td>
-            <h4>{start}</h4>
-        </td>
-        <td>
-            <h4>{end}</h4>
-        </td>
-        <td>
-            <h4>{dist}</h4>
-        </td>
+class Pair extends React.Component {
+    // Declare and initialize any state variables here
 
-        <td>
-            <h4>{runningDist}</h4>
-        </td>
-    </tr>
-</tbody>;
+    constructor(props) {
+        super(props);
+
+    };
+
+    render() {
+        // Place the return statement from the stateless Pair here:
+        var k;
+        k = Object.keys(this.props.startInfo);
+        console.log("k",k);
+        var rows = [];
+        for (var i = 0; i < k.length; i++) {
+            rows.push(<td><h4>{k[i]}</h4></td>);
+        }
+        return <tbody className="Pair">
+        <tr>
+        {rows}
+        </tr>
+        </tbody>;
+    }
+
+}
 
 export default Pair;
