@@ -44,6 +44,7 @@ export default class App extends React.Component {
             console.log("Pushing pair: ", p); //log to console
         }
 
+
         //Here we will update the state of app.
         // Anything component (i.e. pairs) referencing it will be re-rendered
         this.setState({
