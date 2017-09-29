@@ -32,27 +32,18 @@ export default class App extends React.Component {
         //For loop that goes through all pairs,
         let pairs = [];
         let runDist = 0; //new variable to keep track of running distance
-        for (let i = 0; i < Object.values(file).length; i++) {
-            // New edit for new JSON
-            if(i < Object.values(file).length -1){
-	            let start = file[i].name; //.start; //get start from file i
-        	    let end = file[i+1].name; //.end; //get end from file i
-	            let dist = file[i+1].distance;
-        	    let runningDist = (runDist + parseInt(dist) ); //floating points suck in JS
-            	    runDist += parseInt(dist);//gotta keep that running distance running
-           	    let p = { //create object with start, end, and dist variable
-                    start: start,
-                    end: end,
-                    dist: dist,
-                    runningDist: runningDist
-            	};
-            	pairs.push(p); //add object to pairs array
-            	console.log("Pushing pair: ", p); //log to console
-        	}
-		else {
-		
-		}
-	}
+        for (let i = 0; i < Object.values(file).length -1; i++) {
+            let dist = file[i+1].Distance;
+            runDist += parseInt(dist);//gotta keep that running distance running
+            let p = { //create object with start, end, and dist variable
+                startInfo: file[i],
+                endInfo: file[i+1],
+                cumDist: runDist
+            };
+            pairs.push(p); //add object to pairs array
+            console.log("Pushing pair: ", p); //log to console
+        }
+
 
         //Here we will update the state of app.
         // Anything component (i.e. pairs) referencing it will be re-rendered
