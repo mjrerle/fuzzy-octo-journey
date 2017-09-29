@@ -48,12 +48,21 @@ public class LocationRecords {
             }
 
             while(scan.hasNextLine()){
-                String[] line = scan.nextLine().split(",");
+                String line = scan.nextLine();
+                line = line.replaceAll(",",", ");
+                line = " " + line;
+                String[] lines = line.split(",");
 
-                if (line.length != 0) {
+                for(int i = 0 ; i < lines.length;i++){
+                    if(!(lines[i].equals(" "))){
+                        lines[i] = lines[i].substring(1);
+                    }
+                }
+
+                if (lines.length != 0) {
                     Map<String,String> extraInfo = new HashMap<String,String>();
                     for(String key: columnIndex.keySet()){
-                        extraInfo.put(key,line[Integer.parseInt(columnIndex.get(key))]);
+                        extraInfo.put(key,lines[Integer.parseInt(columnIndex.get(key))]);
                     }
                     Location next = new Location(extraInfo);
                     locations.add(next);
