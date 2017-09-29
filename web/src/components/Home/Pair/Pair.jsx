@@ -12,11 +12,27 @@ class Pair extends React.Component {
         // Place the return statement from the stateless Pair here:
         var k;
         k = Object.keys(this.props.startInfo);
-        console.log("k",k);
+        var o = Object.values(this.props.startInfo);
+        var names =[];
+        for(var i in k){
+            names.push(<h5>{k[i]} : {o[i]}</h5>);
+        };
+
+        var l = Object.values(this.props.endInfo);
+        var ends =[];
+        for(var i in k){
+            ends.push(<h5>{k[i]} : {l[i]}</h5>);
+        };
+
         var rows = [];
-        for (var i = 0; i < k.length; i++) {
-            rows.push(<td><h4>{k[i]}</h4></td>);
-        }
+            rows.push(<td><h4>{this.props.startInfo.name}</h4>{names} </td>);
+
+
+
+            rows.push(<td><h4>{this.props.endInfo.name}</h4> {ends}</td>);
+            rows.push(<td><h4>{this.props.endInfo.Distance}</h4></td>);
+            rows.push(<td><h4>{this.props.cumDist}</h4></td>);
+
         return <tbody className="Pair">
         <tr>
         {rows}

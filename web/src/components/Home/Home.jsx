@@ -11,7 +11,7 @@ class Home extends React.Component {
 
            total *= 100000;
 
-           total += (objectArray[i].props.dist *100000);
+           total += (objectArray[i].props.endInfo.Distance *100000);
 
            total /= 100000; //because why would floating-point addition work at all without this
        }
