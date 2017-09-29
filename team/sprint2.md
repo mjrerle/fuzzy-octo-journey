@@ -52,14 +52,25 @@ Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 ## Review
 
 #### Completed user stories (epics) in Sprint Backlog 
+map background(optional)
+basic map with itinerary
+shorter trip
+json view assignment
+model view assignment
+cumulative distances
 
 Completed ** tasks / issues associated with these user stories.
+#118, #126, #119, #123, #114, #118
 
 #### Incomplete user stories / epics in Sprint Backlog 
+#128: create checkboxes
 
 #### What went well
+Tests for every method
 
 #### Problems encountered and resolutions
+Problems: Timing issues, procrastination, reactjs/js understanding
+Resolutions: meet at library to catch up on work
 
 ## Retrospective
 
