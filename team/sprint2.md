@@ -76,7 +76,6 @@ Resolutions: meet at library to catch up on work
 
 Topic | Teamwork | Process | Tools
 :--- | :--- | :--- | :---
-What we will change this time |  |  | 
-What we did well |  |  | 
-What we need to work on |  |  |
-What we will change next time |  |  | 
+What we will change this time | We will Figure out what eachother knows and make sure everyone understands their portion | Meet to work in person at the beggining of the project | Gain an basic Knowledge of JavaScript and React
+What we did well | We met in person to collaborate and help each other | We made a plan for work to be done by certain dates | We learnt how svg files worked and how to create them
+What we need to work on | Communication and reaching out daily to members to stay updated | Time management and completing assigned tasks ontime | Learning of Javacript Components and using them effectively
