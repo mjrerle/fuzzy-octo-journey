@@ -15,13 +15,16 @@ class Home extends React.Component {
 
            total /= 100000; //because why would floating-point addition work at all without this
        }
-       
+
         return <div className="home-container">
             <div className="inner">
                 <h2>Team 29 - SPB</h2>
                 <h3>Itinerary</h3>
                 <Dropzone className="dropzone-style" onDrop={this.drop.bind(this)}>
                     <button>Open JSON File</button>
+                </Dropzone>
+		<Dropzone className="dropzone-style" onDrop={this.renderSVG.bind(this)}>
+                    <button>Open SVG File</button>
                 </Dropzone>
                 <table className="pair-table">
                     <tr>
@@ -41,6 +44,22 @@ class Home extends React.Component {
             </div>
         </div>
     }
+
+	renderSVG(myfiles){
+		console.log("Accepting drop(svg)");
+		myfiles.forEach(myfile => {
+			console.log("Filename: ", myfile.name, "File: ", myfile);
+			let fr = new FileReader();
+			fr.onload= (function() {
+				return function(e){
+					let m = e.target.result;
+					console.log("m: ",m);
+					this.props.browseSVG(m);
+				};
+			})(myfile).bind(this);
+			fr.readAsDataURL(myfile);
+		});
+	}
 
     drop(acceptedFiles) {
         console.log("Accepting drop");

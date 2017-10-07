@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Two22 Brew",
+    "id": "abee",
+    "distance": 0,
+    "latitude": "39°38\u002707\" N",
+    "longitude": "104°45\u002732\" W"
+  },
+  {
+    "name": "Mad Jacks Mountain Brewery",
+    "id": "abellend",
+    "distance": 42,
+    "latitude": "39°24\u002705\" N",
+    "longitude": "105°28\u002737\" W"
+  },
+  {
+    "name": "Equinox Brewing",
+    "id": "acwatson",
+    "distance": 85,
+    "latitude": "40°35\u002717\" N",
+    "longitude": "105°4\u002726\" W"
+  },
+  {
+    "name": "Two22 Brew",
+    "id": "abee",
+    "distance": 68,
+    "latitude": "39°38\u002707\" N",
+    "longitude": "104°45\u002732\" W"
+  }
+]

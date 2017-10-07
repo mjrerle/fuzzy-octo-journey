@@ -1,6 +1,7 @@
 import React from 'react';
 import Home from './Home/Home.jsx';
 import Pair from './Home/Pair/Pair.jsx';
+import Map from './Home/Map/Map.jsx'
 
 
 export default class App extends React.Component {
@@ -8,11 +9,13 @@ export default class App extends React.Component {
         super(props);
         this.state = {
             allPairs: [],
-            sysFile: []
+            sysFile: [],
+            svgFile: []
         }
     };
 
     render() {
+        let sm = <Map source={this.state.svgFile} />
         let pairs = this.state.allPairs;
         let ps = pairs.map((pp) => {
             return <Pair {...pp}/>;
@@ -22,6 +25,7 @@ export default class App extends React.Component {
                 <Home
                     browseFile={this.browseFile.bind(this)}
                     pairs={ps}
+                    browseSVG={this.browseSVG.bind(this)}
                 />
             </div>
         )
@@ -49,7 +53,16 @@ export default class App extends React.Component {
         // Anything component (i.e. pairs) referencing it will be re-rendered
         this.setState({
             allPairs: pairs,
-            sysFile: file
+            sysFile: file,
         });
     }
+
+	async browseSVG(file){
+		console.log("Got svg: ", file);
+		this.setState({
+			svgFile: file
+		});
+	}
+		
+	
 }
