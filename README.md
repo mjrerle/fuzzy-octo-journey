@@ -9,6 +9,6 @@ Sprint # | Model - Data | Model - Itinerary | View - Server | View - Client
 -------- | ------------ | ----------------- | ------------- | -------------
 1 | Elliott Roberts | Trey Yu | Matt Erle | Tim Stroup
 2 | Tim Stroup | Matt Erle | Trey Yu | Elliott Roberts
-3 | | | | 
+3 | Elliott Roberts | Trey Yu | Tim Stroup | Matt Erle 
 4 | | | |
 5 | | | |
