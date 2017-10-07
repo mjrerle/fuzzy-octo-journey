@@ -27,8 +27,11 @@
 
 ## Plan 
 
-User stories (epics) in the Sprint Backlog: *client side search*.  
-
+User stories (epics) in the Sprint Backlog: 
+* client side search  #164
+* Distance Calculator Update #174
+* Web Server #175
+* SQL Database #176
 
 Total planned tasks / issues in the Sprint Backlog: *1* 
 
