@@ -1,5 +1,6 @@
 package edu.csu2017fa314.T29.Model;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,6 +25,7 @@ public class DistanceCalculatorTest {
     ArrayList<Location> locations = new ArrayList<Location>();
 
     Map<String,String> extraInfo = new HashMap<String,String>();
+    LocationRecords locationRecords;
     Location brewery1;
     Location brewery2;
     Location brewery3;
@@ -125,8 +127,8 @@ public class DistanceCalculatorTest {
 
 
     public void utilityCompute(Location A, Location B){
-        LocationRecords t = new LocationRecords("data/test/FullTest.csv");
-        locations= t.getLocations();
+        locationRecords = new LocationRecords("data/test/FullTest.csv");
+        locations = locationRecords.getLocations();
         DistanceCalculator d = new DistanceCalculator(locations);
         int distance =d.calculateGreatCircleDistance(d.degreeToRadian(A.getLatitude()),d.degreeToRadian(A.getLongitude()), d.degreeToRadian(B.getLatitude()),d.degreeToRadian(B.getLongitude()));
         System.out.printf("%04d ",distance);
@@ -134,8 +136,8 @@ public class DistanceCalculatorTest {
 
     @Test
     public void testComputeNearestNeighbor(){
-        LocationRecords t = new LocationRecords("data/test/FullTest.csv");
-        ArrayList<Location> locs = t.getLocations();
+        locationRecords = new LocationRecords("data/test/FullTest.csv");
+        ArrayList<Location> locs = locationRecords.getLocations();
         DistanceCalculator dist = new DistanceCalculator(locs);
         DistanceCalculator.Pair ll1 = dist.computeNearestNeighbor(locs.get(0));
 //        System.out.println();
@@ -157,8 +159,8 @@ public class DistanceCalculatorTest {
 
     @Test
     public void testComputeNearestNeighborCO14ers() {
-        LocationRecords t = new LocationRecords("data/test/CO14ers.csv");
-        ArrayList<Location> locs = t.getLocations();
+        locationRecords = new LocationRecords("data/test/CO14ers.csv");
+        ArrayList<Location> locs = locationRecords.getLocations();
         DistanceCalculator dist = new DistanceCalculator(locs);
         LinkedList<Location> ll = dist.computeAllNearestNeighbors();
         int sum = 0;
@@ -170,8 +172,8 @@ public class DistanceCalculatorTest {
 
     @Test
     public void testComputeNearestNeighborCOrand75() {
-        LocationRecords t = new LocationRecords("data/test/COrand75.csv");
-        ArrayList<Location> locs = t.getLocations();
+        locationRecords = new LocationRecords("data/test/COrand75.csv");
+        ArrayList<Location> locs = locationRecords.getLocations();
         DistanceCalculator dist = new DistanceCalculator(locs);
         LinkedList<Location> ll = dist.computeAllNearestNeighbors();
         int sum = 0;
@@ -183,8 +185,8 @@ public class DistanceCalculatorTest {
 
     @Test
     public void testComputeNearestNeighborCOrand50() {
-        LocationRecords t = new LocationRecords("data/test/COrand50.csv");
-        ArrayList<Location> locs = t.getLocations();
+        locationRecords = new LocationRecords("data/test/COrand50.csv");
+        ArrayList<Location> locs = locationRecords.getLocations();
         DistanceCalculator dist = new DistanceCalculator(locs);
         LinkedList<Location> ll = dist.computeAllNearestNeighbors();
         int sum = 0;
@@ -197,8 +199,8 @@ public class DistanceCalculatorTest {
 
     @Test
     public void testComputeNearestNeighborSki() {
-        LocationRecords t = new LocationRecords("data/test/ski.csv");
-        ArrayList<Location> locs = t.getLocations();
+        locationRecords = new LocationRecords("data/test/ski.csv");
+        ArrayList<Location> locs = locationRecords.getLocations();
         DistanceCalculator dist = new DistanceCalculator(locs);
         LinkedList<Location> ll = dist.computeAllNearestNeighbors();
         int sum = 0;
@@ -210,8 +212,8 @@ public class DistanceCalculatorTest {
 
     @Test
     public void testComputeNearestNeighborFullTest(){
-        LocationRecords t = new LocationRecords("data/test/FullTest.csv");
-        ArrayList<Location> locs = t.getLocations();
+        locationRecords = new LocationRecords("data/test/FullTest.csv");
+        ArrayList<Location> locs = locationRecords.getLocations();
         DistanceCalculator dist = new DistanceCalculator(locs);
         LinkedList<Location> ll = dist.computeAllNearestNeighbors();
         int sum=0;
@@ -227,5 +229,14 @@ public class DistanceCalculatorTest {
 //        }
 //        System.out.println();
 //        System.out.println("Size: "+ll.size());
+    }
+
+    @Test
+    public void testCalculateAllDistances() {
+        locationRecords = new LocationRecords("data/test/FullTest.csv");
+        ArrayList<Location> locations = locationRecords.getLocations();
+        DistanceCalculator distanceCalculator = new DistanceCalculator(locations);
+
+        Assert.assertEquals(distanceCalculator.calculateAllDistances(), null);
     }
 }

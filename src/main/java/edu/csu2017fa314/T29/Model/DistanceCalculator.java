@@ -163,12 +163,10 @@ public class DistanceCalculator {
         return sum;
     }
 
-    //////////////////////////////////////////////////////////
-    // Adds all distances in the 3rd column of the 2D array //
-    // that we create so we know the total distance of an   //
-    // Itinerary                                            //
-    //////////////////////////////////////////////////////////
+    public double[][] calculateAllDistances() {
 
+        return null;
+    }
 
     public static class Pair{
         //this is for keeping track of the total distance
