@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 
-let Map= ({source}) =>
-  <img src={source} width="75%" height="75%"/>;
+let Map= ({source, style}) =>
+  <img id="map" src={source} width="75%" height="75%" style={style}/>;
+
 export default Map;

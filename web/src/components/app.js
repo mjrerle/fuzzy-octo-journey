@@ -10,12 +10,16 @@ export default class App extends React.Component {
         this.state = {
             allPairs: [],
             sysFile: [],
-            svgFile: []
+            svgFile: [],
+            toggleSVG: false
         }
     };
 
     render() {
-        let sm = <Map source={this.state.svgFile} />
+        let sm = <Map source={this.state.svgFile} style={this.state.toggleSVG ? {} : {display: "none"}}/>
+   		console.log(sm);
+		console.log(this.state.toggleSVG);
+		console.log(document.getElementById('map'));
         let pairs = this.state.allPairs;
         let ps = pairs.map((pp) => {
             return <Pair {...pp}/>;
@@ -61,6 +65,7 @@ export default class App extends React.Component {
 	async browseSVG(file){
 		//console.log("Got svg: ", file);
 		this.setState({
+			toggleSVG: true,
 			svgFile: file
 		});
 	}
