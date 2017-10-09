@@ -23,9 +23,10 @@ class Home extends React.Component {
                 <Dropzone className="dropzone-style" onDrop={this.drop.bind(this)}>
                     <button>Open JSON File</button>
                 </Dropzone>
-		<Dropzone className="dropzone-style" onDrop={this.renderSVG.bind(this)}>
+				<Dropzone className="dropzone-style" onDrop={this.renderSVG.bind(this)}>
                     <button>Open SVG File</button>
                 </Dropzone>
+                {this.props.svgmap}
                 <table className="pair-table">
                     <tr>
                         <td><h4>Start</h4></td>
@@ -47,17 +48,17 @@ class Home extends React.Component {
 
 	renderSVG(myfiles){
 		console.log("Accepting drop(svg)");
-		myfiles.forEach(myfile => {
-			console.log("Filename: ", myfile.name, "File: ", myfile);
+		myfiles.forEach(file => {
+			console.log("Filename: ", file.name, "File: ", file);
 			let fr = new FileReader();
-			fr.onload= (function() {
+			fr.onload = (function() {
 				return function(e){
 					let m = e.target.result;
-					console.log("m: ",m);
+					//console.log("m: ",m);
 					this.props.browseSVG(m);
 				};
-			})(myfile).bind(this);
-			fr.readAsDataURL(myfile);
+			})(file).bind(this);
+			fr.readAsDataURL(file);
 		});
 	}
 
@@ -66,8 +67,8 @@ class Home extends React.Component {
         acceptedFiles.forEach(file => {
             console.log("Filename:", file.name, "File:", file);
             console.log(JSON.stringify(file));
-            let fr = new FileReader();
-            fr.onload = (function () {
+            let reader = new FileReader();
+            reader.onload = (function () {
                 return function (e) {
                     let JsonObj = JSON.parse(e.target.result);
                     console.log(JsonObj);
@@ -75,7 +76,7 @@ class Home extends React.Component {
                 };
             })(file).bind(this);
 
-            fr.readAsText(file);
+            reader.readAsText(file);
         });
     }
 }

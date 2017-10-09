@@ -1,0 +1,992 @@
+[
+  {
+    "elevation": "4652",
+    "distance": 0,
+    "city": "Pueblo",
+    "latitude": "38°15\u002755.5\" N",
+    "name": "Brues Alehouse Brewing Company",
+    "id": "lyzhu",
+    "longitude": " 104°36\u002735.0\" W"
+  },
+  {
+    "elevation": "6069",
+    "distance": 40,
+    "city": "Colorado Springs",
+    "latitude": "38°49\u002733\" N",
+    "name": "Fieldhouse Brewing Company",
+    "id": "mlwells",
+    "longitude": " 104°49\u002725\" W"
+  },
+  {
+    "elevation": "7907",
+    "distance": 1,
+    "city": "Colorado Springs",
+    "latitude": "38°50\u002703\" N",
+    "name": "Phantom Canyon Brewing",
+    "id": "jbcarter",
+    "longitude": " 104°49\u002729\" W"
+  },
+  {
+    "elevation": "8201",
+    "distance": 5,
+    "city": "Manitou Springs",
+    "latitude": "38°51\u002723\" N",
+    "name": "Manitou Brewing Company",
+    "id": "jweidenf",
+    "longitude": " 104°55\u002719\" W"
+  },
+  {
+    "elevation": " 6299",
+    "distance": 5,
+    "city": " Colorado Springs",
+    "latitude": " 38°53\u002753\"N",
+    "name": " Red Leg Brewing Company",
+    "id": "treyyu28",
+    "longitude": " 104°50\u002729\"W"
+  },
+  {
+    "elevation": "8497",
+    "distance": 3,
+    "city": "Colorado Springs",
+    "latitude": "38°55\u002707\" N",
+    "name": "Whistle Pig Brewing Company",
+    "id": "arivacca",
+    "longitude": " 104°47\u002733\" W"
+  },
+  {
+    "elevation": " 9165",
+    "distance": 20,
+    "city": "Divide",
+    "latitude": "38°56\u002731\" N",
+    "name": "Paradox Beer Company Inc",
+    "id": "josiahm",
+    "longitude": "105°9\u002728\" W"
+  },
+  {
+    "elevation": "7841",
+    "distance": 31,
+    "city": "Colorado Springs",
+    "latitude": " 38°81\u002710\" N",
+    "name": "Bristol Brewing Company",
+    "id": "twe",
+    "longitude": " 104°82\u002774\" W"
+  },
+  {
+    "elevation": "9580",
+    "distance": 6,
+    "city": "Bailey",
+    "latitude": "39°24\u002705\" N",
+    "name": "Mad Jacks Mountain Brewery",
+    "id": "abellend",
+    "longitude": " 105°28\u002737\" W"
+  },
+  {
+    "elevation": "8891",
+    "distance": 19,
+    "city": "Evergreen",
+    "latitude": "39°38\u002728\" N",
+    "name": "Lariat Lodge Brewing Co.",
+    "id": "powhound",
+    "longitude": "105°18\u002731\" W"
+  },
+  {
+    "elevation": "5774",
+    "distance": 9,
+    "city": "Golden",
+    "latitude": "39°45\u002728\" N",
+    "name": "Mountain Toad Brewing",
+    "id": "kiram15",
+    "longitude": " 105°13\u002728\" W"
+  },
+  {
+    "elevation": "5446",
+    "distance": 8,
+    "city": "Arvada",
+    "latitude": "39°48\u002708\" N",
+    "name": "Spice Trade Brewery",
+    "id": "cwlarson",
+    "longitude": " 105°05\u002702\" W"
+  },
+  {
+    "elevation": "5273",
+    "distance": 1,
+    "city": "Arvada",
+    "latitude": "39°48\u002716\" N",
+    "name": "Odyssey Beerwerks",
+    "id": "erinmfaw",
+    "longitude": " 105°03\u002748\" W"
+  },
+  {
+    "elevation": "6430",
+    "distance": 1,
+    "city": "Arvada",
+    "latitude": "39°47\u002730.08\" N",
+    "name": "Some Place Else Brewery",
+    "id": "habeeb",
+    "longitude": " 105°4\u00273.73\" W"
+  },
+  {
+    "elevation": "5214",
+    "distance": 4,
+    "city": "Denver",
+    "latitude": "39°45\u002741\" N",
+    "name": "Prost Brewing Company",
+    "id": "sporsche",
+    "longitude": "105°00\u002724\" W"
+  },
+  {
+    "elevation": "7054",
+    "distance": 1,
+    "city": "Denver",
+    "latitude": "39°45\u002715\" N",
+    "name": "10 Barrel Brewing",
+    "id": "bjwellsi",
+    "longitude": "104°59\u002706\" W"
+  },
+  {
+    "elevation": "5220",
+    "distance": 0,
+    "city": "Denver",
+    "latitude": "39°45\u002713.71\" N",
+    "name": "Great Divide Brewing Company",
+    "id": "cluark",
+    "longitude": " 104°59\u002718.70\" W"
+  },
+  {
+    "elevation": "5213",
+    "distance": 0,
+    "city": "Denver",
+    "latitude": "39°45\u002713.7\" N",
+    "name": "Grand Lake Brewing Company",
+    "id": "smithza",
+    "longitude": " 104°59\u002718.7\" W"
+  },
+  {
+    "elevation": "7054",
+    "distance": 1,
+    "city": "Denver",
+    "latitude": "39°46\u002724\" N",
+    "name": "Crooked Stave",
+    "id": "gd1035",
+    "longitude": "104°58\u002742\" W"
+  },
+  {
+    "elevation": "5300",
+    "distance": 0,
+    "city": "Denver",
+    "latitude": "39°46\u002740\" N",
+    "name": "Blue Moon Brewing Company",
+    "id": "ctunnell",
+    "longitude": " 104°58\u002748\" W"
+  },
+  {
+    "elevation": "5189",
+    "distance": 0,
+    "city": "Denver",
+    "latitude": "39°46\u002737\" N",
+    "name": "WynKoop Brewing Company",
+    "id": "mikelynn",
+    "longitude": " 104°58\u002747.06\" W"
+  },
+  {
+    "elevation": "5237",
+    "distance": 1,
+    "city": "Denver",
+    "latitude": "39°46\u002706\" N",
+    "name": "Crooked Stave",
+    "id": "jdepoiii",
+    "longitude": " 104°58\u002746\" W"
+  },
+  {
+    "elevation": "5282",
+    "distance": 0,
+    "city": "Denver",
+    "latitude": "39°45\u002747\" N",
+    "name": "Epic Brewing Company",
+    "id": "mcpher19",
+    "longitude": "104°58\u002752\" W"
+  },
+  {
+    "elevation": "5201",
+    "distance": 0,
+    "city": "Denver",
+    "latitude": "39°45\u002741.42\" N",
+    "name": "Ratio Beerworks",
+    "id": "shawtm",
+    "longitude": " 104°58\u002751.86\" W"
+  },
+  {
+    "elevation": "7054",
+    "distance": 2,
+    "city": "Denver",
+    "latitude": "39°44\u002727\" N",
+    "name": "Strange Brewing Company",
+    "id": "kegan21",
+    "longitude": " 105°00\u002732\" W"
+  },
+  {
+    "elevation": "5262",
+    "distance": 1,
+    "city": "Denver",
+    "latitude": "39°43\u002745.50\" N",
+    "name": "Lowdown Brewing",
+    "id": "lexgarr",
+    "longitude": " 104°59\u00279.00\" W"
+  },
+  {
+    "elevation": "5282",
+    "distance": 1,
+    "city": "Denver",
+    "latitude": "39°43\u002711.6\" N",
+    "name": "TRVE Brewing Company",
+    "id": "anewlon",
+    "longitude": " 104°59\u002715.7\" W"
+  },
+  {
+    "elevation": "7054",
+    "distance": 1,
+    "city": "Denver",
+    "latitude": "39°42\u002743\" N",
+    "name": "Cant Stop Brewing",
+    "id": "arielliu",
+    "longitude": " 105°00\u002745\" W"
+  },
+  {
+    "elevation": "5278",
+    "distance": 6,
+    "city": "Denver",
+    "latitude": "39°44\u002725\" N",
+    "name": "Fiction Beer Company",
+    "id": "dcanby",
+    "longitude": "104°54\u002719\" W"
+  },
+  {
+    "elevation": "5249",
+    "distance": 2,
+    "city": "Denver",
+    "latitude": "39°46\u002710\" N",
+    "name": "Station 26 Brewing",
+    "id": "rmwillia",
+    "longitude": "104°54\u002721\" W"
+  },
+  {
+    "elevation": "7217",
+    "distance": 4,
+    "city": "Aurora",
+    "latitude": "39°44\u002735\" N",
+    "name": " Ursula Brewery",
+    "id": "tanishk",
+    "longitude": " 104°50\u002716\" W"
+  },
+  {
+    "elevation": "5033",
+    "distance": 6,
+    "city": "Aurora",
+    "latitude": "39°39\u00279.55\" N",
+    "name": "Dry Dock Brewing Company",
+    "id": "idkirk",
+    "longitude": "104°48\u002744.77\" W"
+  },
+  {
+    "elevation": "5872",
+    "distance": 3,
+    "city": "Centennial",
+    "latitude": "39°38\u002707\" N",
+    "name": "Two22 Brew",
+    "id": "abee",
+    "longitude": " 104°45\u002732\" W"
+  },
+  {
+    "elevation": "5774",
+    "distance": 5,
+    "city": "Loveland",
+    "latitude": "39°36\u002706\" N",
+    "name": "Lost Highway Brewery",
+    "id": "milowang",
+    "longitude": "104°50\u002725\" W"
+  },
+  {
+    "elevation": "5807",
+    "distance": 3,
+    "city": "Centennial",
+    "latitude": "39°35\u002705\" N",
+    "name": "Resolute Brewing Company",
+    "id": "jewett",
+    "longitude": "104°53\u002705\" W"
+  },
+  {
+    "elevation": "5872",
+    "distance": 0,
+    "city": "Centennial",
+    "latitude": "39°35\u002701\" N",
+    "name": "Resolute Brewing Company",
+    "id": "rfigue",
+    "longitude": "104°53\u002704\" W"
+  },
+  {
+    "elevation": "5873",
+    "distance": 2,
+    "city": "Lone Tree",
+    "latitude": "39°33\u002745\" N",
+    "name": "Lone Tree Brewing Company",
+    "id": "evansalz",
+    "longitude": " 104°53\u002734\" W"
+  },
+  {
+    "elevation": "5830",
+    "distance": 3,
+    "city": "Centennial",
+    "latitude": "39°34\u002701.0\"N",
+    "name": "Blue Spruce Brewing company",
+    "id": "malsip",
+    "longitude": " 104°56\u002723.7\"W"
+  },
+  {
+    "elevation": "5711",
+    "distance": 0,
+    "city": "Centennial",
+    "latitude": "39°33\u002758.03\" N",
+    "name": "Blue Spruce Brewing Company",
+    "id": "sstobbs",
+    "longitude": " 104°56\u002724.61\" W"
+  },
+  {
+    "elevation": "5351",
+    "distance": 5,
+    "city": " Littleton",
+    "latitude": " 39°35\u002737.68\" N",
+    "name": "Breckenridge Brewery",
+    "id": "nguyenkd",
+    "longitude": "105°1\u002725.55\" W"
+  },
+  {
+    "elevation": "1678",
+    "distance": 4,
+    "city": "Highlands Ranch",
+    "latitude": "39°32\u002725.188\" N",
+    "name": "Living The Dream Brewing",
+    "id": "maloneml",
+    "longitude": "105°2\u002723.388\" W"
+  },
+  {
+    "elevation": "5869",
+    "distance": 14,
+    "city": "Parker",
+    "latitude": "39°31\u002720\" N",
+    "name": "Barnett \u0026 Sons Brewing",
+    "id": "jdix",
+    "longitude": "104°46\u002730\" W"
+  },
+  {
+    "elevation": "6004",
+    "distance": 9,
+    "city": "Parker",
+    "latitude": "39°31\u002737\" N",
+    "name": "Elk Mountain Brewing Company",
+    "id": "ccclark",
+    "longitude": "104°36\u002714\" W"
+  },
+  {
+    "elevation": "8038",
+    "distance": 18,
+    "city": "Castle Rock",
+    "latitude": "39°22\u002733\" N",
+    "name": "105 West Brewing Company",
+    "id": "ejrober",
+    "longitude": " 104°52\u002703\" W"
+  },
+  {
+    "elevation": "7316",
+    "distance": 35,
+    "city": "Westminster",
+    "latitude": "39°51\u002730\" N",
+    "name": "Kokopelli Brewing Company",
+    "id": "kenhicks",
+    "longitude": " 105°3\u002755\" W"
+  },
+  {
+    "elevation": "5491",
+    "distance": 4,
+    "city": "Broomfield",
+    "latitude": "39°54\u002723\" N",
+    "name": "4 Noses Brewing Company",
+    "id": "adnewman",
+    "longitude": "105°05\u002754\" W"
+  },
+  {
+    "elevation": "5509",
+    "distance": 0,
+    "city": "Broomfield",
+    "latitude": "39°54\u002723.23\" N",
+    "name": "4 Noses Brewing Company",
+    "id": "myou",
+    "longitude": " 105°05\u002754.94\" W"
+  },
+  {
+    "elevation": "5443",
+    "distance": 1,
+    "city": "Broomfield",
+    "latitude": "39°55\u002714.849\" N",
+    "name": "Nighthawk Brewery",
+    "id": "treslar",
+    "longitude": " 105°6\u00274.599\" W"
+  },
+  {
+    "elevation": "5293",
+    "distance": 2,
+    "city": "Broomfield",
+    "latitude": "39°54\u002747.96\" N",
+    "name": "Wonderland Brewing Company",
+    "id": "jdorcey",
+    "longitude": "105°03\u002721.09\" W"
+  },
+  {
+    "elevation": "5314",
+    "distance": 6,
+    "city": "Lafayette",
+    "latitude": "39°59\u002757\" N",
+    "name": "Liquid Mechanics Brewing Company",
+    "id": "mjgaffne",
+    "longitude": " 105°06\u002712\" W"
+  },
+  {
+    "elevation": "7086",
+    "distance": 2,
+    "city": "Louisville",
+    "latitude": "39°58\u002741.77\" N",
+    "name": "12 Degree Brewing",
+    "id": "pbivrell",
+    "longitude": "105°7\u002754.26\" W"
+  },
+  {
+    "elevation": "5236",
+    "distance": 5,
+    "city": "Boulder",
+    "latitude": "40°1\u002712.5826\" N",
+    "name": "Upslope Brewing Company",
+    "id": "emcintos",
+    "longitude": " 105°13\u00275.415\" W"
+  },
+  {
+    "elevation": "5231",
+    "distance": 0,
+    "city": "Boulder",
+    "latitude": "40°0\u002758\" N",
+    "name": "Wild Woods Brewery",
+    "id": "ktgrifin",
+    "longitude": "105°13\u002733\" W"
+  },
+  {
+    "elevation": "5229",
+    "distance": 0,
+    "city": "Parker",
+    "latitude": "40°00\u002759.1\" N",
+    "name": "Hall Brewing",
+    "id": "ndbart",
+    "longitude": "105°13\u002736\" W"
+  },
+  {
+    "elevation": "7776",
+    "distance": 3,
+    "city": "Boulder",
+    "latitude": "40°03\u002736\" N",
+    "name": "Asher Brewing Company",
+    "id": "cjschaff",
+    "longitude": " 105°12\u002721\" W"
+  },
+  {
+    "elevation": "5188",
+    "distance": 0,
+    "city": "Boulder",
+    "latitude": "40°03\u002745.2\" N",
+    "name": "Avery Brewing Company",
+    "id": "cwesterm",
+    "longitude": " 105°12\u002717.1\" W"
+  },
+  {
+    "elevation": "7743",
+    "distance": 1,
+    "city": "Boulder",
+    "latitude": "40°04\u002723\" N",
+    "name": "New Planet Beer",
+    "id": "kevincb",
+    "longitude": "105°12\u002703\" W"
+  },
+  {
+    "elevation": "4984",
+    "distance": 6,
+    "city": "Longmont",
+    "latitude": "40°08\u002720.7\" N",
+    "name": "Oskar Blues Brewery",
+    "id": "luhan",
+    "longitude": "105°07\u002722.4\" W"
+  },
+  {
+    "elevation": "4984",
+    "distance": 1,
+    "city": "Longmont",
+    "latitude": "40°09\u002731.3\" N",
+    "name": "Left Hand Brewing Company",
+    "id": "bkkammer",
+    "longitude": " 105°06\u002754.3\" W"
+  },
+  {
+    "elevation": "4970",
+    "distance": 1,
+    "city": "Longmont",
+    "latitude": "40°09\u002710\" N",
+    "name": "Shoes and Brews",
+    "id": "mrouault",
+    "longitude": "105°06\u002727\" W"
+  },
+  {
+    "elevation": "6791",
+    "distance": 9,
+    "city": "Frederick",
+    "latitude": "40°06\u002724\" N",
+    "name": "Echo Brewing Company",
+    "id": "adamep3",
+    "longitude": "104°56\u002743\" W"
+  },
+  {
+    "elevation": "5371",
+    "distance": 19,
+    "city": "Lyons",
+    "latitude": "40°13\u002727.48\" N",
+    "name": "Oskar Blues",
+    "id": "ltfurst",
+    "longitude": " 105°16\u00276.96\" W"
+  },
+  {
+    "elevation": "5150",
+    "distance": 15,
+    "city": "Loveland",
+    "latitude": "40°24\u002728.9\"N",
+    "name": "Big Beaver Brewing Company",
+    "id": "markss",
+    "longitude": " 105°06\u002752.1\"W"
+  },
+  {
+    "elevation": "4985",
+    "distance": 2,
+    "city": "Loveland",
+    "latitude": "40°23\u002748.4\"N",
+    "name": "Verboten Brewing and Barrel Project",
+    "id": "jhornbak",
+    "longitude": "105°04\u002730.30\"W"
+  },
+  {
+    "elevation": " 4951",
+    "distance": 1,
+    "city": "Loveland",
+    "latitude": "40°23\u002748.34\" N",
+    "name": "Grimm Brothers Brewhouse",
+    "id": "jjmau14",
+    "longitude": " 105°2\u002749\" W"
+  },
+  {
+    "elevation": "4797",
+    "distance": 8,
+    "city": "Windsor",
+    "latitude": "40°28\u002750.5\" N",
+    "name": "High Hops Brewery",
+    "id": "drewjj",
+    "longitude": " 104°56\u002708.0\" W"
+  },
+  {
+    "elevation": "5118",
+    "distance": 8,
+    "city": "Fort Collins",
+    "latitude": "40°31\u002704\" N",
+    "name": "Zwei Brewing Company",
+    "id": "awdennis",
+    "longitude": "105°04\u002742\" W"
+  },
+  {
+    "elevation": "5003",
+    "distance": 1,
+    "city": "Fort Collins",
+    "latitude": "40°32\u002721.48\" N",
+    "name": "Gilded Goat Brewing Company",
+    "id": "hkgomoll",
+    "longitude": "105°4\u002731.08\" W"
+  },
+  {
+    "elevation": "4961",
+    "distance": 2,
+    "city": "Fort Collins",
+    "latitude": "40°33\u002758.01\" N",
+    "name": "Rally King Brewing",
+    "id": "apmiller",
+    "longitude": "105°03\u002724.29\" W"
+  },
+  {
+    "elevation": "4924",
+    "distance": 1,
+    "city": "Fort Collins",
+    "latitude": "40°34\u002759.13\" N",
+    "name": "Funkwerks",
+    "id": "afinnman",
+    "longitude": " 105°2\u002731.41\" W"
+  },
+  {
+    "elevation": "5072",
+    "distance": 0,
+    "city": "Fort Collins",
+    "latitude": "40°35\u002723\" N",
+    "name": "Horse \u0026 Dragon Brewing Company",
+    "id": "dmod",
+    "longitude": " 105°02\u002744\" W"
+  },
+  {
+    "elevation": "4988",
+    "distance": 1,
+    "city": "Fort Collins",
+    "latitude": "40°35\u002717\" N",
+    "name": "Equinox Brewing",
+    "id": "acwatson",
+    "longitude": " 105°4\u002726\" W"
+  },
+  {
+    "elevation": "5003",
+    "distance": 0,
+    "city": "Fort Collins",
+    "latitude": "40°35\u002735.12\" N",
+    "name": "New Belgium Brewing Company",
+    "id": "granchho",
+    "longitude": " 105°4\u00278.51\" W"
+  },
+  {
+    "elevation": "5052",
+    "distance": 0,
+    "city": "Fort Collins",
+    "latitude": "40°35\u002722\" N",
+    "name": "Fort Collins Brewery",
+    "id": "burtar",
+    "longitude": "105°03\u002748\" W"
+  },
+  {
+    "elevation": "5003",
+    "distance": 0,
+    "city": "Fort Collins",
+    "latitude": "40°35\u002724\" N",
+    "name": "SnowBank Brewing",
+    "id": "mj259",
+    "longitude": " 105°3\u002731.32\" W"
+  },
+  {
+    "elevation": "5003",
+    "distance": 0,
+    "city": "Fort Collins",
+    "latitude": "40°35\u002712.89\" N",
+    "name": "Odell Brewing Company",
+    "id": "waterc55",
+    "longitude": " 105°03\u002728.61\" W"
+  },
+  {
+    "elevation": " 5007",
+    "distance": 1,
+    "city": "Fort Collins",
+    "latitude": "40°35\u002714.60\" N",
+    "name": "Coopersmiths Pub and Brewing",
+    "id": "jllewis",
+    "longitude": " 105°04\u002732.36\" W"
+  },
+  {
+    "elevation": "5118",
+    "distance": 1,
+    "city": "Fort Collins",
+    "latitude": "40°33\u002759\" N",
+    "name": "Black Bottle Brewery",
+    "id": "codyp424",
+    "longitude": "105°04\u002743\" W"
+  },
+  {
+    "elevation": "5086",
+    "distance": 2,
+    "city": "Fort Collins",
+    "latitude": "40°34\u002721.94\" N",
+    "name": " McClellans Brewing Company",
+    "id": "skunberg",
+    "longitude": " 105°6\u002755.63\" W"
+  },
+  {
+    "elevation": "5021",
+    "distance": 7,
+    "city": "Fort Collins",
+    "latitude": "40°37\u002702.4\" N",
+    "name": "Budweiser Brewery",
+    "id": "mattheil",
+    "longitude": " 105°00\u002717.5\" W"
+  },
+  {
+    "elevation": "5191",
+    "distance": 21,
+    "city": "Greeley",
+    "latitude": "40°25\u002730\" N",
+    "name": "Brix Taphouse \u0026 Brewery",
+    "id": "mjrerle",
+    "longitude": "104°41\u002729\" W"
+  },
+  {
+    "elevation": "4656",
+    "distance": 0,
+    "city": "Greeley",
+    "latitude": "40°25\u002741\" N",
+    "name": "WeldWerks Brewing Company",
+    "id": "plhager",
+    "longitude": " 104°41\u002726\" W"
+  },
+  {
+    "elevation": "5280",
+    "distance": 40,
+    "city": "Lafayette",
+    "latitude": "40°54\u002754\" N",
+    "name": "Odd 13 Brewing",
+    "id": "rcox",
+    "longitude": " 105°05\u002716\" W"
+  },
+  {
+    "elevation": "7522",
+    "distance": 44,
+    "city": "Estes Park",
+    "latitude": "40°22\u002717.1084\" N",
+    "name": "Estes Park Brewery",
+    "id": "nkacirek",
+    "longitude": " 105°31\u002734.0356\" W"
+  },
+  {
+    "elevation": "8818",
+    "distance": 34,
+    "city": "Winter Park",
+    "latitude": "39°55\u002704\" N",
+    "name": "Hideaway Park Brewery",
+    "id": "maxsatt",
+    "longitude": " 105°47\u002702\" W"
+  },
+  {
+    "elevation": "9022",
+    "distance": 25,
+    "city": "Silverthorne",
+    "latitude": "39°37\u002747\" N",
+    "name": "The Bakers Brewery",
+    "id": "tstroup",
+    "longitude": "106°04\u002703\" W"
+  },
+  {
+    "elevation": "9974",
+    "distance": 4,
+    "city": "Frisco",
+    "latitude": "39°34\u002741\" N",
+    "name": "Backcountry Brewery",
+    "id": "andrewpj",
+    "longitude": " 106°05\u002739\" W"
+  },
+  {
+    "elevation": "9451",
+    "distance": 5,
+    "city": "Breckenridge",
+    "latitude": " 39°30\u002753\" N",
+    "name": "Broken Compass Brewing",
+    "id": "sahandri",
+    "longitude": " 106°03\u002712\" W"
+  },
+  {
+    "elevation": "9974",
+    "distance": 20,
+    "city": "Fairplay",
+    "latitude": "39°13\u002722\" N",
+    "name": "Southpark Brewing Company",
+    "id": "rschlac",
+    "longitude": "105°59\u002713\" W"
+  },
+  {
+    "elevation": "10152",
+    "distance": 16,
+    "city": "Leadville",
+    "latitude": "39°14\u002758.4\" N",
+    "name": "Periodic Brewing",
+    "id": "eholmgre",
+    "longitude": "106°17\u002728.8\" W"
+  },
+  {
+    "elevation": "6693",
+    "distance": 39,
+    "city": "Eagle",
+    "latitude": "39°38\u002728\" N",
+    "name": "7 Hermits Brewing Company",
+    "id": "mazziac",
+    "longitude": " 106°49\u002750\" W"
+  },
+  {
+    "elevation": "5770",
+    "distance": 27,
+    "city": "Glenwood Springs",
+    "latitude": "39°32\u002751\" N",
+    "name": "Glenwood Canyon Brewing Company",
+    "id": "koti",
+    "longitude": "107°19\u002723\" W"
+  },
+  {
+    "elevation": "6181",
+    "distance": 9,
+    "city": "Carbondale",
+    "latitude": "39°40\u002707\" N",
+    "name": "Carbondale Beer Works",
+    "id": "bwhua",
+    "longitude": "107°21\u002731\" W"
+  },
+  {
+    "elevation": "6434",
+    "distance": 57,
+    "city": "Hayden",
+    "latitude": "40°29\u002744.8\" N",
+    "name": "Yampa Valley Brewing Company",
+    "id": "jflack",
+    "longitude": " 107°15\u002727.5\" W"
+  },
+  {
+    "elevation": "8923",
+    "distance": 113,
+    "city": "Crested Butte",
+    "latitude": "38°52\u002712\" N",
+    "name": "The Eldo Brewery",
+    "id": "eajohns",
+    "longitude": "106°59\u002712\" W"
+  },
+  {
+    "elevation": "6430",
+    "distance": 51,
+    "city": "Cedaredge",
+    "latitude": "38°54\u002701\" N",
+    "name": " 4Bs Brewery",
+    "id": "jhpokors",
+    "longitude": "107°55\u002743\" W"
+  },
+  {
+    "elevation": "6562",
+    "distance": 27,
+    "city": "Palisade",
+    "latitude": "39°06\u002713\" N",
+    "name": "Meadery of the Rockies",
+    "id": "joshlutz",
+    "longitude": " 108°21\u002735\" W"
+  },
+  {
+    "elevation": " 5808",
+    "distance": 21,
+    "city": "Montrose",
+    "latitude": "38°48\u002728\" N",
+    "name": "Horsefly Brewing Company",
+    "id": "jtgreen",
+    "longitude": " 107°87\u002714\" W"
+  },
+  {
+    "elevation": "5906",
+    "distance": 39,
+    "city": "Montrose",
+    "latitude": "38°28\u002739\" N",
+    "name": "Horsefly Brewing Company",
+    "id": "haynes21",
+    "longitude": "107°52\u002716\" W"
+  },
+  {
+    "elevation": "7756",
+    "distance": 33,
+    "city": "Ouray",
+    "latitude": "38°01\u002725\" N",
+    "name": "Ourayle House Brewery",
+    "id": "nsunny",
+    "longitude": "107°40\u002720\" W"
+  },
+  {
+    "elevation": "9318",
+    "distance": 15,
+    "city": "Silverton",
+    "latitude": "37°48\u002736.72\"N",
+    "name": "Avalanche Brewing Company",
+    "id": "ashellum",
+    "longitude": "107°39\u002752.2\"W"
+  },
+  {
+    "elevation": "6889",
+    "distance": 38,
+    "city": "Durango",
+    "latitude": "37°16\u002747.8\" N",
+    "name": "Animas Brewing Company",
+    "id": "kjo124",
+    "longitude": " 107°52\u002736.7\" W"
+  },
+  {
+    "elevation": "6565",
+    "distance": 3,
+    "city": "Durango",
+    "latitude": "37°14\u002719.69\" N",
+    "name": "SKA Brewing Company",
+    "id": "retzlaff",
+    "longitude": " 107°52\u002734.14\" W"
+  },
+  {
+    "elevation": "6145",
+    "distance": 39,
+    "city": "Cortez",
+    "latitude": "37°20\u002754\" N",
+    "name": "J. Fargos Restaurant \u0026 Microbrewery",
+    "id": "mlyonsru",
+    "longitude": "108°34\u002713\" W"
+  },
+  {
+    "elevation": "9317",
+    "distance": 159,
+    "city": "Salida",
+    "latitude": "38°31\u002706\" N",
+    "name": "Elevation Beer Company",
+    "id": "acyaeger",
+    "longitude": "106°03\u002732\" W"
+  },
+  {
+    "elevation": "7152",
+    "distance": 4,
+    "city": "Salida",
+    "latitude": "38°32\u002705.0\" N",
+    "name": "Moonlight Pizza \u0026 Brewery",
+    "id": "adolan5",
+    "longitude": " 105°59\u002735.0\" W"
+  },
+  {
+    "elevation": "8923",
+    "distance": 0,
+    "city": "Salida",
+    "latitude": "38°31\u002753\" N",
+    "name": "Amicas Pizza Microbrew \u0026 More",
+    "id": "vicweeks",
+    "longitude": " 105°59\u002717\" W"
+  },
+  {
+    "elevation": "6010",
+    "distance": 122,
+    "city": "Trinidad",
+    "latitude": "37°13\u00275.16\" N",
+    "name": "Dodgeton Creek Brewing",
+    "id": "kevall",
+    "longitude": " 104°29\u002725.44\" W"
+  },
+  {
+    "elevation": "8465",
+    "distance": 89,
+    "city": "Durango",
+    "latitude": "37°16\u002742\" N",
+    "name": "Carver Brewing Company",
+    "id": "alnolte",
+    "longitude": " 102°52\u002753\" W"
+  },
+  {
+    "elevation": "4652",
+    "distance": 116,
+    "city": "Pueblo",
+    "latitude": "38°15\u002755.5\" N",
+    "name": "Brues Alehouse Brewing Company",
+    "id": "lyzhu",
+    "longitude": " 104°36\u002735.0\" W"
+  }
+]

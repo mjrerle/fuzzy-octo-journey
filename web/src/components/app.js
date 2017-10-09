@@ -26,6 +26,7 @@ export default class App extends React.Component {
                     browseFile={this.browseFile.bind(this)}
                     pairs={ps}
                     browseSVG={this.browseSVG.bind(this)}
+                    svgmap={sm}
                 />
             </div>
         )
@@ -53,12 +54,12 @@ export default class App extends React.Component {
         // Anything component (i.e. pairs) referencing it will be re-rendered
         this.setState({
             allPairs: pairs,
-            sysFile: file,
+            sysFile: file
         });
     }
 
 	async browseSVG(file){
-		console.log("Got svg: ", file);
+		//console.log("Got svg: ", file);
 		this.setState({
 			svgFile: file
 		});
