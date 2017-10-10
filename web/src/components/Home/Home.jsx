@@ -3,18 +3,25 @@ import Dropzone from 'react-dropzone'
 
 class Home extends React.Component {
     render() {
-        let total = 0; {/*update the total here*/}
+        let total = 0;
+        {/*update the total here*/
+        }
 
-        let objectArray = this.props.pairs; {/*assigned it to a variable to make it easier to read, still insane*/}
+        let objectArray = this.props.pairs;
+        {/*assigned it to a variable to make it easier to read, still insane*/
+        }
 
-       for(var i = 0; i < objectArray.length;i++){ 
-		   {/*parsing through objects and adding distances together*/} 
-           total *= 100000;
+        for (let i = 0; i < objectArray.length; i++) {
+            {/*parsing through objects and adding distances together*/
+            }
+            total *= 100000;
 
-           total += (objectArray[i].props.endInfo.distance *100000);
+            total += (objectArray[i].props.endInfo.distance * 100000);
 
-           total /= 100000; {/*because why would floating-point addition work at all without this*/}
-       }
+            total /= 100000;
+            {/*because why would floating-point addition work at all without this*/
+            }
+        }
 
         return <div className="home-container">
             <div className="inner">
@@ -23,7 +30,7 @@ class Home extends React.Component {
                 <Dropzone className="dropzone-style" onDrop={this.drop.bind(this)}>
                     <button>Open JSON File</button>
                 </Dropzone>
-				<Dropzone className="dropzone-style" onDrop={this.renderSVG.bind(this)}>
+                <Dropzone className="dropzone-style" onDrop={this.renderSVG.bind(this)}>
                     <button>Open SVG File</button>
                 </Dropzone>
                 {/* new button for opening the svg file */}
@@ -38,38 +45,38 @@ class Home extends React.Component {
                     </tr>
                     {this.props.pairs}
                     <tbody>
-                        <tr>
-                            <td colSpan="3"><h3>Total miles:</h3></td>
-                            <td>{total}</td>
-                        </tr>
+                    <tr>
+                        <td colSpan="3"><h3>Total miles:</h3></td>
+                        <td>{total}</td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     }
 
-	renderSVG(myfiles){
-		{/*this method acts similar to drop: accept file into an array: file[0] will be evaluated as a data file instead */}
-		console.log("Accepting drop(svg)");
-		myfiles.forEach(file => {
-			console.log("Filename: ", file.name, "File: ", file);
-			let fr = new FileReader();
-			fr.onload = (function() {
-				{/*when calling the read, create anonymous function*/}
-				return function(e){
-					{/*anonymous function returns another function which handles the event*/}
-					let m = e.target.result;
-					{/*obviously don't parse as a json, just call the parent method*/}
-					{/*console.log("m: ",m);*/}
-					this.props.browseSVG(m);
-					{/*calling the parent method(in app.js)*/}
-				};
-			})(file).bind(this);
-			{/*must bind the file to this*/}
-			fr.readAsDataURL(file);
-			{/*most important part*/}
-		});
-	}
+    renderSVG(myfiles) {
+        /*this method acts similar to drop: accept file into an array: file[0] will be evaluated as a data file instead */
+        console.log("Accepting drop(svg)");
+        myfiles.forEach(file => {
+            console.log("Filename: ", file.name, "File: ", file);
+            let fr = new FileReader();
+            fr.onload = (function () {
+                /*when calling the read, create anonymous function*/
+                return function (e) {
+                    /*anonymous function returns another function which handles the event*/
+                    let rawSVG = e.target.result;
+                    /*obviously don't parse as a json, just call the parent method*/
+                    /*console.log("m: ",m);*/
+                    this.props.browseSVG(rawSVG);
+                    /*calling the parent method(in app.js)*/
+                };
+            })(file).bind(this);
+            /*must bind the file to this*/
+            fr.readAsDataURL(file);
+            /*most important part*/
+        });
+    }
 
     drop(acceptedFiles) {
         console.log("Accepting drop");
