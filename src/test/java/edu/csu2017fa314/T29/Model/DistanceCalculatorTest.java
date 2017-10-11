@@ -219,6 +219,7 @@ public class DistanceCalculatorTest {
         ArrayList<Location> locs = locationRecords.getLocations();
         DistanceCalculator dist = new DistanceCalculator(locs);
         LinkedList<Location> ll = dist.computeAllNearestNeighbors();
+
         int sum=0;
         for (int i = 0; i < ll.size(); i++) {
             sum+=ll.get(i).getDistance();
@@ -242,7 +243,9 @@ public class DistanceCalculatorTest {
 
         String expectedString = Arrays.deepToString(expectedArray);
         String actualString = Arrays.deepToString(distanceCalculator.calculateAllDistances());
-        
+
         Assert.assertEquals(expectedString, actualString);
+
+
     }
 }
