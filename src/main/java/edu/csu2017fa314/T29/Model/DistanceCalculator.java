@@ -12,6 +12,7 @@ public class DistanceCalculator {
     private static final double KILOMETER_TO_MILES = EARTH_RADIUS_MILES/EARTH_RADIUS; //How many miles in one kilometer
 
     protected ArrayList<Location> locations = new ArrayList<>();
+    protected int[][] allDistances; // This 2D array will store every distance of all of
 
 
     //////////////////////////////////////////////////////////
@@ -163,7 +164,9 @@ public class DistanceCalculator {
         return sum;
     }
 
-    public double[][] calculateAllDistances() {
+    public int[][] calculateAllDistances() {
+        allDistances = new int[locations.size()][locations.size()];
+
 
         return null;
     }

@@ -23,6 +23,7 @@ public class DistanceCalculatorTest {
     double boraBoraLongitude = -151.74149039999998;
 
     ArrayList<Location> locations = new ArrayList<Location>();
+    ArrayList<Location> breweries = new ArrayList<Location>();
 
     Map<String,String> extraInfo = new HashMap<String,String>();
     LocationRecords locationRecords;
@@ -98,7 +99,9 @@ public class DistanceCalculatorTest {
         extraInfo.put("longitude","999");
         t03 = new Location(extraInfo);
 
-
+        breweries.add(brewery1);
+        breweries.add(brewery2);
+        breweries.add(brewery3);
     }
 
 
@@ -233,10 +236,13 @@ public class DistanceCalculatorTest {
 
     @Test
     public void testCalculateAllDistances() {
-        locationRecords = new LocationRecords("data/test/FullTest.csv");
-        ArrayList<Location> locations = locationRecords.getLocations();
-        DistanceCalculator distanceCalculator = new DistanceCalculator(locations);
+        DistanceCalculator distanceCalculator = new DistanceCalculator(breweries);
 
-        Assert.assertEquals(distanceCalculator.calculateAllDistances(), null);
+        int[][] expectedArray = { {0, 42, 68}, {42, 0, 85}, {68, 85, 0} };
+
+        String expectedString = Arrays.deepToString(expectedArray);
+        String actualString = Arrays.deepToString(distanceCalculator.calculateAllDistances());
+        
+        Assert.assertEquals(expectedString, actualString);
     }
 }
