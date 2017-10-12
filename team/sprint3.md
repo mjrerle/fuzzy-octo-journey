@@ -33,13 +33,15 @@ User stories (epics) in the Sprint Backlog:
 * Web Server #175
 * SQL Database #176
 
-Total planned tasks / issues in the Sprint Backlog: *1* 
+Total planned tasks / issues in the Sprint Backlog: *15* 
 
 ## Daily Scrums
 
 Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 :--- | :--- | :--- | :--- | :---
  *10/6/2017* | *None* | *#165* | *ReactJS understanding* | *High*
+ *10/9/2017* | *#170* | *#165,#173* | *None* | *High*
+ *10/11/2017* | *#165* | *#128,#173* | *Event Handling in React* | *High*
  
 
 ## Review
