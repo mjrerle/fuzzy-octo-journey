@@ -248,4 +248,22 @@ public class DistanceCalculatorTest {
 
 
     }
+
+    @Test
+    public void testShortestTrip() {
+        locationRecords = new LocationRecords("data/test/FullTest.csv");
+        ArrayList<Location> locations = locationRecords.getLocations();
+
+        DistanceCalculator distanceCalculator = new DistanceCalculator(locations);
+        LinkedList<Location> expectedItinerary = distanceCalculator.shortestTrip();
+
+        String expectedString = distanceCalculator.toStringByID(expectedItinerary);
+
+        LinkedList<Location> actualItinerary = distanceCalculator.shortestTrip();
+        String actualString = distanceCalculator.toStringByID(actualItinerary);
+
+        Assert.assertEquals(expectedString, actualString);
+        System.out.println(expectedString);
+        System.out.println(actualString);
+    }
 }

@@ -20,6 +20,7 @@ public class DistanceCalculator {
     //////////////////////////////////////////////////////////
     public DistanceCalculator(ArrayList<Location> locations) {
         this.locations = locations;
+        this.allDistances = calculateAllDistances();
     }
 
 
@@ -90,17 +91,45 @@ public class DistanceCalculator {
 
     public LinkedList<Location> shortestTrip () {
         LinkedList<Location> itinerary = new LinkedList<Location>();
-        Location nextLocation;
+        Location nextLocation = null;
 
         itinerary.add(locations.get(0)); // Starting location
         int currentIndex = 0; // Starts at 0
-        int min = Integer.MAX_VALUE;
 
-        for(int i = 0; i < locations.size(); i++) {
-            
+        while(itinerary.size() < locations.size()) {
+            int currentMin = Integer.MAX_VALUE;
+
+            for (int i = 0; i < locations.size(); i++) {
+                int tempDist = allDistances[currentIndex][i];
+
+                if (tempDist < currentMin && tempDist != 0
+                        && itinerary.contains(locations.get(i)) == false) {
+                    currentIndex = i;
+                    currentMin = tempDist;
+                    nextLocation = locations.get(i);
+                } else {
+                    //YOU STILL NEED TO EXPLAIN
+                }
+            }
+            itinerary.add(nextLocation);
         }
 
         return itinerary;
+    }
+
+
+    //////////////////////////////////////////////////////////
+    // toString method(s)                                   //
+    //////////////////////////////////////////////////////////
+    public String toStringByID (LinkedList<Location> itinerary) {
+        String result = "";
+
+        for (int i = 0; i < itinerary.size(); i++) {
+            result += Integer.toString(i) + ": " + itinerary.get(i).getId() + "\n";
+
+        }
+
+        return result;
     }
 
     //////////////////////////////////////////////////////////
