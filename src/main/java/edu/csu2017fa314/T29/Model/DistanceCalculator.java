@@ -86,12 +86,23 @@ public class DistanceCalculator {
     }
 
     //////////////////////////////////////////////////////////
-    // Let's try this...                                    //
+    // This Shortest Trip method calculates the itinerary   //
+    // through a Dynamic Programming approach. We have a 2D //
+    // array that will help us determine the next closest   //
+    // neighbor (see calculateAllDistances for 2D array     //
+    // info). Once a location is selected, we add it to the //
+    // itinerary, and then search all of its distance and   //
+    // find the smallest, non-zero, distance. We also check //
+    // if the column index of that distance already exist in//
+    // the itinerary. Once that location is compared with   //
+    // every other location in our list and no smaller value//
+    // exist, then we add that location to the itinerary and//
+    // update the "current" location to that new location.  //
     //////////////////////////////////////////////////////////
 
     public LinkedList<Location> shortestTrip () {
         LinkedList<Location> itinerary = new LinkedList<Location>();
-        Location nextLocation = null;
+        Location nextLocation = null; // Declaration so IntelliJ stops yelling at me
 
         itinerary.add(locations.get(0)); // Starting location
         int currentIndex = 0; // Starts at 0
@@ -102,13 +113,17 @@ public class DistanceCalculator {
             for (int i = 0; i < locations.size(); i++) {
                 int tempDist = allDistances[currentIndex][i];
 
+                /* In the following comparison, we ignore 0 because
+                   every row will contain a 0, because that is the
+                   distance of a location to itself.
+                 */
                 if (tempDist < currentMin && tempDist != 0
                         && itinerary.contains(locations.get(i)) == false) {
                     currentIndex = i;
                     currentMin = tempDist;
                     nextLocation = locations.get(i);
                 } else {
-                    //YOU STILL NEED TO EXPLAIN
+                    //Do nothing, keep parsing the list
                 }
             }
             itinerary.add(nextLocation);
