@@ -263,7 +263,5 @@ public class DistanceCalculatorTest {
         String actualString = distanceCalculator.toStringByID(actualItinerary);
 
         Assert.assertEquals(expectedString, actualString);
-        System.out.println(expectedString);
-        System.out.println(actualString);
     }
 }
