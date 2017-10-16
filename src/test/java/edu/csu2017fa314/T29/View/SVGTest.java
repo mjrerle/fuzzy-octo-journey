@@ -48,6 +48,9 @@ public class SVGTest {
 
         locationLinkedList = distanceCalculator.computeAllNearestNeighbors();
     }
-
+    @Test
+    public void testNull(){
+        assertTrue(locations!=null);
+    }
 
 }
