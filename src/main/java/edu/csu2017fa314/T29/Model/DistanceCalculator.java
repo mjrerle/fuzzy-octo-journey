@@ -85,7 +85,7 @@ public class DistanceCalculator {
     }
 
     //////////////////////////////////////////////////////////
-    // This Shortest Trip method calculates the itinerary   //
+    // This Calculate Trips method calculates the itinerary //
     // through a Dynamic Programming approach. We have a 2D //
     // array that will help us determine the next closest   //
     // neighbor (see calculateAllDistances for 2D array     //
@@ -98,7 +98,6 @@ public class DistanceCalculator {
     // exist, then we add that location to the itinerary and//
     // update the "current" location to that new location.  //
     //////////////////////////////////////////////////////////
-
     public Pair calculateTrips (Location startNode, int startIndex) {
         LinkedList<Location> itinerary = new LinkedList<Location>();
         Location currentLocation = startNode; // Starting Location
@@ -146,6 +145,13 @@ public class DistanceCalculator {
         return new Pair(itinerary, totalDistance);
     }
 
+
+    //////////////////////////////////////////////////////////
+    // This Shortest Trip calculates all of the possible    //
+    // trips based on different starting locations, which   //
+    // are the different "permutations" of the trip. We then//
+    // find the shortest permutation and return it.         //
+    //////////////////////////////////////////////////////////
     public LinkedList<Location> shortestTrip() {
         ArrayList<Pair> permutations = new ArrayList<>();
 
@@ -167,6 +173,38 @@ public class DistanceCalculator {
 
     }
 
+    //////////////////////////////////////////////////////////
+    // 2-Opt?                                               //
+    //////////////////////////////////////////////////////////
+    public LinkedList<Location> twoOpt(LinkedList<Location> trip, int startIndex, int endIndex) {
+        while(startIndex < endIndex) {
+            Location tempLocation = trip.get(startIndex);
+            trip.set(startIndex, trip.get(endIndex));
+            trip.set(endIndex, tempLocation);
+            startIndex++;
+            endIndex--;
+        }
+
+        boolean improvement = true;
+        while (improvement) {
+            improvement = false;
+            for (int i = 0; i <= trip.size() - 3; i++) {
+                for (int j = 0; j <= trip.size() - 1; j++) {
+                    int delta = -calculateGreatCircleDistance(locations.get(i), locations.get(i + 1))
+                                -calculateGreatCircleDistance(locations.get(j), locations.get(j + 1))
+                                +calculateGreatCircleDistance(locations.get(i), locations.get(j))
+                                +calculateGreatCircleDistance(locations.get(i + 1), locations.get(j + 1));
+
+                    if(delta < 0) {
+                        twoOpt(trip, i + 1, j);
+                        improvement = true;
+                    }
+                }
+            }
+        }
+
+        return trip;
+    }
 
     //////////////////////////////////////////////////////////
     // toString method(s)                                   //
