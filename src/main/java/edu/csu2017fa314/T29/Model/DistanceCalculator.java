@@ -14,7 +14,6 @@ public class DistanceCalculator {
     protected ArrayList<Location> locations = new ArrayList<>();
     protected int[][] allDistances; // This 2D array will store every distance of all of the locations
 
-
     //////////////////////////////////////////////////////////
     // Constructor                                          //
     //////////////////////////////////////////////////////////
@@ -100,26 +99,30 @@ public class DistanceCalculator {
     // update the "current" location to that new location.  //
     //////////////////////////////////////////////////////////
 
-    public LinkedList<Location> shortestTrip () {
+    public Pair calculateTrips (Location startNode, int startIndex) {
         LinkedList<Location> itinerary = new LinkedList<Location>();
+        Location currentLocation = startNode; // Starting Location
         Location nextLocation = null; // Declaration so IntelliJ stops yelling at me
+        int totalDistance = 0;
 
-        itinerary.add(locations.get(0)); // Starting location
-        int currentIndex = 0; // Starts at 0
+        itinerary.add(startNode); // Starting location
+        int currentIndex = startIndex;
 
         while(itinerary.size() < locations.size()) {
             int currentMin = Integer.MAX_VALUE;
+            int tempDist;
+            int tempIndex = 0;
 
             for (int i = 0; i < locations.size(); i++) {
-                int tempDist = allDistances[currentIndex][i];
+                tempDist = allDistances[currentIndex][i];
 
-                /* In the following comparison, we ignore 0 because
-                   every row will contain a 0, because that is the
-                   distance of a location to itself.
+                /* In the following comparison, we ignore currentIndex
+                   because when i == currentIndex, the distance will be
+                   to itself, or 0.
                  */
-                if (tempDist < currentMin && tempDist != 0
-                        && itinerary.contains(locations.get(i)) == false) {
-                    currentIndex = i;
+                if (tempDist < currentMin && i != currentIndex
+                        && (!itinerary.contains(locations.get(i)))) {
+                    tempIndex = i;
                     currentMin = tempDist;
                     nextLocation = locations.get(i);
                 } else {
@@ -127,9 +130,41 @@ public class DistanceCalculator {
                 }
             }
             itinerary.add(nextLocation);
+            int currentDistance = calculateGreatCircleDistance(currentLocation, nextLocation);
+            nextLocation.setDistance(currentDistance);
+            currentLocation = nextLocation;
+            currentIndex = tempIndex;
+            totalDistance += currentDistance;
+
         }
 
-        return itinerary;
+        // I will comment on this later, its make the trip round and completed by readding the starting node
+        int finalLegDist = calculateGreatCircleDistance(itinerary.get(locations.size() - 1), startNode);
+        totalDistance += finalLegDist;
+        itinerary.add(startNode);
+        itinerary.get(itinerary.size() - 1).setDistance(finalLegDist);
+        return new Pair(itinerary, totalDistance);
+    }
+
+    public LinkedList<Location> shortestTrip() {
+        ArrayList<Pair> permutations = new ArrayList<>();
+
+        for(int i = 0; i < locations.size(); i++) {
+            permutations.add(calculateTrips(locations.get(i), i));
+        }
+
+        int min = Integer.MAX_VALUE;
+        int index = 0;
+
+        for(int j = 0; j < locations.size(); j++) {
+            if(permutations.get(j).getValue() < min) {
+                min = permutations.get(j).getValue();
+                index = j;
+            }
+        }
+
+        return permutations.get(index).getKey();
+
     }
 
 
@@ -236,7 +271,7 @@ public class DistanceCalculator {
             }
         }
 
-//        System.out.println("min: "+min + " index: "+index);
+        //System.out.println("min: "+min + " index: "+index);
         shortest=permutations.get(index).getKey();
         //set shortest equal to the path with lowest total distance
 

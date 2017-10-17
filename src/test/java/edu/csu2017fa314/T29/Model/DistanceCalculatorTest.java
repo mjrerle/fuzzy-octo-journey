@@ -238,6 +238,9 @@ public class DistanceCalculatorTest {
     @Test
     public void testCalculateAllDistances() {
         DistanceCalculator distanceCalculator = new DistanceCalculator(breweries);
+        locationRecords = new LocationRecords("data/test/FullTest.csv");
+        ArrayList<Location> locations = locationRecords.getLocations();
+        DistanceCalculator distanceCalculator1 = new DistanceCalculator(locations);
 
         int[][] expectedArray = { {0, 42, 68}, {42, 0, 85}, {68, 85, 0} };
 
@@ -246,22 +249,46 @@ public class DistanceCalculatorTest {
 
         Assert.assertEquals(expectedString, actualString);
 
+        int [] expectedDistances = new int[locations.size()];
+        for(int i = 0; i < locations.size(); i++) {
+            expectedDistances[i] = distanceCalculator1.calculateGreatCircleDistance(locations.get(0), locations.get(i));
+        }
 
+        int [] actualDistances = distanceCalculator1.allDistances[0];
+        String expectedDistString = Arrays.toString(expectedDistances);
+        String actualDistString = Arrays.toString(actualDistances);
+
+        Assert.assertEquals(expectedDistString, actualDistString);
+    }
+
+    @Test
+    public void testCalculateTrips() {
+        locationRecords = new LocationRecords("data/test/FullTest.csv");
+        ArrayList<Location> locations = locationRecords.getLocations();
+        DistanceCalculator distanceCalculator = new DistanceCalculator(locations);
+
+        DistanceCalculator.Pair treyPair = distanceCalculator.calculateTrips(locations.get(67), 67);
+        DistanceCalculator.Pair mattPair = distanceCalculator.computeNearestNeighbor(locations.get(67));
+        LinkedList<Location> treyLinkedList = treyPair.getKey();
+        LinkedList<Location> mattLinkedList = mattPair.getKey();
+
+        String treysTrip = distanceCalculator.toStringByID(treyLinkedList);
+        String mattsTrip = distanceCalculator.toStringByID(mattLinkedList);
+        int treysDistance = treyPair.getValue();
+        int mattsDistance = mattPair.getValue();
+
+        Assert.assertEquals(treysTrip, mattsTrip);
+        Assert.assertEquals(treysDistance, mattsDistance);
     }
 
     @Test
     public void testShortestTrip() {
         locationRecords = new LocationRecords("data/test/FullTest.csv");
         ArrayList<Location> locations = locationRecords.getLocations();
-
         DistanceCalculator distanceCalculator = new DistanceCalculator(locations);
-        LinkedList<Location> expectedItinerary = distanceCalculator.shortestTrip();
 
-        String expectedString = distanceCalculator.toStringByID(expectedItinerary);
+        LinkedList<Location> shortestTrip = distanceCalculator.shortestTrip();
 
-        LinkedList<Location> actualItinerary = distanceCalculator.shortestTrip();
-        String actualString = distanceCalculator.toStringByID(actualItinerary);
-
-        Assert.assertEquals(expectedString, actualString);
+        Assert.assertEquals("lyzhu", shortestTrip.get(0).getId());
     }
 }
