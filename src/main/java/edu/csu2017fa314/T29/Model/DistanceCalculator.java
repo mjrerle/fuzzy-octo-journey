@@ -12,22 +12,179 @@ public class DistanceCalculator {
     private static final double KILOMETER_TO_MILES = EARTH_RADIUS_MILES/EARTH_RADIUS; //How many miles in one kilometer
 
     protected ArrayList<Location> locations = new ArrayList<>();
-
+    protected int[][] allDistances; // This 2D array will store every distance of all of the locations
 
     //////////////////////////////////////////////////////////
     // Constructor                                          //
     //////////////////////////////////////////////////////////
-
     public DistanceCalculator(ArrayList<Location> locations) {
         this.locations = locations;
+        this.allDistances = calculateAllDistances();
     }
 
 
+    //////////////////////////////////////////////////////////
+    // Getters and Setters                                  //
+    //////////////////////////////////////////////////////////
     public ArrayList<Location> getLocations () {return locations;}
     public void setLocations(ArrayList<Location> locations) {this.locations = locations;}
 
 
+    //////////////////////////////////////////////////////////
+    // Great Circle Distance calculation                    //
+    //////////////////////////////////////////////////////////
+    public int calculateGreatCircleDistance(Location node1, Location node2){
+        return calculateGreatCircleDistance(degreeToRadian(node1.getLatitude()),degreeToRadian(node1.getLongitude()),degreeToRadian(node2.getLatitude()),degreeToRadian(node2.getLongitude()));
+    }
 
+    public int calculateGreatCircleDistance(double startLat, double startLong, double endLat, double endLong) {
+        double deltaLambda = Math.abs(startLong - endLong);
+
+        double numerator = Math.pow((( Math.pow(Math.cos(endLat) * Math.sin(deltaLambda), 2)) + (Math.pow((Math.cos(startLat) * Math.sin(endLat)) -
+                (Math.sin(startLat) * Math.cos(endLat) * Math.cos(deltaLambda)), 2))),0.5);
+        double denominator = (Math.sin(startLat) * Math.sin(endLat)) +
+                             (Math.cos(startLat) * Math.cos(endLat) * Math.cos(deltaLambda));
+
+        double deltaSigma = Math.atan2(numerator, denominator);
+
+        return Math.round((float)(deltaSigma * EARTH_RADIUS * KILOMETER_TO_MILES)); //This calculation is done with Kilometers.
+                                                                           //then multiplied to be converted into miles
+                                                                           //and rounds it to the nearest whole number
+    }
+
+
+    //////////////////////////////////////////////////////////
+    // This creates a 2D array that contains all of the     //
+    // distances from every locations to every other        //
+    // locations. We list every location in every column and//
+    // every row and calculate the distance of the location //
+    // at the specific cross section. It should be noted    //
+    // the diagonal from the top left to the bottom right   //
+    // will be all 0's because the entries at those indices //
+    // are the distance of a location to itself.            //
+    //////////////////////////////////////////////////////////
+    public int[][] calculateAllDistances() {
+        int locSize = locations.size();
+        allDistances = new int[locSize][locSize];
+
+        for(int i = 0; i < locSize; i++) {
+            for (int j = 0; j < locSize; j++) {
+                allDistances[i][j] = calculateGreatCircleDistance(locations.get(i), locations.get(j));
+            }
+        }
+
+        return allDistances;
+    }
+    //////////////////////////////////////////////////////////
+    // Radian Conversion for Latitude and Longitude         //
+    //////////////////////////////////////////////////////////
+    public double degreeToRadian (double degree) {
+
+        return Math.toRadians(degree);
+
+    }
+
+    //////////////////////////////////////////////////////////
+    // This Shortest Trip method calculates the itinerary   //
+    // through a Dynamic Programming approach. We have a 2D //
+    // array that will help us determine the next closest   //
+    // neighbor (see calculateAllDistances for 2D array     //
+    // info). Once a location is selected, we add it to the //
+    // itinerary, and then search all of its distance and   //
+    // find the smallest, non-zero, distance. We also check //
+    // if the column index of that distance already exist in//
+    // the itinerary. Once that location is compared with   //
+    // every other location in our list and no smaller value//
+    // exist, then we add that location to the itinerary and//
+    // update the "current" location to that new location.  //
+    //////////////////////////////////////////////////////////
+
+    public Pair calculateTrips (Location startNode, int startIndex) {
+        LinkedList<Location> itinerary = new LinkedList<Location>();
+        Location currentLocation = startNode; // Starting Location
+        Location nextLocation = null; // Declaration so IntelliJ stops yelling at me
+        int totalDistance = 0;
+
+        itinerary.add(startNode); // Starting location
+        int currentIndex = startIndex;
+
+        while(itinerary.size() < locations.size()) {
+            int currentMin = Integer.MAX_VALUE;
+            int tempDist;
+            int tempIndex = 0;
+
+            for (int i = 0; i < locations.size(); i++) {
+                tempDist = allDistances[currentIndex][i];
+
+                /* In the following comparison, we ignore currentIndex
+                   because when i == currentIndex, the distance will be
+                   to itself, or 0.
+                 */
+                if (tempDist < currentMin && i != currentIndex
+                        && (!itinerary.contains(locations.get(i)))) {
+                    tempIndex = i;
+                    currentMin = tempDist;
+                    nextLocation = locations.get(i);
+                } else {
+                    //Do nothing, keep parsing the list
+                }
+            }
+            itinerary.add(nextLocation);
+            int currentDistance = calculateGreatCircleDistance(currentLocation, nextLocation);
+            nextLocation.setDistance(currentDistance);
+            currentLocation = nextLocation;
+            currentIndex = tempIndex;
+            totalDistance += currentDistance;
+
+        }
+
+        // I will comment on this later, its make the trip round and completed by readding the starting node
+        int finalLegDist = calculateGreatCircleDistance(itinerary.get(locations.size() - 1), startNode);
+        totalDistance += finalLegDist;
+        itinerary.add(startNode);
+        itinerary.get(itinerary.size() - 1).setDistance(finalLegDist);
+        return new Pair(itinerary, totalDistance);
+    }
+
+    public LinkedList<Location> shortestTrip() {
+        ArrayList<Pair> permutations = new ArrayList<>();
+
+        for(int i = 0; i < locations.size(); i++) {
+            permutations.add(calculateTrips(locations.get(i), i));
+        }
+
+        int min = Integer.MAX_VALUE;
+        int index = 0;
+
+        for(int j = 0; j < locations.size(); j++) {
+            if(permutations.get(j).getValue() < min) {
+                min = permutations.get(j).getValue();
+                index = j;
+            }
+        }
+
+        return permutations.get(index).getKey();
+
+    }
+
+
+    //////////////////////////////////////////////////////////
+    // toString method(s)                                   //
+    //////////////////////////////////////////////////////////
+    public String toStringByID (LinkedList<Location> itinerary) {
+        String result = "";
+
+        for (int i = 0; i < itinerary.size(); i++) {
+            result += Integer.toString(i) + ": " + itinerary.get(i).getId() + "\n";
+
+        }
+
+        return result;
+    }
+
+    //////////////////////////////////////////////////////////
+    // All of Matt's Code                                   //
+    //////////////////////////////////////////////////////////
     public Pair computeNearestNeighbor(Location node){
         //this will return a Pair... a pair is key value pair: LinkedList<Location> key, Integer value
         ArrayList<Location> unvisited = new ArrayList<>(locations);
@@ -114,7 +271,7 @@ public class DistanceCalculator {
             }
         }
 
-//        System.out.println("min: "+min + " index: "+index);
+        //System.out.println("min: "+min + " index: "+index);
         shortest=permutations.get(index).getKey();
         //set shortest equal to the path with lowest total distance
 
@@ -122,37 +279,6 @@ public class DistanceCalculator {
     }
 
 
-    //////////////////////////////////////////////////////////
-    // Great Circle Distance calculation                    //
-    //////////////////////////////////////////////////////////
-    public int calculateGreatCircleDistance(Location node1, Location node2){
-        return calculateGreatCircleDistance(degreeToRadian(node1.getLatitude()),degreeToRadian(node1.getLongitude()),degreeToRadian(node2.getLatitude()),degreeToRadian(node2.getLongitude()));
-    }
-
-    public int calculateGreatCircleDistance(double startLat, double startLong, double endLat, double endLong) {
-        double deltaLambda = Math.abs(startLong - endLong);
-
-        double numerator = Math.pow((( Math.pow(Math.cos(endLat) * Math.sin(deltaLambda), 2)) + (Math.pow((Math.cos(startLat) * Math.sin(endLat)) -
-                (Math.sin(startLat) * Math.cos(endLat) * Math.cos(deltaLambda)), 2))),0.5);
-        double denominator = (Math.sin(startLat) * Math.sin(endLat)) +
-                             (Math.cos(startLat) * Math.cos(endLat) * Math.cos(deltaLambda));
-
-        double deltaSigma = Math.atan2(numerator, denominator);
-
-        return Math.round((float)(deltaSigma * EARTH_RADIUS * KILOMETER_TO_MILES)); //This calculation is done with Kilometers.
-                                                                           //then multiplied to be converted into miles
-                                                                           //and rounds it to the nearest whole number
-    }
-
-    //////////////////////////////////////////////////////////
-    // Radian Conversion for Latitude and Longitude         //
-    //////////////////////////////////////////////////////////
-
-    public double degreeToRadian (double degree) {
-
-        return Math.toRadians(degree);
-
-    }
 
     public int getTotal(LinkedList<Location> path){
         int sum=0;
@@ -162,13 +288,6 @@ public class DistanceCalculator {
         //this will get the distance total for a path (useful for testing purposes)
         return sum;
     }
-
-    //////////////////////////////////////////////////////////
-    // Adds all distances in the 3rd column of the 2D array //
-    // that we create so we know the total distance of an   //
-    // Itinerary                                            //
-    //////////////////////////////////////////////////////////
-
 
     public static class Pair{
         //this is for keeping track of the total distance
