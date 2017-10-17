@@ -4,6 +4,7 @@ import edu.csu2017fa314.T29.Model.DistanceCalculator;
 import edu.csu2017fa314.T29.Model.Location;
 import edu.csu2017fa314.T29.Model.LocationRecords;
 import edu.csu2017fa314.T29.View.SVG;
+import edu.csu2017fa314.T29.View.Server;
 import edu.csu2017fa314.T29.View.View;
 import sun.awt.image.ImageWatched;
 
@@ -37,7 +38,7 @@ public class TripCo {
     }
 
     public static void main(String[] args) {
-
+/*
         System.out.println("Welcome to TripCo");
         String from = "";
         String to = "";
@@ -64,7 +65,10 @@ public class TripCo {
         json.createItinerary(); // Create Itinerary with info from Linked List
         json.writeFile(to);
 
-        System.out.println("Printed JSON file to data/"+to+" in main");
+        System.out.println("Printed JSON file to data/"+to+" in main");*/
+
+        Server s = new Server();
+        s.serve();
     }
 
 }
