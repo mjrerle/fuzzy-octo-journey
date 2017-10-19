@@ -148,7 +148,12 @@ public class DistanceCalculator {
     }
 
     //////////////////////////////////////////////////////////
-
+    // A method that calculates all of the Nearest Neighbor //
+    // trips and them in an ArrayList called permutations.  //
+    // Permutations is an ArrayList of Pairs, where the key //
+    // is the Linked List object of an itinerary, and the   //
+    // value is the total distance of that itinerary.       //
+    //////////////////////////////////////////////////////////
     public void calculateAllNearestNeighbor() {
 
         for(int i = 0; i < locations.size(); i++) {
@@ -157,10 +162,8 @@ public class DistanceCalculator {
 
     }
     //////////////////////////////////////////////////////////
-    // This Shortest Trip calculates all of the possible    //
-    // trips based on different starting locations, which   //
-    // are the different "permutations" of the trip. We then//
-    // find the shortest permutation and return it.         //
+    // Shortest Nearest Neighbor Trip iterates through all  //
+    // of permutations and finds the shortest trip.         //
     //////////////////////////////////////////////////////////
     public LinkedList<Location> shortestNearestNeighborTrip() {
         int min = Integer.MAX_VALUE;
@@ -177,6 +180,12 @@ public class DistanceCalculator {
 
     }
 
+
+    //////////////////////////////////////////////////////////
+    // Shortest Two Opt Trip iterates through permutations  //
+    // and calls Two Opt on every Nearest Neighbor trip in  //
+    // it. It then finds the shortest two opt trip.         //
+    //////////////////////////////////////////////////////////
     public LinkedList<Location> shortestTwoOptTrip() {
         ArrayList<Pair> twoOptPermutations = new ArrayList<>();
 
@@ -196,8 +205,12 @@ public class DistanceCalculator {
 
         return twoOptPermutations.get(index).getKey();
     }
-    //////////////////////////////////////////////////////////
 
+
+    //////////////////////////////////////////////////////////
+    // Additional method required for two opt, just a method//
+    // that swaps two locations.                            //
+    //////////////////////////////////////////////////////////
     public void twoOptSwap(LinkedList<Location> trip, int startIndex, int endIndex) {
         while(startIndex < endIndex) {
             Location tempLocation = trip.get(startIndex);
@@ -209,7 +222,8 @@ public class DistanceCalculator {
     }
 
     //////////////////////////////////////////////////////////
-    // 2-Opt?                                               //
+    // A better description is needed for this function, but//
+    // this is essentially a formalization of Dave's slide  //
     //////////////////////////////////////////////////////////
     public Pair twoOpt(LinkedList<Location> trip) {
 
@@ -232,10 +246,15 @@ public class DistanceCalculator {
         }
 
         setLocationDistances(trip);
-        System.out.println(getTotal(trip));
         return new Pair(trip, getTotal(trip));
     }
 
+    //////////////////////////////////////////////////////////
+    // A method for setting the distance between every      //
+    // location in an itinerary, specifically for 2-Opt.    //
+    // This is definitely a lot of extra work that needs to //
+    // be optimized.                                        //
+    //////////////////////////////////////////////////////////
     public void setLocationDistances(LinkedList<Location> itinerary) {
         for(int i = 0; i < itinerary.size() - 1; i++) {
             itinerary.get(i + 1).setDistance(calculateGreatCircleDistance(itinerary.get(i), itinerary.get(i + 1)));
