@@ -13,6 +13,7 @@ public class DistanceCalculator {
 
     protected ArrayList<Location> locations = new ArrayList<>();
     protected int[][] allDistances; // This 2D array will store every distance of all of the locations
+    protected ArrayList<Pair> permutations = new ArrayList<>();
 
     //////////////////////////////////////////////////////////
     // Constructor                                          //
@@ -20,6 +21,7 @@ public class DistanceCalculator {
     public DistanceCalculator(ArrayList<Location> locations) {
         this.locations = locations;
         this.allDistances = calculateAllDistances();
+        calculateAllNearestNeighbor();
     }
 
 
@@ -145,20 +147,22 @@ public class DistanceCalculator {
         return new Pair(itinerary, totalDistance);
     }
 
+    //////////////////////////////////////////////////////////
 
+    public void calculateAllNearestNeighbor() {
+
+        for(int i = 0; i < locations.size(); i++) {
+            permutations.add(calculateTrips(locations.get(i), i));
+        }
+
+    }
     //////////////////////////////////////////////////////////
     // This Shortest Trip calculates all of the possible    //
     // trips based on different starting locations, which   //
     // are the different "permutations" of the trip. We then//
     // find the shortest permutation and return it.         //
     //////////////////////////////////////////////////////////
-    public LinkedList<Location> shortestTrip() {
-        ArrayList<Pair> permutations = new ArrayList<>();
-
-        for(int i = 0; i < locations.size(); i++) {
-            permutations.add(calculateTrips(locations.get(i), i));
-        }
-
+    public LinkedList<Location> shortestNearestNeighborTrip() {
         int min = Integer.MAX_VALUE;
         int index = 0;
 
@@ -173,10 +177,28 @@ public class DistanceCalculator {
 
     }
 
+    public LinkedList<Location> shortestTwoOptTrip() {
+        ArrayList<Pair> twoOptPermutations = new ArrayList<>();
+
+        for(int i = 0; i < permutations.size(); i++) {
+            twoOptPermutations.add(twoOpt(permutations.get(i).key));
+        }
+
+        int min = Integer.MAX_VALUE;
+        int index = 0;
+
+        for(int j = 0; j < twoOptPermutations.size(); j++) {
+            if(twoOptPermutations.get(j).getValue() < min) {
+                min = permutations.get(j).getValue();
+                index = j;
+            }
+        }
+
+        return twoOptPermutations.get(index).getKey();
+    }
     //////////////////////////////////////////////////////////
-    // 2-Opt?                                               //
-    //////////////////////////////////////////////////////////
-    public LinkedList<Location> twoOpt(LinkedList<Location> trip, int startIndex, int endIndex) {
+
+    public void twoOptSwap(LinkedList<Location> trip, int startIndex, int endIndex) {
         while(startIndex < endIndex) {
             Location tempLocation = trip.get(startIndex);
             trip.set(startIndex, trip.get(endIndex));
@@ -184,28 +206,41 @@ public class DistanceCalculator {
             startIndex++;
             endIndex--;
         }
+    }
+
+    //////////////////////////////////////////////////////////
+    // 2-Opt?                                               //
+    //////////////////////////////////////////////////////////
+    public Pair twoOpt(LinkedList<Location> trip) {
 
         boolean improvement = true;
         while (improvement) {
             improvement = false;
-            for (int i = 0; i <= trip.size() - 3; i++) {
-                for (int j = 0; j <= trip.size() - 1; j++) {
-                    int delta = -calculateGreatCircleDistance(locations.get(i), locations.get(i + 1))
-                                -calculateGreatCircleDistance(locations.get(j), locations.get(j + 1))
-                                +calculateGreatCircleDistance(locations.get(i), locations.get(j))
-                                +calculateGreatCircleDistance(locations.get(i + 1), locations.get(j + 1));
+            for (int i = 0; i < trip.size() - 3; i++) {
+                for (int j = i+2; j <= trip.size() - 2; j++) {
+                    int delta = -calculateGreatCircleDistance(trip.get(i), trip.get(i + 1))
+                                -calculateGreatCircleDistance(trip.get(j), trip.get(j + 1))
+                                +calculateGreatCircleDistance(trip.get(i), trip.get(j))
+                                +calculateGreatCircleDistance(trip.get(i + 1), trip.get(j + 1));
 
                     if(delta < 0) {
-                        twoOpt(trip, i + 1, j);
+                        twoOptSwap(trip, i + 1, j);
                         improvement = true;
                     }
                 }
             }
         }
 
-        return trip;
+        setLocationDistances(trip);
+        System.out.println(getTotal(trip));
+        return new Pair(trip, getTotal(trip));
     }
 
+    public void setLocationDistances(LinkedList<Location> itinerary) {
+        for(int i = 0; i < itinerary.size() - 1; i++) {
+            itinerary.get(i + 1).setDistance(calculateGreatCircleDistance(itinerary.get(i), itinerary.get(i + 1)));
+        }
+    }
     //////////////////////////////////////////////////////////
     // toString method(s)                                   //
     //////////////////////////////////////////////////////////

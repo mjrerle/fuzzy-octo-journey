@@ -282,13 +282,14 @@ public class DistanceCalculatorTest {
     }
 
     @Test
-    public void testShortestTrip() {
+    public void testShortestNearestNeighborTrip() {
         locationRecords = new LocationRecords("data/test/FullTest.csv");
         ArrayList<Location> locations = locationRecords.getLocations();
         DistanceCalculator distanceCalculator = new DistanceCalculator(locations);
 
-        LinkedList<Location> shortestTrip = distanceCalculator.shortestTrip();
+        LinkedList<Location> shortestTrip = distanceCalculator.shortestNearestNeighborTrip();
 
         Assert.assertEquals("lyzhu", shortestTrip.get(0).getId());
     }
+
 }
