@@ -11,24 +11,35 @@ class Pair extends React.Component {
     render() {
         // Place the return statement from the stateless Pair here:
         let k = this.props.keys;
-        let o = Object.values(this.props.startInfo);
-        let names =[];
+        let startKeys = Object.keys(this.props.startInfo);
+        let startObjects = Object.values(this.props.startInfo);
+        let start=[];
+        // console.log("keys: "+k);
+        // console.log("startkeys: "+startKeys);
+        for(let i in k) {
+            for (let j in k){
+                if (k[i] === startKeys[j] && startKeys[i] && startObjects[i]) {
+                    start.push(<li>{startKeys[i]} : {startObjects[i]}</li>);
+                }
+            }
+        }
+        let endKeys=Object.keys(this.props.endInfo);
+        let endObjects=Object.values(this.props.endInfo);
+        let end =[];
         for(let i in k){
-            names.push(<h5>{k[i]} : {o[i]}</h5>);
-        };
-
-        let l = Object.values(this.props.endInfo);
-        let ends =[];
-        for(var i in k){
-            ends.push(<h5>{k[i]} : {l[i]}</h5>);
-        };
+            for(let j in k) {
+                if (k[i] === endKeys[j] && endKeys[i] && endObjects[i]) {
+                    end.push(<li>{endKeys[i]} : {endObjects[i]}</li>);
+                }
+            }
+        }
 
         let rows = [];
-            rows.push(<td><h4>{this.props.startInfo.name}</h4>{names} </td>);
+            rows.push(<td><h4>{this.props.startInfo.name}</h4>{start} </td>);
 
 
 
-            rows.push(<td><h4>{this.props.endInfo.name}</h4> {ends}</td>);
+            rows.push(<td><h4>{this.props.endInfo.name}</h4> {end}</td>);
             rows.push(<td><h4>{this.props.endInfo.distance}</h4></td>);
             rows.push(<td><h4>{this.props.cumDist}</h4></td>);
 

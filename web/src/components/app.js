@@ -5,8 +5,8 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            svg:"",
-            itinerary:"",
+            pairs:[],
+
         }
     };
 
@@ -14,10 +14,36 @@ export default class App extends React.Component {
         return (
             <div className="app-container">
                 <Home
+                    pairs={this.state.pairs}
                     svg={this.state.svg}
-                    itinerary={this.state.itinerary}
+                    showSVG={this.showSVG.bind(this)}
+                    dataShowItinerary={this.dataShowItinerary.bind(this)}
                 />
             </div>
         )
+    }
+
+    async dataShowItinerary(data){
+        let input=data;
+        let pairs = [];
+        let runDist = 0;
+        for (let i = 0; i < input.length-1; i++) {
+            runDist += parseInt(input[i+1].distance);
+            let p = {
+                startInfo: (input[i].extraInfo),
+                endInfo:(input[i+1].extraInfo),
+                cumDist: runDist,
+            }
+            pairs.push(p);
+        }
+        this.setState({
+            pairs:pairs,
+        });
+    }
+
+    async showSVG(data){
+        this.setState({
+            svg:data,
+        })
     }
 }

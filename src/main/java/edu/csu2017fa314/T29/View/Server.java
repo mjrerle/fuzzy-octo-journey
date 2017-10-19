@@ -7,6 +7,7 @@ import edu.csu2017fa314.T29.Model.DistanceCalculator;
 import spark.Request;
 import spark.Response;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -62,20 +63,21 @@ public class Server {
             itinerary = dist.computeAllNearestNeighbors();
             //TODO add change to two_opt method when it is made
         }
-
-        SVG svg = new SVG(itinerary,"./data/Background.svg");
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        String filepath = classLoader.getResource("Background.svg").getFile();
+        File file = new File(filepath);
+        SVG svg = new SVG(itinerary,file.getPath());
 
         // Create object with svg file path and array of matching database entries to return to server
         HashMap<String,String> map = itinerary.get(0).getExtraInfo();
         Object columns[] = map.keySet().toArray();
 
-        ServerResponse sRes = new ServerResponse("./Map.svg", itinerary,columns);
+        ServerResponse sRes = new ServerResponse(svg.getContents(),svg.getWidth(),svg.getHeight(), itinerary,columns);
 
         System.out.println("Sending \"" + sRes.toString() + "\" to server.");
 
         //Convert response to json
         Object ret = gson.toJson(sRes, ServerResponse.class);
-
         /* What to return to the server.
          * In this example, the "ServerResponse" object sRes is converted into a JSON representation using the GSON library.
          * If you'd like to see what this JSON looks like, it is logged to the console in the web client.

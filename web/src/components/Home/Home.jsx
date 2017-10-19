@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 // import Dropzone from 'react-dropzone';
 import Select from 'react-select';
-import 'react-select/dist/react-select.css';
-
+import Pair from './Pair/Pair.jsx';
+import InlineSVG from "svg-inline-react";
 
 class Home extends React.Component {
     constructor(props) {
@@ -11,11 +11,10 @@ class Home extends React.Component {
             serverReturned: null,
             tags: [],
             destinations: [],
-            pairs: [],
-            opt_level: [],
-            svg: "",
+            op_level: "Nearest Neighbor",
         }
     }
+
     /*DEPRECATED circa Sprint 2*/
 
 // renderSVG(myfiles) {
@@ -59,25 +58,6 @@ class Home extends React.Component {
 // }
     render() {
         let total = 0;
-        {/*update the total here*/
-        }
-
-        let objectArray = this.state.pairs;
-        {/*assigned it to a variable to make it easier to read, still insane*/
-        }
-
-        for (let i = 0; i < objectArray.length; i++) {
-            {/*parsing through objects and adding distances together*/
-            }
-            total *= 100000;
-
-            total += (objectArray[i].props.endInfo.distance * 100000);
-
-            total /= 100000;
-            {/*because why would floating-point addition work at all without this*/
-            }
-        }
-
         let svg;
         let svgmap;
         let dests;
@@ -87,27 +67,35 @@ class Home extends React.Component {
         let opt_options;
         let pairs;
         let p;
-        if (this.state.serverReturned) {
-            pairs = this.state.pairs;
+        let renderedSVG;
+        if (this.state.serverReturned && this.props.svg) {
+            let array = this.props.pairs;
+            {/*assigned it to a variable to make it easier to read, still insane*/
+            }
+            // console.log("pairs: "+array[3].endInfo.distance);
+            for (let i = 0; i < array.length - 1; i++) {
+                total += (array[i + 1].distance);
+            }
+            pairs = this.props.pairs;
             p = pairs.map((pp) => {
-                return <Pair keys={this.state.serverReturned.columns}{...pp}/>;
+                return <Pair keys={this.state.serverReturned.columns} cumDist={pp.cumDist} startInfo={pp.startInfo}
+                             endInfo={pp.endInfo}/>;
             });
-            svg = this.state.svg;
-            svgmap = <Map source={svg}/>;
-            dests = this.state.destinations;
-            destinations = dests.map((d) => {
-                return <td><h4>{...d}</h4></td>;
-            });
+            console.log(this.props.svg.contents);
+            renderedSVG = <InlineSVG src={this.props.svg}>SVG</InlineSVG>;
+                        // dests = this.state.destinations;
+            // destinations = dests.map((d) => {
+            //     return <td><h4>{...d}</h4></td>;
+            // });
             cols = this.state.tags;
-            columns = cols.map((cc) => {
-                return <td><h4>{...cc}</h4></td>;
-            });
-            opt_options = [{value: 'NN', label: 'Nearest Neighbor'}, {value: '2-opt', label: '2-opt'}];
+            // columns = cols.map((cc) => {
+            //     return <td><h4>{...cc}</h4></td>;
+            // });
         }
         return (<div className="home-container">
                 <div className="inner">
                     <h2>Team 29 - SPB</h2>
-                    <h3>Itinerary</h3>
+                    <h3>Itinerary Builder 3.0</h3>
                     {/*<Dropzone className="dropzone-style" onDrop={this.drop.bind(this)}>
                     <button>Open JSON File</button>
                 </Dropzone>
@@ -115,26 +103,27 @@ class Home extends React.Component {
                     <button>Open SVG File</button>
                 </Dropzone>
                 */}
+                    <h4>Search</h4>
+                    <input className="search-button" type="search" placeholder="Enter a search like denver"
+                           onKeyUp={this.handleSearchEvent.bind(this)} autoFocus/><br/>
+                    <label><h4>Choose Optimization Level</h4>
+                        <label>Nearest Neighbor<input name="opt-level" type="radio" value={"Nearest Neighbor"}
+                                                      checked={this.state.op_level === "Nearest Neighbor"}
+                                                      onChange={this.handleOptimization.bind(this)}/></label><br/>
+                        <label>2-Opt<input name="opt-level" type="radio" value={"2-Opt"}
+                                           checked={this.state.op_level === "2-Opt"}
+                                           onChange={this.handleOptimization.bind(this)}/></label>
+                    </label>
 
-                    <input className="search-button" type="text" placeholder="Enter a search like denver"
-                           onKeyUp={this.handleSearchEvent.bind(this)} autoFocus/>
-                    <Select name="opt-level" value="Choose Optimization Level" options={opt_options}
-                            onChange={this.handleOptimization.bind(this)}/>
-
-                    <table className="destinations-table">
-                        <tr>
-                            {columns}
-                        </tr>
-                        <tbody>
-                        <tr>
-                            {destinations}
-                        </tr>
-                        </tbody>
-                    </table>
-                    <Select name="attributes" value="Choose Attributes" options={cols}
-                            onChange={this.handleTagSearch.bind(this)}/>
-                    <button name="show-itinerary" onChange={this.handleShowItinerary.bind(this)}>Show Trip</button>
-                    {svgmap}
+                    <h4>Show extra information</h4>
+                    <Select
+                        options={cols}
+                        multi
+                        value={this.state.tags}
+                        onChange={this.handleTagSearch.bind(this)}/><br/>
+                    <h4>My Trip</h4>
+                    <button name="show-itinerary" onClick={this.handleShowItinerary.bind(this)}>Show Trip</button>
+                    {renderedSVG}
                     <table className="pair-table">
                         <tr>
                             <td><h4>Start</h4></td>
@@ -142,7 +131,7 @@ class Home extends React.Component {
                             <td><h4>Distance (mi)</h4></td>
                             <td><h4>Running Total (mi)</h4></td>
                         </tr>
-                        {pairs}
+                        {p}
                         <tbody>
                         <tr>
                             <td colSpan="3"><h3>Total miles:</h3></td>
@@ -161,7 +150,7 @@ class Home extends React.Component {
             object the server is reading into (in this case DataClass) */
         let newMap = {
             query: input,
-            opt_level: this.state.opt_level,
+            op_level: this.state.op_level,
         };
         try {
             // Attempt to send `newMap` via a POST request
@@ -179,6 +168,8 @@ class Home extends React.Component {
             this.setState({
                 serverReturned: JSON.parse(ret),
             });
+            console.log("serverret: " + this.state.serverReturned.locs);
+
             /*serverReturned has svg, locations, columns*/
 
             // Log the received JSON to the browser console
@@ -194,27 +185,17 @@ class Home extends React.Component {
     }
 
     async handleShowItinerary(event) {
-        let input = this.state.serverReturned.locations;
-        let pairs = [];
-        let runDist = 0;
-        for (let i = 0; i < input.length; i++) {
-            runDist += parseInt(input[i + 1].distance);
-            let p = {
-                startInfo: input[i],
-                endInfo: input[i + 1],
-                cumDist: runDist,
-            }
-            pairs.push(p);
-        }
-        this.setState({
-            svg: this.state.serverReturned.svg,
-            pairs: pairs,
-        })
+        event.preventDefault();
+        let input = this.state.serverReturned;
+        this.props.dataShowItinerary(input.locs);
+        /*this method acts similar to drop: accept file into an array: file[0] will be evaluated as a data file instead */
+        this.props.showSVG(this.state.serverReturned.svg);
+                /*calling the parent method(in app.js)*/
     }
 
-    async handleTagSearch(event) {
+    async handleTagSearch(event){
         let input = event.target.value;
-        let a = [];
+        let a = this.state.tags;
         a.push(input);
         this.setState({
             tags: a,
@@ -224,16 +205,16 @@ class Home extends React.Component {
     async handleOptimization(event) {
         let input = event.target.value;
         this.setState({
-            opt_level: input,
+            op_level: input,
         });
     }
 
-    // This function waits until enter is pressed on the event (input)
-    // A better implementation would be to have a Javascript form with an onSubmit event that calls fetch
+// This function waits until enter is pressed on the event (input)
+// A better implementation would be to have a Javascript form with an onSubmit event that calls fetch
     async handleSearchEvent(event) {
         if (event.which === 13) { // Waiting for enter to be pressed. Enter is key 13: https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
-            this.fetch(event.target.value); // Call fetch and pass whatever text is in the input box
-        }
+        this.fetch(event.target.value); // Call fetch and pass whatever text is in the input box
+    }
     }
 }
 export default Home
