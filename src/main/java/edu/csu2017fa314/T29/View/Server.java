@@ -8,6 +8,7 @@ import spark.Request;
 import spark.Response;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import edu.csu2017fa314.T29.Model.Location;
 
@@ -47,17 +48,28 @@ public class Server {
         // Client sends query under "name" field in received json:
         String searched = sRec.getQuery();
         // Get something from the server
-        QueryBuilder q = new QueryBuilder("tstroup", "Abc123def456hij"); // Create new QueryBuilder instance and pass in credentials //TODO update credentials
-        String queryString = String.format("SELECT * FROM airports WHERE municipality LIKE '%s' OR name LIKE '%s' OR type LIKE '%s' LIMIT 10", searched, searched, searched);
+        QueryBuilder q = new QueryBuilder("tstroup", "830670870"); // Create new QueryBuilder instance and pass in credentials //TODO update credentials
+        String queryString = "SELECT * FROM airports WHERE municipality LIKE '%" + searched +"%' " + " OR name LIKE '%" + searched +"%' " + " OR type LIKE '%" + searched + "%'";
         ArrayList<Location> queryResults = q.query(queryString);
 
         DistanceCalculator dist = new DistanceCalculator(queryResults);
-        LinkedList<Location> itinerary = dist.computeAllNearestNeighbors();
+        LinkedList<Location> itinerary;
 
-        SVG svg = new SVG(itinerary,"/data/Background.svg");
+        if(sRec.getOpLevel().equals("Nearest Neighbor")){
+           itinerary = dist.computeAllNearestNeighbors();
+        }
+        else{
+            itinerary = dist.computeAllNearestNeighbors();
+            //TODO add change to two_opt method when it is made
+        }
+
+        SVG svg = new SVG(itinerary,"./data/Background.svg");
 
         // Create object with svg file path and array of matching database entries to return to server
-        ServerResponse sRes = new ServerResponse("/Map.svg", itinerary);
+        HashMap<String,String> map = itinerary.get(0).getExtraInfo();
+        Object columns[] = map.keySet().toArray();
+
+        ServerResponse sRes = new ServerResponse("./Map.svg", itinerary,columns);
 
         System.out.println("Sending \"" + sRes.toString() + "\" to server.");
 
