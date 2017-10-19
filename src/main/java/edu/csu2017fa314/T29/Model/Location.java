@@ -9,7 +9,7 @@ public class Location {
 
     private int distance;
 
-    private Map<String,String> extraInfo = new HashMap<String,String>();
+    private HashMap<String,String> extraInfo = new HashMap<>();
 
 
     public Location(Map<String,String> extraInfo){
@@ -28,7 +28,7 @@ public class Location {
 
     public void setDistance(int distance){ this.distance = distance;}
 
-    public Map<String, String> getExtraInfo() {
+    public HashMap<String, String> getExtraInfo() {
         return extraInfo;
     }
 
