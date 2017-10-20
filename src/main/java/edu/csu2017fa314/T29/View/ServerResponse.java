@@ -2,6 +2,7 @@ package edu.csu2017fa314.T29.View;
 
 import edu.csu2017fa314.T29.Model.Location;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.Arrays;
 /**
@@ -9,14 +10,18 @@ import java.util.Arrays;
  */
 
 public class ServerResponse {
-    private String svg = "";
+    private String svg;
     private LinkedList<Location> locs;
     private Object columns[];
+    private double width;
+    private double height;
 
-    public ServerResponse(String svg,LinkedList<Location> locs,Object columns[]) {
+    public ServerResponse(String svg, double width, double height, LinkedList<Location> locs, Object columns[]) {
         this.svg = svg;
         this.locs = locs;
         this.columns = columns;
+        this.width = width;
+        this.height=height;
     }
 
     @Override
