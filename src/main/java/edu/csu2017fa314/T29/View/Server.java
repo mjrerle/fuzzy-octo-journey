@@ -8,6 +8,7 @@ import spark.Request;
 import spark.Response;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -63,10 +64,8 @@ public class Server {
             itinerary = dist.computeAllNearestNeighbors();
             //TODO add change to two_opt method when it is made
         }
-        ClassLoader classLoader = this.getClass().getClassLoader();
-        String filepath = classLoader.getResource("Background.svg").getFile();
-        File file = new File(filepath);
-        SVG svg = new SVG(itinerary,file.getPath());
+        SVG svg = new SVG(itinerary, "src/main/resources/Background.svg");
+
 
         // Create object with svg file path and array of matching database entries to return to server
         HashMap<String,String> map = itinerary.get(0).getExtraInfo();
