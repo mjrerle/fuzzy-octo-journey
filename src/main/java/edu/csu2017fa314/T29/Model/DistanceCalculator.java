@@ -20,7 +20,7 @@ public class DistanceCalculator {
     //////////////////////////////////////////////////////////
     public DistanceCalculator(ArrayList<Location> locations) {
         this.locations = locations;
-        this.allDistances = calculateAllDistances();
+        //this.allDistances = calculateAllDistances();
         calculateAllNearestNeighbor();
     }
 
@@ -157,7 +157,7 @@ public class DistanceCalculator {
     public void calculateAllNearestNeighbor() {
 
         for(int i = 0; i < locations.size(); i++) {
-            permutations.add(calculateTrips(locations.get(i), i));
+            permutations.add(computeNearestNeighbor(locations.get(i)));
         }
 
     }
@@ -198,7 +198,7 @@ public class DistanceCalculator {
 
         for(int j = 0; j < twoOptPermutations.size(); j++) {
             if(twoOptPermutations.get(j).getValue() < min) {
-                min = permutations.get(j).getValue();
+                min = twoOptPermutations.get(j).getValue();
                 index = j;
             }
         }
