@@ -13,6 +13,7 @@ public class DistanceCalculator {
 
     protected ArrayList<Location> locations = new ArrayList<>();
     protected int[][] allDistances; // This 2D array will store every distance of all of the locations
+    protected ArrayList<Pair> permutations = new ArrayList<>();
 
     //////////////////////////////////////////////////////////
     // Constructor                                          //
@@ -20,6 +21,7 @@ public class DistanceCalculator {
     public DistanceCalculator(ArrayList<Location> locations) {
         this.locations = locations;
         this.allDistances = calculateAllDistances();
+        calculateAllNearestNeighbor();
     }
 
 
@@ -85,7 +87,7 @@ public class DistanceCalculator {
     }
 
     //////////////////////////////////////////////////////////
-    // This Shortest Trip method calculates the itinerary   //
+    // This Calculate Trips method calculates the itinerary //
     // through a Dynamic Programming approach. We have a 2D //
     // array that will help us determine the next closest   //
     // neighbor (see calculateAllDistances for 2D array     //
@@ -98,7 +100,6 @@ public class DistanceCalculator {
     // exist, then we add that location to the itinerary and//
     // update the "current" location to that new location.  //
     //////////////////////////////////////////////////////////
-
     public Pair calculateTrips (Location startNode, int startIndex) {
         LinkedList<Location> itinerary = new LinkedList<Location>();
         Location currentLocation = startNode; // Starting Location
@@ -146,13 +147,25 @@ public class DistanceCalculator {
         return new Pair(itinerary, totalDistance);
     }
 
-    public LinkedList<Location> shortestTrip() {
-        ArrayList<Pair> permutations = new ArrayList<>();
+    //////////////////////////////////////////////////////////
+    // A method that calculates all of the Nearest Neighbor //
+    // trips and them in an ArrayList called permutations.  //
+    // Permutations is an ArrayList of Pairs, where the key //
+    // is the Linked List object of an itinerary, and the   //
+    // value is the total distance of that itinerary.       //
+    //////////////////////////////////////////////////////////
+    public void calculateAllNearestNeighbor() {
 
         for(int i = 0; i < locations.size(); i++) {
             permutations.add(calculateTrips(locations.get(i), i));
         }
 
+    }
+    //////////////////////////////////////////////////////////
+    // Shortest Nearest Neighbor Trip iterates through all  //
+    // of permutations and finds the shortest trip.         //
+    //////////////////////////////////////////////////////////
+    public LinkedList<Location> shortestNearestNeighborTrip() {
         int min = Integer.MAX_VALUE;
         int index = 0;
 
@@ -168,6 +181,85 @@ public class DistanceCalculator {
     }
 
 
+    //////////////////////////////////////////////////////////
+    // Shortest Two Opt Trip iterates through permutations  //
+    // and calls Two Opt on every Nearest Neighbor trip in  //
+    // it. It then finds the shortest two opt trip.         //
+    //////////////////////////////////////////////////////////
+    public LinkedList<Location> shortestTwoOptTrip() {
+        ArrayList<Pair> twoOptPermutations = new ArrayList<>();
+
+        for(int i = 0; i < permutations.size(); i++) {
+            twoOptPermutations.add(twoOpt(permutations.get(i).key));
+        }
+
+        int min = Integer.MAX_VALUE;
+        int index = 0;
+
+        for(int j = 0; j < twoOptPermutations.size(); j++) {
+            if(twoOptPermutations.get(j).getValue() < min) {
+                min = permutations.get(j).getValue();
+                index = j;
+            }
+        }
+
+        return twoOptPermutations.get(index).getKey();
+    }
+
+
+    //////////////////////////////////////////////////////////
+    // Additional method required for two opt, just a method//
+    // that swaps two locations.                            //
+    //////////////////////////////////////////////////////////
+    public void twoOptSwap(LinkedList<Location> trip, int startIndex, int endIndex) {
+        while(startIndex < endIndex) {
+            Location tempLocation = trip.get(startIndex);
+            trip.set(startIndex, trip.get(endIndex));
+            trip.set(endIndex, tempLocation);
+            startIndex++;
+            endIndex--;
+        }
+    }
+
+    //////////////////////////////////////////////////////////
+    // A better description is needed for this function, but//
+    // this is essentially a formalization of Dave's slide  //
+    //////////////////////////////////////////////////////////
+    public Pair twoOpt(LinkedList<Location> trip) {
+
+        boolean improvement = true;
+        while (improvement) {
+            improvement = false;
+            for (int i = 0; i < trip.size() - 3; i++) {
+                for (int j = i+2; j <= trip.size() - 2; j++) {
+                    int delta = -calculateGreatCircleDistance(trip.get(i), trip.get(i + 1))
+                                -calculateGreatCircleDistance(trip.get(j), trip.get(j + 1))
+                                +calculateGreatCircleDistance(trip.get(i), trip.get(j))
+                                +calculateGreatCircleDistance(trip.get(i + 1), trip.get(j + 1));
+
+                    if(delta < 0) {
+                        twoOptSwap(trip, i + 1, j);
+                        improvement = true;
+                    }
+                }
+            }
+        }
+
+        setLocationDistances(trip);
+        return new Pair(trip, getTotal(trip));
+    }
+
+    //////////////////////////////////////////////////////////
+    // A method for setting the distance between every      //
+    // location in an itinerary, specifically for 2-Opt.    //
+    // This is definitely a lot of extra work that needs to //
+    // be optimized.                                        //
+    //////////////////////////////////////////////////////////
+    public void setLocationDistances(LinkedList<Location> itinerary) {
+        for(int i = 0; i < itinerary.size() - 1; i++) {
+            itinerary.get(i + 1).setDistance(calculateGreatCircleDistance(itinerary.get(i), itinerary.get(i + 1)));
+        }
+    }
     //////////////////////////////////////////////////////////
     // toString method(s)                                   //
     //////////////////////////////////////////////////////////

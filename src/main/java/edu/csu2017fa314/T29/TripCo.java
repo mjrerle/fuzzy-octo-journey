@@ -59,9 +59,13 @@ public class TripCo {
 
         DistanceCalculator transform = new DistanceCalculator(records.getLocations());
         LinkedList<Location> locationLinkedList = transform.computeAllNearestNeighbors();
+        System.out.println("I've calculated all nearest neighbor trip");
+        LinkedList<Location> twoOptLinkedList = transform.shortestTwoOptTrip();
+        System.out.println("I've calculated all shortest Two Opt Trip");
+        SVG twoOpt = new SVG(twoOptLinkedList, svgPath);
         SVG svg = new SVG(locationLinkedList, svgPath);
 
-        View json = new View(locationLinkedList); // Create View Object
+        View json = new View(twoOptLinkedList); // Create View Object90
         json.createItinerary(); // Create Itinerary with info from Linked List
         json.writeFile(to);
 
