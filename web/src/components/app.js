@@ -24,14 +24,15 @@ export default class App extends React.Component {
     }
 
     async dataShowItinerary(data){
+        //this just makes the pairs, nothing new
         let input=data;
         let pairs = [];
         let runDist = 0;
         for (let i = 0; i < input.length-1; i++) {
             runDist += parseInt(input[i+1].distance);
             let p = {
-                startInfo: (input[i].extraInfo),
-                endInfo:(input[i+1].extraInfo),
+                startInfo: (input[i]),
+                endInfo:(input[i+1]),
                 cumDist: runDist,
             }
             pairs.push(p);
@@ -39,6 +40,7 @@ export default class App extends React.Component {
         this.setState({
             pairs:pairs,
         });
+
     }
 
     async showSVG(data){
