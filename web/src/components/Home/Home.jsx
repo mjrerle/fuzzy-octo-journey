@@ -80,8 +80,6 @@ class Home extends React.Component {
                         </div>);
 
 
-        }
-        if (this.state.serverReturned && this.props.svg) {
             showtrip = (<div style={{textAlign: "center"}}>
                 <h4><strong>My Trip</strong></h4>
                 <br/>
@@ -117,7 +115,7 @@ class Home extends React.Component {
             res.forEach(function(ss){
                 // console.log(ss);
                 selection.push(<li>{ss}</li>);
-                return;
+
             });
             //this is for showing the currently selected attributes
             // console.log("selection: "+selection);
@@ -125,10 +123,12 @@ class Home extends React.Component {
                 return <Pair keys={(res)} cumDist={pp.cumDist} startInfo={pp.startInfo}
                              endInfo={pp.endInfo}/>;
             });
-            //like before in app.js except this time we explicitly give it key value pairs
-            renderedSVG = (<InlineSVG src={this.props.svg}>SVG</InlineSVG>);
-            //svg magic
 
+            //like before in app.js except this time we explicitly give it key value pairs
+            if(this.props.svg) {
+                renderedSVG = (<InlineSVG src={this.props.svg}>SVG</InlineSVG>);
+                //svg magic
+            }
             if(renderedSVG){
                 //if the map isn't null, make sure it renders
                 showmap=(<label style={{color:"blue"}}><strong><h4>Generated Map</h4></strong>
