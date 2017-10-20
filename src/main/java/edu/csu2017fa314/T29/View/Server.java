@@ -61,13 +61,12 @@ public class Server {
            itinerary = dist.computeAllNearestNeighbors();
         }
         else{
-            itinerary = dist.computeAllNearestNeighbors();
-            //TODO add change to two_opt method when it is made
+            itinerary = dist.shortestTwoOptTrip();
         }
         ClassLoader classLoader = this.getClass().getClassLoader();
         String filepath = classLoader.getResource("Background.svg").getFile();
         File file = new File(filepath);
-        SVG svg = new SVG(itinerary, file.getPath());
+        SVG svg = new SVG(itinerary, filepath);
 
 
         // Create object with svg file path and array of matching database entries to return to server

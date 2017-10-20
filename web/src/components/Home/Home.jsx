@@ -100,7 +100,7 @@ class Home extends React.Component {
             let array = this.props.pairs;
             {/*assigned it to a variable to make it easier to read, still insane*/
             }
-            total = (array[array.length-1].cumDist);
+
             //why not let the cumDist do the work for me?
             pairs = this.props.pairs;
             let jstring = JSON.parse(JSON.stringify(this.state.selected));
@@ -137,6 +137,7 @@ class Home extends React.Component {
                         </label>);
             }
             if(showmap){
+                total = (array[array.length-1].cumDist);
                 //this is switched on by the search event
                 showtable=(<table className="pair-table">
                     <tbody>
