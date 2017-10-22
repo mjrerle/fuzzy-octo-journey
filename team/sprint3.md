@@ -47,20 +47,22 @@ Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 ## Review
 
 #### Completed user stories (epics) in Sprint Backlog 
-* *user story*:  *comments*
-* 
+* Distance Calculator Update
+* client side search
+* Web server
 
 Completed *number of issues completed* issues associated with these user stories.
 
 #### Incomplete user stories / epics in Sprint Backlog 
-* *user story*: *Explanation...*
+* SQL Database: Does not handle errors
 *
 
 #### What went well
-* 
+* We worked well at the last minute
+* Added a bunch of functionality to the front end
 
 #### Problems encountered and resolutions
-* 
+* We worked well at the last minute
 
 ## Retrospective
 
