@@ -14,7 +14,7 @@ public class SVGTest {
     DistanceCalculator distanceCalculator;
     LinkedList<Location> locationLinkedList;
     ArrayList<Location> locations;
-
+    SVG svg;
     @Before
     public void setUp() {
         locations = new ArrayList<Location>();
@@ -46,11 +46,22 @@ public class SVGTest {
         distanceCalculator = new DistanceCalculator(locations);
         locationLinkedList = new LinkedList<Location>();
 
-        locationLinkedList = distanceCalculator.computeAllNearestNeighbors();
+        svg = new SVG(distanceCalculator.computeAllNearestNeighbors());
+
     }
     @Test
     public void testNull(){
-        assertTrue(locations!=null);
+        assertNotNull(svg);
+    }
+
+    @Test
+    public void testGetMap(){
+        assertNotNull(svg.getMap());
+    }
+
+    @Test
+    public void testGetContents(){
+        assertNotNull(svg.getContents());
     }
 
 }
