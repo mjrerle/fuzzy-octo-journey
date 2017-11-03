@@ -45,6 +45,7 @@ Total story points in the Sprint Backlog: *total number of story points in sprin
 Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 :--- | :--- | :--- | :--- | :---
 *10/25* | *None* | *#199* *#202* | *None* | *High*
+*11/1*  | *#202* *#209* | *#199* *#221* *#222* | *None* | *High*
  | | | | 
  
 
