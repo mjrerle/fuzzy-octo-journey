@@ -12,7 +12,7 @@
          <groupId>edu.csu2017fa314.T29</groupId>
          <artifactId>T29</artifactId>
          <packaging>jar</packaging>
-         <version>3.0.0</version>
+         <version>4.0.0</version>
          <name>T29</name>
          <url>https://github.com/csu2017fa314/T29/</url>
          <build>
