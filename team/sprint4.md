@@ -46,7 +46,7 @@ Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 :--- | :--- | :--- | :--- | :---
 *10/25* | *None* | *#199* *#202* | *None* | *High*
 *11/1*  | *#202* *#209* | *#199* *#221* *#222* | *None* | *High*
- | | | | 
+ *11/3* | *None* | *#216* *#218* *#221* *#222* *#199* | Coordination, SVG Scaling, 3-OPT, React Understanding, SQL | *Medium* 
  
 
 ## Review
