@@ -1,39 +1,42 @@
 package edu.csu2017fa314.T29.View;
 
+import java.util.ArrayList;
+
 /**
  * Created by sswensen on 10/1/17.
  */
 
 public class ServerRequest {
-    private String query = "";
-    private String op_level = "";
+    private String request="";
 
-    public ServerRequest(String query, String op_level) {
-        this.query = query;
-        this.op_level = op_level;
+    public ArrayList<String> getDescription() {
+        return description;
     }
 
-    public String getQuery() {
-        return query;
+    public void setDescription(ArrayList<String> description) {
+        this.description= new ArrayList<>();
+        this.description.addAll(description);
     }
 
-    public void setQuery(String query) {
-        this.query = query;
+    private ArrayList<String> description;
+
+    public ServerRequest(String request, ArrayList<String> description) {
+        this.request=request;
+        this.description=description; //description is either a search or an array of destinations
     }
 
-    public String getOpLevel() {
-        return op_level;
+    public String getRequest(){
+        return request;
     }
-
-    public void setOpLevel(String id) {
-        this.op_level = id;
+    public void setRequest(String request){
+        this.request=request;
     }
-
     @Override
     public String toString() {
         return "Request{" +
-                "query='" + query + '\'' +
-                ", id='" + op_level + '\'' +
+                "request='" + request + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
+
 }
