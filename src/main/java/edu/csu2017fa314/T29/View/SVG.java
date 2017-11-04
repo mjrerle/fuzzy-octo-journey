@@ -21,21 +21,67 @@ public class SVG {
     private final double x3 = 1027.738;
     private final double y3 = 744.63525;
 
-    private final double height=783.0824;
-    private final double width = 1066.6073;
+    private final double height=512;
+    private final double width = 1024;
     private String contents="";
     public SVG(LinkedList<Location> locations){
         this.locations = locations;
         writeContents();
     }
+    //    private double longitudeToSVG(double longitude){
+//        return ((-109 - longitude)/-7 * (x3 - x1)) + x1;
+//    }
+//    private double latitudeToSVG(double latitude){
+//        return ((41 - latitude)/4 * (y3 - y1)) + y1;
+//    }
+
+    //initial thoughts: svg coordinates are at the left corner of the map corresponding the 90,-180 on the geographic scale
+    //to get to my geographic point i will have to perform a conversion by scaling
+    //test points: [41,-109], [0,0], [90,-180], [-90, 180], [90, 180], [-90, -180]
+    // 0,0 -> this should transform into svg(512,256) 512 is height/2 and 256 is width/2
+    // perform longitude + 512, latitude + 256... easy
+    // 90, -180 -> should return svg(0,0) the origin
+    // perform longitude - 90, latitude + 180
+    // -90, 180 -> should return svg(1024,512)
+    // perform longitude + 90 + 1024, latitude - 180 + 512 (don't want to perform that math rn)
+    // 90, 180 -> svg(1024,0)
+    // perform longitude - 90 + 1024, latitude - 180
+    // -90, -180 -> svg(0,512)
+    // perform longitude + 90, latitude + 180
+    // 41, -109 -> should return svg(???)
+    // from what I see...
+    // if long/lat < 0
+    // hypothesis:
+    // svg(x) = (width - width*(longitude/-180))/2
+    // svg(y) = (height - height*(latitude/90))/2
+    // svg(201.955,139.377)
+    // preliminary testing in python interpreter!!:
+    //    carson-city:~$ ./convertToSVG 0 0
+    //            [512.0, 256.0]
+    //    carson-city:~$ ./convertToSVG -180 90
+    //            [0.0, 0.0]
+    //    carson-city:~$ ./convertToSVG -180 -90
+    //            [0.0, 512.0]
+    //    carson-city:~$ ./convertToSVG 180 90
+    //            [1024.0, 0.0]
+    //    carson-city:~$ ./convertToSVG 180 -90
+    //            [1024.0, 512.0]
+    //    carson-city:~$ ./convertToSVG -109 41
+    //            [201.95555555555558, 139.3777777777778]
 
     private double latitudeToSVG(double latitude){
-        return ((41 - latitude)/4 * (y3 - y1)) + y1;
+        double ratio = 90;
+        double y = getHeight() - getHeight() * (latitude / ratio);
+        y = y / 2;
+        return y;
+    }
+    private double longitudeToSVG(double longitude) {
+        double ratio = -180.0;
+        double x = getWidth() - getWidth() * (longitude / ratio);
+        x = x / 2;
+        return x;
     }
 
-    private double longitudeToSVG(double longitude){
-        return ((-109 - longitude)/-7 * (x3 - x1)) + x1;
-    }
 
     private String map="";
     public double getWidth(){
@@ -53,7 +99,7 @@ public class SVG {
     public void writeContents(){
         contents+="<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
         contents+="<svg xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\"" +
-                " version=\"1.0\" width=\"1066.6073\" height=\"783.0824\" id=\"svgUno\">";
+                " version=\"1.0\" width=\"1024\" height=\"512\" id=\"svgUno\">";
         Scanner scan = new Scanner(getMap());
         scan.nextLine();
         while(scan.hasNextLine()){
