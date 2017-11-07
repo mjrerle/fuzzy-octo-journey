@@ -8,10 +8,8 @@ import spark.Request;
 import spark.Response;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import edu.csu2017fa314.T29.Model.Location;
 
 import static spark.Spark.post;
@@ -55,7 +53,7 @@ public class Server {
         ArrayList<Location> queryResults = q.query(queryString);
 
         DistanceCalculator dist = new DistanceCalculator(queryResults);
-        LinkedList<Location> itinerary;
+        ArrayList<Location> itinerary;
 
         if(sRec.getOpLevel().equals("Nearest Neighbor")){
            itinerary = dist.computeAllNearestNeighbors();

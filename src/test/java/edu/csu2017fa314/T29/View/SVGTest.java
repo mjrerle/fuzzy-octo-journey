@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 public class SVGTest {
 
     DistanceCalculator distanceCalculator;
-    LinkedList<Location> locationLinkedList;
+    ArrayList<Location> locationArrayList;
     ArrayList<Location> locations;
 
     @Before
@@ -44,9 +44,9 @@ public class SVGTest {
         locations.add(brewery3);
 
         distanceCalculator = new DistanceCalculator(locations);
-        locationLinkedList = new LinkedList<Location>();
+        locationArrayList = new ArrayList<Location>();
 
-        locationLinkedList = distanceCalculator.computeAllNearestNeighbors();
+        locationArrayList = distanceCalculator.computeAllNearestNeighbors();
     }
     @Test
     public void testNull(){
