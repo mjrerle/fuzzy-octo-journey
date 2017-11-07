@@ -47,26 +47,28 @@ Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 ## Review
 
 #### Completed user stories (epics) in Sprint Backlog 
-* *user story*:  *comments*
-* 
+* Distance Calculator Update
+* client side search
+* Web server
 
 Completed *number of issues completed* issues associated with these user stories.
 
 #### Incomplete user stories / epics in Sprint Backlog 
-* *user story*: *Explanation...*
+* SQL Database: Does not handle errors
 *
 
 #### What went well
-* 
+* We worked well at the last minute
+* Added a bunch of functionality to the front end
 
 #### Problems encountered and resolutions
-* 
+* We worked well at the last minute
 
 ## Retrospective
 
 Topic | Teamwork | Process | Tools
 :--- | :--- | :--- | :---
-What we will change this time |  |  | 
-What we did well |  |  | 
-What we need to work on |  |  |
-What we will change next time |  |  | 
+What we will change this time | work earlier on the project | break down each task before plunging in | communicate more
+What we did well | worked hard at the last minute | achieved each non-optional task | learned reactjs
+What we need to work on | communication | constant work and achievements | fully understand react and optimization levels
+What we will change next time | communicate more | work more frequently | slack

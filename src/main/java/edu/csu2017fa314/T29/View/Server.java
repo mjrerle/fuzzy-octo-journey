@@ -51,7 +51,12 @@ public class Server {
         QueryBuilder q = new QueryBuilder("tstroup", "830670870"); // Create new QueryBuilder instance and pass in credentials //TODO update credentials
         String queryString = "SELECT * FROM airports WHERE municipality LIKE '%" + searched +"%' " + " OR name LIKE '%" + searched +"%' " + " OR type LIKE '%" + searched + "%'";
         ArrayList<Location> queryResults = q.query(queryString);
-
+        if(queryResults.size()==0){
+            System.out.println("Size of query results = 0, try a better search");
+            Object err = gson.toJson(new ServerResponse("",0,0,new LinkedList<>(), new Object[0]));
+            //return an empty object json for error handling on the client side
+            return err;
+        }
         DistanceCalculator dist = new DistanceCalculator(queryResults);
         ArrayList<Location> itinerary;
 
@@ -59,12 +64,10 @@ public class Server {
            itinerary = dist.computeAllNearestNeighbors();
         }
         else{
-            itinerary = dist.shortestTwoOptTrip();
+            itinerary = dist.computeAllNearestNeighbors();
+            //TODO add change to two_opt method when it is made
         }
-        ClassLoader classLoader = this.getClass().getClassLoader();
-        String filepath = classLoader.getResource("Background.svg").getFile();
-        File file = new File(filepath);
-        SVG svg = new SVG(itinerary, filepath);
+        SVG svg = new SVG(itinerary);
 
 
         // Create object with svg file path and array of matching database entries to return to server

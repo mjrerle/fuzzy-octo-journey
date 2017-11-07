@@ -12,9 +12,9 @@ import static org.junit.Assert.*;
 public class SVGTest {
 
     DistanceCalculator distanceCalculator;
-    ArrayList<Location> locationArrayList;
+    LinkedList<Location> locationLinkedList;
     ArrayList<Location> locations;
-
+    SVG svg;
     @Before
     public void setUp() {
         locations = new ArrayList<Location>();
@@ -44,13 +44,24 @@ public class SVGTest {
         locations.add(brewery3);
 
         distanceCalculator = new DistanceCalculator(locations);
-        locationArrayList = new ArrayList<Location>();
+        locationLinkedList = new LinkedList<Location>();
 
-        locationArrayList = distanceCalculator.computeAllNearestNeighbors();
+        svg = new SVG(distanceCalculator.computeAllNearestNeighbors());
+
     }
     @Test
     public void testNull(){
-        assertTrue(locations!=null);
+        assertNotNull(svg);
+    }
+
+    @Test
+    public void testGetMap(){
+        assertNotNull(svg.getMap());
+    }
+
+    @Test
+    public void testGetContents(){
+        assertNotNull(svg.getContents());
     }
 
 }
