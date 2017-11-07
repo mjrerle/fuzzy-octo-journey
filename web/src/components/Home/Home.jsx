@@ -72,21 +72,24 @@ class Home extends React.Component {
         let query = this.state.query;
         let searchedfor;
         //holds the fetched query
+
         if(this.state.serverReturned) {
             //if the server returns show the trip
             searchedfor=(<div>
-                            <h4>You search for {query}</h4>
+                            <h4>You searched for {query}</h4>
                             <button name="show-itinerary" onClick={this.handleShowItinerary.bind(this)}>Show Trip</button>
                         </div>);
 
 
             showtrip = (<div style={{textAlign: "center"}}>
-                <h4><strong>My Trip</strong></h4>
-                <br/>
-            </div>);
+                            <h4><strong>My Trip</strong></h4>
+                        <br/>
+                        </div>);
             //rest of trip details
+
             header=<h4><strong>Show more information for {query}</strong></h4>;
             //experimentation with jsx
+
             extrainfo= <Select
                 options={this.state.options}
                 multi
@@ -98,10 +101,9 @@ class Home extends React.Component {
             //click button to clear all attributes selected (not required but done for debugging purposes)
 
             let array = this.props.pairs;
-            {/*assigned it to a variable to make it easier to read, still insane*/
-            }
+            //{/*assigned it to a variable to make it easier to read, still insane*/
+            //}
 
-            //why not let the cumDist do the work for me?
             pairs = this.props.pairs;
             let jstring = JSON.parse(JSON.stringify(this.state.selected));
             //this is weird bear with me: this ensures that I have a json object stored in jstring... i need this to be able to iterate through the object and grab the keys
@@ -160,30 +162,40 @@ class Home extends React.Component {
         }
         return (
             <div className="home-container">
-                <div className="inner">
+                <div className="header">
+                    {/* The Header of the Home Page */}
                     <div className="row" style={{borderStyle:"solid"}}>
                         <div className="col" style={{textAlign: "center"}}><h2><strong>Team 29 - SPB</strong></h2></div>
                         <div className="col" style={{textAlign: "center"}}><h3><strong>Itinerary Builder 3.0</strong></h3></div>
                     </div>
                     <br/>
-                    <div className="row">
-                        <div style={{textAlign:"center"}}><h4><strong>Search</strong></h4><br/>
-                            <input className="search-button" type="search" placeholder="Enter a search like denver" onKeyUp={this.handleSearchEvent.bind(this)} autoFocus/>
-                            {searchedfor}
-                        </div>
-                    </div>
-                    <br/>
-                    <br/>
-                    <div className="row">
-                        <div style={{textAlign:"center"}}>
-                            <label><h4><strong>Choose Optimization Level</strong></h4>
-                                <label style={{color:"blue"}}>Nearest Neighbor<input name="opt-level" type="radio" value={"Nearest Neighbor"} checked={this.state.op_level === "Nearest Neighbor"} onChange={this.handleOptimization.bind(this)}/>
-                                </label><br/>
-                                <label style={{color:"red"}}>2-Opt<input name="opt-level" type="radio" value={"2-Opt"} checked={this.state.op_level === "2-Opt"} onChange={this.handleOptimization.bind(this)}/>
+
+                    {/* The Main Body of the the Home Page, it has a Form layout */}
+                    <div className="body">
+                        <div style={{textAlign:"center"}}><h4><strong>Search</strong></h4>
+                            <form id="searchForm" action="">
+                                <input type="text" name="textField" placeholder="ie: Denver"/>
+                                <br/><br/>
+
+
+                                <label><i>Choose Optimization Level</i><br/>
+                                    <label style={{color:"blue"}}>Nearest Neighbor<input name="opt-level" type="radio" value={"Nearest Neighbor"} onChange={this.handleOptimization.bind(this)}/>
+                                    </label><br/>
+                                    <label style={{color:"red"}}>2-Opt<input name="opt-level" type="radio" value={"2-Opt"} onChange={this.handleOptimization.bind(this)}/>
+                                    </label>
                                 </label>
-                            </label>
+                                <br/>
+
+
+                                <input type="button" name="searchButton" value="Search" onClick={this.handleSearchEvent.bind(this)}/>
+
+                            </form>
+
+                            {searchedfor}
+
                         </div>
                     </div>
+
                     <br/>
                     {header}
                     {extrainfo}
@@ -324,17 +336,18 @@ class Home extends React.Component {
         });
     }
 
-// This function waits until enter is pressed on the event (input)
-// A better implementation would be to have a Javascript form with an onSubmit event that calls fetch
-    async handleSearchEvent(event) {
-        if (event.which === 13) { // Waiting for enter to be pressed. Enter is key 13: https://www.cambiaresearch.com/articles/15/javascript-char-codes-key-codes
-            this.setState({
-                //set the event value to query(for documentation purposes)
-                query:event.target.value,
-            });
-            //fetch the value
-            this.fetch(event.target.value); // Call fetch and pass whatever text is in the input box
-        }
+
+    async handleSearchEvent() {
+        var queryText = document.forms["searchForm"]["textField"].value;
+
+        this.setState({
+            //set the event value to query(for documentation purposes)
+            query: queryText,
+        });
+        //fetch the value
+        this.fetch(queryText); // Call fetch and pass whatever text is in the input box
     }
+
+
 }
 export default Home
