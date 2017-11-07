@@ -191,9 +191,7 @@ public class DistanceCalculator {
         ArrayList<Pair> twoOptPermutations = new ArrayList<>();
 
         for(int i = 0; i < permutations.size(); i++) {
-            ArrayList<Location> copy = new ArrayList<Location>(permutations.get(i).getKey());
-            Pair perm = twoOpt(copy);
-            twoOptPermutations.add(perm);
+            twoOptPermutations.add(twoOpt(permutations.get(i).getKey()));
         }
 
         int min = Integer.MAX_VALUE;
