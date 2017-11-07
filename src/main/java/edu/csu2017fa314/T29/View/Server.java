@@ -53,7 +53,7 @@ public class Server {
         ArrayList<Location> queryResults = q.query(queryString);
         if(queryResults.size()==0){
             System.out.println("Size of query results = 0, try a better search");
-            Object err = gson.toJson(new ServerResponse("",0,0,new LinkedList<>(), new Object[0]));
+            Object err = gson.toJson(new ServerResponse("",0,0,new ArrayList<>(), new Object[0]));
             //return an empty object json for error handling on the client side
             return err;
         }

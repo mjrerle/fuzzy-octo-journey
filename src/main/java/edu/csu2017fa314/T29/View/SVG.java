@@ -2,18 +2,13 @@ package edu.csu2017fa314.T29.View;
 
 import edu.csu2017fa314.T29.Model.Location;
 
-import java.util.LinkedList;
-import java.io.FileWriter;
-import java.io.BufferedWriter;
-import java.io.PrintWriter;
-import java.io.IOException;
-import java.io.File;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 
 public class SVG {
 
-    private LinkedList<Location> locations;
+    private ArrayList<Location> locations;
 
     private final double x1 = 34.74561;
     private final double y1 = 34.74561;
@@ -24,7 +19,7 @@ public class SVG {
     private final double height=512;
     private final double width = 1024;
     private String contents="";
-    public SVG(LinkedList<Location> locations){
+    public SVG(ArrayList<Location> locations){
         this.locations = locations;
         writeContents();
     }
