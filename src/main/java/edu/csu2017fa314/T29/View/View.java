@@ -1,4 +1,5 @@
 package edu.csu2017fa314.T29.View;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import edu.csu2017fa314.T29.Model.Location;
@@ -8,20 +9,20 @@ import org.json.simple.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
 public class View
 {
    private JSONArray list; // This is the overarching structure of the JSON
-   private LinkedList<Location> iti; // A LinkedList of Locations in the shortest order
+    private ArrayList<Location> iti; // A LinkedList of Locations in the shortest order
 
     /////////////////////////////////
     // Constructor                 //
     /////////////////////////////////
-    public View(LinkedList<Location> iti) {
+    public View(ArrayList<Location> iti) {
        this.iti = iti;
        list = new JSONArray();
     }
@@ -30,8 +31,11 @@ public class View
     /////////////////////////////////
     // Some Getters and Setters    //
     /////////////////////////////////
-    public LinkedList<Location> getIti () {return iti;}
-    public void setIti (LinkedList<Location> linkedList) {
+    public ArrayList<Location> getIti() {
+        return iti;
+    }
+
+    public void setIti(ArrayList<Location> linkedList) {
        this.iti = linkedList;
     }
 
@@ -41,7 +45,7 @@ public class View
     // "Start Location" or a "End Location"    //
     /////////////////////////////////////////////
     public JSONObject createLocationInfo(Location location) {
-        Location firstLocation = iti.getFirst();
+        Location firstLocation = iti.get(0);
         Map information = new LinkedHashMap<String,String>(); // A Map is necessary for ordering
         Set<String> columnNames = firstLocation.getColumnNames(); // Get a Set of all possible information
                                                                   // IE: "Elevation" or "Latitude"

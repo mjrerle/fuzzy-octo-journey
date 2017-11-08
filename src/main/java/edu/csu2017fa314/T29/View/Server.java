@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import edu.csu2017fa314.T29.Model.DistanceCalculator;
+import edu.csu2017fa314.T29.Model.Location;
 import spark.Request;
 import spark.Response;
 
@@ -11,8 +12,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
-import edu.csu2017fa314.T29.Model.Location;
 
 import static spark.Spark.post;
 
@@ -93,8 +92,13 @@ import static spark.Spark.post;
 *
 * */
 
+/**
+ * web server just for fun
+ */
 public class Server {
-
+    /**
+     * set up event listeners
+     */
     public void serve() {
         Gson g = new Gson();
         post("/testing", (rec, res) -> {
@@ -109,7 +113,11 @@ public class Server {
         });
     }
 
-
+    /**
+     * @param rec : request from the client, consists of a "request" : String, "description" : ArrayList<String> key pairs
+     * @param res : response from the server, consists of a RawHttpServletResponse
+     * @return raw HttpServletResponse with attached file
+     */
     private Object download(Request rec, Response res) {
         // As before, parse the request and convert it to a Java class with Gson:
         JsonParser parser = new JsonParser();
@@ -125,6 +133,10 @@ public class Server {
         return res;
     }
 
+    /**
+     * @param res       : passed from download, will be a HttpServletResponse type with an attached file
+     * @param locations : ArrayList<String> of locations passed from the client
+     */
     private void writeFile(Response res, ArrayList<String> locations) {
         try {
             // Write our file directly to the response rather than to a file
@@ -148,6 +160,12 @@ public class Server {
         }
     }
 
+    /**
+     * @param rec : raw json passed from the client
+     * @param res : template that will eventually be returned
+     *            listen on a specific port and create a dynamic response based on the input
+     * @return a serve: basically an event handler based on the "request" value passed from the client
+     */
     private Object testing(Request rec, Response res) {
         setHeaders(res);
 
@@ -179,11 +197,19 @@ public class Server {
             // assume if the request is not "query" it is "svg":
         } else {
             //serve the svg with the information in description (should be a bunch of destinations)
-            return serveSvg(sRec.getRequest(),sRec.getDescription()); //0 should be the opcode, next is my dests
+            return serveSvg(sRec.getRequest(), sRec.getDescription()); //0 should be the opcode, next is my dests
         }
     }
 
     // called by testing method if the client requests an svg
+
+    /**
+     * "description" is basically an arraylist of destinations, in this case we expect it to be the destination's codes
+     *
+     * @param opcode : assumes that the "request" value is an opcode, that is, an optimization level (none, nearest neighbor, 2 opt, 3 opt)
+     * @param locs   : the "description" value passed from the client. must be an array of locations
+     * @return an SVGResponse which is a response consisting of an svg and an array of locations
+     */
     private Object serveSvg(String opcode, ArrayList<String> locs) {
         Gson gson = new Gson();
         // Instead of writing the SVG to a file, we send it in plaintext back to the client to be rendered inline
@@ -193,40 +219,42 @@ public class Server {
         ArrayList<Location> temp = q.query(queryString);
         DistanceCalculator distanceCalculator = new DistanceCalculator(temp);
 
-        LinkedList<Location> locations; //will be changed to ArrayList
-        if(opcode.equals("Nearest Neighbor")) { //opcode is dependent on trey's code
+        ArrayList<Location> locations; //will be changed to ArrayList
+        if (opcode.equals("Nearest Neighbor")) { //opcode is dependent on trey's code
             //figure out which method to call... depends on Tim's code
-            locations = distanceCalculator.computeAllNearestNeighbors();
-        }
-        else if(opcode.equals("2-Opt")){
+            locations = new ArrayList<>();
+        } else if (opcode.equals("2-Opt")) {
             //what is this method?
-            locations = new LinkedList<>();
-        }
-        else if(opcode.equals("3-Opt")){
+            locations = new ArrayList<>();
+        } else if (opcode.equals("3-Opt")) {
             //what is this method?
-            locations = new LinkedList<>();
-        }
-        else{
+            locations = new ArrayList<>();
+        } else {
             //opcode is likely "none" so I want the raw order->need a method for this in Distance Calculator
-            locations = new LinkedList<>();
+            locations = new ArrayList<>();
         }
 
         //
         SVG svg = new SVG(locations);
         String map = svg.getContents();
-        ServerSVGResponse ssres = new ServerSVGResponse((int)svg.getWidth(), (int)svg.getHeight(), map, locations);
+        ServerSVGResponse ssres = new ServerSVGResponse((int) svg.getWidth(), (int) svg.getHeight(), map, locations);
 
         return gson.toJson(ssres, ServerSVGResponse.class);
     }
-    private String buildWithCode(ArrayList<String> locations){ //makes locations given an arraylist of codes(ids like AXHS), quite useful
+
+    /**
+     * @param locations : "description" value passed from the client, will consist of "code" for each destination, we use it to build a query string to pass to the sql server
+     * @return the built query string (ex: select {code} where code = '{code[i]}')
+     */
+    private String buildWithCode(ArrayList<String> locations) { //makes locations given an arraylist of codes(ids like AXHS), quite useful
         /*for reference:
         * "SELECT airports.*, countries.*, regions.*, continents.* "
         * "FROM continents INNER JOIN countries ON continents.code = countries.continent INNER JOIN regions ON countries.code = regions.iso_country INNER JOIN airports ON regions.code = airports.iso_region "
         * joins all tables (in theory)
         * */
         String queryString = "SELECT airports.*, countries.*, regions.*, continents.* ";
-        queryString+="FROM continents INNER JOIN countries ON continents.code = countries.continent INNER JOIN regions ON countries.code = regions.iso_country INNER JOIN airports ON regions.code = airports.iso_region ";
-        queryString+="WHERE ";
+        queryString += "FROM continents INNER JOIN countries ON continents.code = countries.continent INNER JOIN regions ON countries.code = regions.iso_country INNER JOIN airports ON regions.code = airports.iso_region ";
+        queryString += "WHERE ";
         for (int i = 0; i < locations.size(); i++) {
             if (i == locations.size() - 1) {
                 queryString += "code = '" + locations.get(i) + "';";
@@ -236,6 +264,11 @@ public class Server {
         }
         return queryString;
     }
+
+    /**
+     * @param locations : "description" value passed from the client, consists of codes
+     * @return a ServerResponse, similar to a query request
+     */
     // if the user uploads a file
     private Object serveUpload(ArrayList<String> locations) {
         Gson gson = new Gson();
@@ -256,12 +289,20 @@ public class Server {
     }
 
     // called by testing method if client requests a search
+
+    /**
+     * search the database for the input
+     *
+     * @param searched : input passed from the client (e.target.value)
+     * @return a ServerResponse, but also give it the optional Object[] parameter
+     * The Object[] parameter is useful for Trey because he needs the keys in order to show attributes, may as well give it to him here
+     */
     private Object serveQuery(String searched) {
         Gson gson = new Gson();
         QueryBuilder q = new QueryBuilder("mjrerle", "829975763"); // Create new QueryBuilder instance and pass in credentials
         String queryString = "SELECT airports.*, countries.*, regions.*, continents.* ";
-        queryString+=        "FROM continents INNER JOIN countries ON continents.code = countries.continent INNER JOIN regions ON countries.code = regions.iso_country INNER JOIN airports ON regions.code = airports.iso_region ";
-        queryString+=        "WHERE municipality LIKE '%" + searched +"%' " + " OR airports.name LIKE '%" + searched +"%' " + " OR airports.type LIKE '%" + searched + "%'";
+        queryString += "FROM continents INNER JOIN countries ON continents.code = countries.continent INNER JOIN regions ON countries.code = regions.iso_country INNER JOIN airports ON regions.code = airports.iso_region ";
+        queryString += "WHERE municipality LIKE '%" + searched + "%' " + " OR airports.name LIKE '%" + searched + "%' " + " OR airports.type LIKE '%" + searched + "%'";
         ArrayList<Location> queryResults = q.query(queryString);
         if (queryResults.size() == 0) {
             System.out.println("Size of query results = 0, try a better search");
@@ -271,7 +312,7 @@ public class Server {
         }
 
         // Create object with svg file path and array of matching database entries to return to server
-        HashMap<String,String> map = queryResults.get(0).getExtraInfo();
+        HashMap<String, String> map = queryResults.get(0).getExtraInfo();
         Object columns[] = map.keySet().toArray();
         ServerResponse sRes = new ServerResponse(queryResults, columns);
         sRes.setResponseType("query");
@@ -281,6 +322,10 @@ public class Server {
         return gson.toJson(sRes, ServerResponse.class);
     }
 
+    /**
+     * @param res : a HttpServletResponse
+     *            configures the POST reply
+     */
     private void setHeaders(Response res) {
         // Declares returning type json
         res.header("Content-Type", "application/json");
@@ -290,6 +335,11 @@ public class Server {
         res.header("Access-Control-Allow-Headers", "*");
     }
 
+    /**
+     * attach a file (selection.json) and do a force download on the client
+     *
+     * @param res : a HttpServletResponse, we want the raw form
+     */
     private void setHeadersFile(Response res) {
         /* Unlike the other responses, the file request sends back an actual file. This means
         that we have to work with the raw HttpServletRequest that Spark's Response class is built

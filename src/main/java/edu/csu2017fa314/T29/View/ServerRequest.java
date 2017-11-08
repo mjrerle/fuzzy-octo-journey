@@ -7,30 +7,29 @@ import java.util.ArrayList;
  */
 
 public class ServerRequest {
-    private String request="";
+    private String request = "";
+    private ArrayList<String> description;
 
     public ArrayList<String> getDescription() {
         return description;
     }
 
-    public void setDescription(ArrayList<String> description) {
-        this.description= new ArrayList<>();
-        this.description.addAll(description);
-    }
-
-    private ArrayList<String> description;
-
+    /**
+     * @param request     : either "query" or "upload"
+     * @param description : a list of strings consisting of Destination Codes (AXHS,COBE,ERAW)
+     */
     public ServerRequest(String request, ArrayList<String> description) {
-        this.request=request;
-        this.description=description; //description is either a search or an array of destinations
+        this.request = request;
+        this.description = description; //description is either a search or an array of destinations
     }
 
-    public String getRequest(){
+    public String getRequest() {
         return request;
     }
-    public void setRequest(String request){
-        this.request=request;
-    }
+
+    /**
+     * @return json formatted string
+     */
     @Override
     public String toString() {
         return "Request{" +

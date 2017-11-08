@@ -2,10 +2,8 @@ package edu.csu2017fa314.T29.View;
 
 import edu.csu2017fa314.T29.Model.Location;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Arrays;
+
 /**
  * Created by sswensen on 10/1/17.
  */
@@ -15,22 +13,42 @@ public class ServerResponse {
     private ArrayList<Location> locations;
     private Object[] columns; //location keys
 
+    /**
+     * @param locations : no order locations list, this is for the initial query
+     * @param columns   : keys to the locations list, Trey needs this for the attribute selection
+     */
     public ServerResponse(ArrayList<Location> locations, Object[] columns) {
-        this.locations=locations;
-        this.columns=columns;
+        this.locations = locations;
+        this.columns = columns;
         System.out.println(this.toString());
     }
-    public ServerResponse(ArrayList<Location> locations){
+
+    /**
+     * called when i request an upload
+     *
+     * @param locations : no order locations list
+     */
+    public ServerResponse(ArrayList<Location> locations) {
         //this happens when i request an upload
-        this.locations=locations;
-        this.columns=new Object[1];
+        this.locations = locations;
+        this.columns = new Object[1];
+        System.out.println(this.toString());
+
     }
     // set to query for query request
     // set to upload for upload request
     //
-    public void setResponseType(String response){
-        this.response=response;
+
+    /**
+     * @param response : either "upload" or "query"
+     */
+    public void setResponseType(String response) {
+        this.response = response;
     }
+
+    /**
+     * @return json formatted string
+     */
     @Override
     public String toString() {
         return "ServerResponse{" +
