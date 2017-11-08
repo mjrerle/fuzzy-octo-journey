@@ -19,6 +19,7 @@ public class SVG {
     private final double height=512;
     private final double width = 1024;
     private String contents="";
+
     public SVG(ArrayList<Location> locations){
         this.locations = locations;
         writeContents();

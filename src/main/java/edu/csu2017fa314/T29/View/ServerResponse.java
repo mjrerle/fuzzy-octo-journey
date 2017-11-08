@@ -17,6 +17,18 @@ public class ServerResponse {
     private double width;
     private double height;
 
+    /**
+     * Creates a response to the client that contains all of the info
+     * it needs to display a trip that was calculated
+     *
+     * @param svg The Background svg to display
+     * @param width width of the svg display
+     * @param height height of the svg display
+     * @param locs ArrayList that is the trip
+     * @param columns Name of each column that each location has
+     *
+     * */
+
     public ServerResponse(String svg, double width, double height, ArrayList<Location> locs, Object columns[]) {
         this.svg = svg;
         this.locs = locs;

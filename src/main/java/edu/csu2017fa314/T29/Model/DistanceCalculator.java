@@ -357,8 +357,8 @@ public class DistanceCalculator {
             //keeps track of distances between nodes
             for (int i = 0; i < unvisited.size(); i++) {
 
-                int distance =
-                        calculateGreatCircleDistance(unvisited.get(i),visited.get(visited.size()-1));
+                int distance = calculateGreatCircleDistance(unvisited.get(i)
+                        ,visited.get(visited.size()-1));
                 distances.add(distance);
                 //populate distances arraylist
             }
@@ -407,6 +407,7 @@ public class DistanceCalculator {
      *
      * @return ArrayList of the shortest Nearest Neighbor trip
      */
+
     public ArrayList<Location> computeAllNearestNeighbors(){
         ArrayList<Pair> permutations = new ArrayList<>();
         //list of lists
@@ -470,12 +471,15 @@ public class DistanceCalculator {
         public ArrayList<Location> getKey() {
             return key;
         }
+
         public void setKey(ArrayList<Location> newkey){
             this.key=newkey;
         }
+
         public Integer getValue() {
             return value;
         }
+
         public void setValue( Integer newValue){
             this.value=newValue;
         }

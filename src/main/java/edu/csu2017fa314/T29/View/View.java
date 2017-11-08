@@ -8,7 +8,10 @@ import org.json.simple.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.Set;
+import java.util.Map;
 
 public class View
 {
@@ -27,8 +30,11 @@ public class View
     /////////////////////////////////
     // Some Getters and Setters    //
     /////////////////////////////////
-    public ArrayList<Location> getIti () {return iti;}
-    public void setIti (ArrayList<Location> linkedList) {
+    public ArrayList<Location> getIti() {
+        return iti;
+    }
+
+    public void setIti(ArrayList<Location> linkedList) {
        this.iti = linkedList;
     }
 
