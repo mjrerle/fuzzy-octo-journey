@@ -28,12 +28,7 @@ public class SVG {
         this.locations = locations;
         writeContents();
     }
-    //    private double longitudeToSVG(double longitude){
-//        return ((-109 - longitude)/-7 * (x3 - x1)) + x1;
-//    }
-//    private double latitudeToSVG(double latitude){
-//        return ((41 - latitude)/4 * (y3 - y1)) + y1;
-//    }
+
 
     //initial thoughts: svg coordinates are at the left corner of the map corresponding the 90,-180 on the geographic scale
     //to get to my geographic point i will have to perform a conversion by scaling
@@ -122,6 +117,7 @@ public class SVG {
         }
         contents+="</svg>";
     }
+    //big friggin string because io sucks
     public String getMap(){
         map+="<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
         map+="<svg";
@@ -542,60 +538,4 @@ public class SVG {
         map+="       id=\"Antarctique\" /></g></svg>";
         return map;
     }
-//deprecated
-//    private void writeSVG(){
-//            try(FileWriter fw = new FileWriter("Map.svg");
-//            BufferedWriter bw = new BufferedWriter(fw);
-//            PrintWriter out = new PrintWriter(bw))
-//        {
-//            File map = new File(filePath);
-//            Scanner scan = new Scanner(map);
-//            out.println("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>");
-//            contents+="<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
-//            out.printf("<svg xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\"" +
-//                    " version=\"1.0\" width=\"1066.6073\" height=\"783.0824\" id=\"svgUno\">");
-//            contents+="<svg xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\"" +
-//                    " version=\"1.0\" width=\"1066.6073\" height=\"783.0824\" id=\"svgUno\">";
-//            scan.nextLine();
-//            while(scan.hasNextLine()){
-//                String line = scan.nextLine();
-//                contents+=line;
-//                out.println(line);
-//            }
-//            for(int i = 0 ; i < locations.size();i++){
-//                if(i == locations.size() -1){
-//                    out.printf("<line id=\"%d\" x1=\"%f\" y1=\"%f\" x2=\"%f\" y2=\"%f\" stroke-width=\"1.5\" stroke=\"#0000FF\"/>\n"
-//                            ,i
-//                            ,longitudeToSVG(locations.get(i).getLongitude()), latitudeToSVG(locations.get(i).getLatitude())
-//                            ,longitudeToSVG(locations.get(0).getLongitude()),latitudeToSVG(locations.get(0).getLatitude()));
-//                    contents+= String.format("<line id=\"%d\" x1=\"%f\" y1=\"%f\" x2=\"%f\" y2=\"%f\" stroke-width=\"1.5\" stroke=\"#0000FF\"/>\n"
-//                            ,i
-//                            ,longitudeToSVG(locations.get(i).getLongitude()), latitudeToSVG(locations.get(i).getLatitude())
-//                            ,longitudeToSVG(locations.get(0).getLongitude()),latitudeToSVG(locations.get(0).getLatitude()));
-//                }
-//                else {
-//                    out.printf("<line id=\"%d\" x1=\"%f\" y1=\"%f\" x2=\"%f\" y2=\"%f\" stroke-width=\"1.5\" stroke=\"#0000FF\"/>\n"
-//                            , i
-//                            , longitudeToSVG(locations.get(i).getLongitude()), latitudeToSVG(locations.get(i).getLatitude())
-//                            , longitudeToSVG(locations.get(i + 1).getLongitude()), latitudeToSVG(locations.get(i + 1).getLatitude()));
-//                    contents+=String.format("<line id=\"%d\" x1=\"%f\" y1=\"%f\" x2=\"%f\" y2=\"%f\" stroke-width=\"1.5\" stroke=\"#0000FF\"/>\n"
-//                            , i
-//                            , longitudeToSVG(locations.get(i).getLongitude()), latitudeToSVG(locations.get(i).getLatitude())
-//                            , longitudeToSVG(locations.get(i + 1).getLongitude()), latitudeToSVG(locations.get(i + 1).getLatitude()));
-//                }
-//
-//            }
-//            out.println("</svg>");
-//            contents+="</svg>";
-//            out.close();
-//            bw.close();
-//            fw.close();
-//            scan.close();
-//
-//        } catch (IOException e) {
-//                System.out.println(e);
-//        }
-
-
-//    }
 }
