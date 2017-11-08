@@ -16,47 +16,6 @@ class Home extends React.Component {
         }
     }
 
-    /*DEPRECATED circa Sprint 2*/
-
-// renderSVG(myfiles) {
-//     /*this method acts similar to drop: accept file into an array: file[0] will be evaluated as a data file instead */
-//     console.log("Accepting drop(svg)");
-//     myfiles.forEach(file => {
-//         console.log("Filename: ", file.name, "File: ", file);
-//         let fr = new FileReader();
-//         fr.onload = (function () {
-//             /*when calling the read, create anonymous function*/
-//             return function (e) {
-//                 /*anonymous function returns another function which handles the event*/
-//                 let rawSVG = e.target.result;
-//                 /*obviously don't parse as a json, just call the parent method*/
-//                 /*console.log("m: ",m);*/
-//                 this.props.browseSVG(rawSVG);
-//                 /*calling the parent method(in app.js)*/
-//             };
-//         })(file).bind(this);
-//         /*must bind the file to this*/
-//         fr.readAsDataURL(file);
-//         /*most important part*/
-//     });
-// }
-// drop(acceptedFiles) {
-//     console.log("Accepting drop");
-//     acceptedFiles.forEach(file => {
-//         console.log("Filename:", file.name, "File:", file);
-//         console.log(JSON.stringify(file));
-//         let reader = new FileReader();
-//         reader.onload = (function () {
-//             return function (e) {
-//                 let JsonObj = JSON.parse(e.target.result);
-//                 console.log(JsonObj);
-//                 this.props.browseFile(JsonObj);
-//             };
-//         })(file).bind(this);
-//
-//         reader.readAsText(file);
-//     });
-// }
     render() {
         let total = 0;
         let pairs;
@@ -73,15 +32,27 @@ class Home extends React.Component {
         let searchedfor;
         //holds the fetched query
 
+        {/* If the server returned some value, then we have
+          * information that we queried for, and thus can display
+          * various information such as which locations were matched
+          * and any relevant information with it */}
         if (this.state.serverReturned) {
-            //if the server returns show the trip
+
+            let response = this.state.serverReturned;
+            let locationNames = [];
+
+            for(let i = 0; i < response.locs.length; i++) {
+               locationNames.push(response.locs[i].extraInfo.name);
+            }
             searchedfor = (<div>
-                <h4>You searched for {query}</h4>
-                <button name="show-itinerary" onClick={this.handleShowItinerary.bind(this)}>Show Trip</button>
+                <h4><strong>You searched for {query}, please select which locations you would like to add: </strong></h4>
+
             </div>);
 
             showtrip = (<footer>
                 <h4><strong>My Trip</strong></h4>
+                <button name="show-itinerary" onClick={this.handleShowItinerary.bind(this)}>Show Trip</button>
+
             </footer>);
             //rest of trip details
 
@@ -174,52 +145,49 @@ class Home extends React.Component {
 
                 {/* The following code is the Main Body of the the Home Page, it has a Form layout */}
                 <div className="main"y>
-                    <section style={{float: "left"}}><h4><strong>Search</strong></h4>
+                    <section style={{float: "left"}}>
+                        <h4><strong>Search</strong></h4>
                         <form id="searchForm" action="">
                             <input type="text" name="textField" placeholder="ie: Denver"/>
                             <br/><br/>
 
                             <label><i>Choose Optimization Level</i><br/>
+                                <label style={{color: "black"}}>None<input name="opt-level" type="radio" value={"None"}
+                                                                          onChange={this.handleOptimization.bind(this)}/>
+                                </label> <br/>
                                 <label style={{color: "blue"}}>Nearest Neighbor<input name="opt-level" type="radio"
                                                                                       value={"Nearest Neighbor"}
                                                                                       onChange={this.handleOptimization.bind(this)}/>
                                 </label><br/>
                                 <label style={{color: "red"}}>2-Opt<input name="opt-level" type="radio" value={"2-Opt"}
                                                                           onChange={this.handleOptimization.bind(this)}/>
+                                </label><br/>
+                                <label style={{color: "green"}}>3-Opt<input name="opt-level" type="radio" value={"3-Opt"}
+                                                                          onChange={this.handleOptimization.bind(this)}/>
                                 </label>
                             </label>
-                            <br/>
 
+                            <br/>
                             <input type="button" name="searchButton" value="Search"
                                    onClick={this.handleSearchEvent.bind(this)}/>
-
                         </form>
-
-
                     </section>
 
-                    <section className="searchedFor">
-                        <div style={{float: "center", marginRight: "50%"}}>
-                            {searchedfor}
-                        </div>
-                    </section>
-
-                    <section className="extraInfo">
-                        <div style={{float: "right", marginRight: "10%"}}>
+                    <section className="extraInfo" style={{float: "right", marginRight: "10%"}}>
                             {header}
                             {extrainfo}
                             {clearbutton}
-                        </div>
+                            {selection}
                     </section>
-
                 </div>
 
-                {selection}
 
-                <div id="trip">
+                <section className="searchedFor" style={{float: "left", clear: "both"}}>
+                    {searchedfor}
+                </section>
 
-                    <br/>
-                    <br/>
+
+                <div id="trip" style={{bottom: 0, position: "absolute", height: "25%"}}>
                     {showtrip}
                     {showmap}
                     {showtable}
