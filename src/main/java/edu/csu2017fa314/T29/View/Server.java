@@ -64,8 +64,7 @@ public class Server {
            itinerary = dist.computeAllNearestNeighbors();
         }
         else{
-            itinerary = dist.computeAllNearestNeighbors();
-            //TODO add change to two_opt method when it is made
+            itinerary = dist.shortestTwoOptTrip();
         }
         SVG svg = new SVG(itinerary);
 

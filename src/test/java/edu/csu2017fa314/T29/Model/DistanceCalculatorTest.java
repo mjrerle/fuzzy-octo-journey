@@ -273,8 +273,8 @@ public class DistanceCalculatorTest {
        ArrayList<Location> treyArrayList = treyPair.getKey();
        ArrayList<Location> mattArrayList = mattPair.getKey();
 
-        String treysTrip = distanceCalculator.toStringByID(treyArrayList);
-        String mattsTrip = distanceCalculator.toStringByID(mattArrayList);
+        String treysTrip = distanceCalculator.toStringById(treyArrayList);
+        String mattsTrip = distanceCalculator.toStringById(mattArrayList);
         int treysDistance = treyPair.getValue();
         int mattsDistance = mattPair.getValue();
 
