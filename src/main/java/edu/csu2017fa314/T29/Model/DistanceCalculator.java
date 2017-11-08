@@ -357,8 +357,8 @@ public class DistanceCalculator {
             //keeps track of distances between nodes
             for (int i = 0; i < unvisited.size(); i++) {
 
-                int distance = calculateGreatCircleDistance(unvisited.get(i)
-                        ,visited.get(visited.size()-1));
+                int distance = calculateGreatCircleDistance(unvisited.get(i),
+                        visited.get(visited.size()-1));
                 distances.add(distance);
                 //populate distances arraylist
             }
