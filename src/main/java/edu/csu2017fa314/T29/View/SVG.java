@@ -10,8 +10,8 @@ import java.util.Scanner;
  */
 public class SVG {
 
-    private final double HEIGHT = 512;
-    private final double WIDTH = 1024;
+    private final double height = 512;
+    private final double width = 1024;
     private ArrayList<Location> locations;
     private String contents = "";
     private String map = "";
@@ -20,7 +20,7 @@ public class SVG {
     //initial thoughts: svg coordinates are at the left corner of the map corresponding the 90,-180 on the geographic scale
     //to get to my geographic point i will have to perform a conversion by scaling
     //test points: [41,-109], [0,0], [90,-180], [-90, 180], [90, 180], [-90, -180]
-    // 0,0 -> this should transform into svg(512,256) 512 is HEIGHT/2 and 256 is WIDTH/2
+    // 0,0 -> this should transform into svg(512,256) 512 is height/2 and 256 is width/2
     // perform longitude + 512, latitude + 256... easy
     // 90, -180 -> should return svg(0,0) the origin
     // perform longitude - 90, latitude + 180
@@ -34,8 +34,8 @@ public class SVG {
     // from what I see...
     // if long/lat < 0
     // hypothesis:
-    // svg(x) = (WIDTH - WIDTH*(longitude/-180))/2
-    // svg(y) = (HEIGHT - HEIGHT*(latitude/90))/2
+    // svg(x) = (width - width*(longitude/-180))/2
+    // svg(y) = (height - height*(latitude/90))/2
     // svg(201.955,139.377)
     // preliminary testing in python interpreter!!:
     //    carson-city:~$ ./convertToSVG 0 0
@@ -67,9 +67,9 @@ public class SVG {
      */
     private double latitudeToSVG(double latitude) {
         double ratio = 90;
-        double y = getHEIGHT() - getHEIGHT() * (latitude / ratio);
-        y = y / 2;
-        return y;
+        double svgy = getHeight() - getHeight() * (latitude / ratio);
+        svgy = svgy / 2;
+        return svgy;
     }
 
     /**
@@ -79,17 +79,17 @@ public class SVG {
 
     private double longitudeToSVG(double longitude) {
         double ratio = -180.0;
-        double x = getWIDTH() - getWIDTH() * (longitude / ratio);
-        x = x / 2;
-        return x;
+        double svgx = getWidth() - getWidth() * (longitude / ratio);
+        svgx = svgx / 2;
+        return svgx;
     }
 
-    public double getWIDTH() {
-        return WIDTH;
+    public double getWidth() {
+        return width;
     }
 
-    public double getHEIGHT() {
-        return HEIGHT;
+    public double getHeight() {
+        return height;
     }
 
     public String getContents() {
@@ -107,7 +107,7 @@ public class SVG {
     public void writeContents() {
         contents += "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
         contents += "<svg xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\"" +
-                " version=\"1.0\" WIDTH=\"1024\" HEIGHT=\"512\" id=\"svgUno\">";
+                " version=\"1.0\" width=\"1024\" height=\"512\" id=\"svgUno\">";
         Scanner scan = new Scanner(getMap());
         scan.nextLine();
         while (scan.hasNextLine()) {
@@ -116,12 +116,19 @@ public class SVG {
         }
         for (int i = 0; i < locations.size(); i++) {
             if (i == locations.size() - 1) {
-                contents += String.format("<line id=\"%d\" x1=\"%f\" y1=\"%f\" x2=\"%f\" y2=\"%f\" stroke-WIDTH=\"1.5\" stroke=\"#0000FF\"/>\n"
+                contents += String.format("<line id=\"%d\" "
+                                + "x1=\"%f\" y1=\"%f\" x2=\"%f\" "
+                                + "y2=\"%f\" stroke-width=\"1.5\" "
+                                + "stroke=\"#0000FF\"/>\n"
                         , i
                         , longitudeToSVG(locations.get(i).getLongitude()), latitudeToSVG(locations.get(i).getLatitude())
                         , longitudeToSVG(locations.get(0).getLongitude()), latitudeToSVG(locations.get(0).getLatitude()));
             } else {
-                contents += String.format("<line id=\"%d\" x1=\"%f\" y1=\"%f\" x2=\"%f\" y2=\"%f\" stroke-WIDTH=\"1.5\" stroke=\"#0000FF\"/>\n"
+                contents += String.format("<line id=\"%d\" "
+                                + "x1=\"%f\" y1=\"%f\" "
+                                + "x2=\"%f\" y2=\"%f\" "
+                                + "stroke-width=\"1.5\" "
+                                + "stroke=\"#0000FF\"/>\n"
                         , i
                         , longitudeToSVG(locations.get(i).getLongitude()), latitudeToSVG(locations.get(i).getLatitude())
                         , longitudeToSVG(locations.get(i + 1).getLongitude()), latitudeToSVG(locations.get(i + 1).getLatitude()));
@@ -133,7 +140,9 @@ public class SVG {
 
     /**
      * why? because file io that's supposed to be maven compatible isn't. sorry not sorry.
-     * also fun fact, i wrote a script to write this code for me, talk about a H A C K. (separated by spaces because code climate sees it and friggin freaks out)
+     * also fun fact, i wrote a script to write this code for me,
+     * talk about a H A C K. (separated by spaces because code
+     * climate sees it and friggin freaks out)
      *
      * @return an svg background map
      */
@@ -155,14 +164,14 @@ public class SVG {
         map += "   id=\"svg2\"";
         map += "   sodipodi:version=\"0.32\"";
         map += "   inkscape:version=\"0.44.1\"";
-        map += "   WIDTH=\"1024\"";
-        map += "   HEIGHT=\"512\"";
+        map += "   width=\"1024\"";
+        map += "   height=\"512\"";
         map += "   sodipodi:docname=\"World map with nations.svg\"";
         map += "   sodipodi:docbase=\"K:\\Inkscape\"";
         map += "   version=\"1.0\"><defs";
         map += "     id=\"defs2032\" /><sodipodi:namedview";
-        map += "     inkscape:window-HEIGHT=\"692\"";
-        map += "     inkscape:window-WIDTH=\"1377\"";
+        map += "     inkscape:window-height=\"692\"";
+        map += "     inkscape:window-width=\"1377\"";
         map += "     inkscape:pageshadow=\"2\"";
         map += "     inkscape:pageopacity=\"0.0\"";
         map += "     guidetolerance=\"10.0\"";
@@ -178,8 +187,8 @@ public class SVG {
         map += "     inkscape:window-x=\"12\"";
         map += "     inkscape:window-y=\"-4\"";
         map += "     inkscape:current-layer=\"svg2\"";
-        map += "     WIDTH=\"1024px\"";
-        map += "     HEIGHT=\"512px\" /><metadata";
+        map += "     width=\"1024px\"";
+        map += "     height=\"512px\" /><metadata";
         map += "     id=\"metadata2034\"><rdf:RDF><cc:Work";
         map += "         rdf:about=\"\"><dc:format>image/svg+xml</dc:format><dc:type";
         map += "           rdf:resource=\"http://purl.org/dc/dcmitype/StillImage\" /><cc:license";
@@ -193,16 +202,18 @@ public class SVG {
         map += "     transform=\"scale(1.279907,1.279907)\"><rect";
         map += "       y=\"0\"";
         map += "       x=\"0\"";
-        map += "       HEIGHT=\"400\"";
+        map += "       height=\"400\"";
         map += "       style=\"opacity:1;fill:#daf0fd;fill-opacity:1;stroke:none\"";
         map += "       id=\"rect5538\"";
-        map += "       WIDTH=\"800\" /></g><g";
-        map += "     style=\"fill:#f4e2ba;fill-rule:nonzero;stroke:#787878;stroke-WIDTH:0.25;stroke-miterlimit:1\"";
+        map += "       width=\"800\" /></g><g";
+        map += "     style=\"fill:#f4e2ba;fill-rule:nonzero;";
+        map += "stroke:#787878;stroke-width:0.25;stroke-miterlimit:1\"";
         map += "     id=\"Countries\"";
         map += "     transform=\"scale(1.279907,1.279907)\"><g";
         map += "       id=\"Europe\"><g";
         map += "         id=\"Ex-Yougoslavie\"><path";
-        map += "           d=\"M 443.617,107.095 C 443.03113,107.03773 442.97163,106.38536 442.43147,106.20973 C 442.0238,106.09913 441.5816,105.97368 441.59799,105.517 C 442.1406,105.35028 441.47707,104.96133 441.65399,104.579 C 442.15327,104.52066 441.94794,104.04084 442.37318,103.84617 C 442.64374,103.75923 443.23045,104.21466 442.815,103.618 C 442.61481,103.15943 443.38997,103.44107 443.59158,103.59929 C 444.00047,103.79885 444.2107,104.25456 444.7107,104.29708 C 445.0823,104.30817 445.2901,104.71388 445.72601,104.746 C 446.03487,105.14023 445.11495,104.97031 445.00169,105.18825 C 445.57586,105.40122 444.8996,105.87415 444.50244,105.60512 C 443.96236,105.32178 443.56923,105.97494 443.51342,106.40783 C 443.60537,106.63441 443.64493,106.85095 443.617,107.095 z \"";
+        map += "           d=\"M 443.617,107.095 C 443.03113,107.03773 442.97163,106.38536 442.43147,106.20973 C 442.0238,106.09913 441.5816,105.97368 441.59799,105.517 C 442.1406,105.35028 441.47707,104.96133 441.65399,104.579 C 442.15327,104.52066 441.94794,104.04084 442.37318,103.84617 C 442.64374,";
+        map += "103.75923 443.23045,104.21466 442.815,103.618 C 442.61481,103.15943 443.38997,103.44107 443.59158,103.59929 C 444.00047,103.79885 444.2107,104.25456 444.7107,104.29708 C 445.0823,104.30817 445.2901,104.71388 445.72601,104.746 C 446.03487,105.14023 445.11495,104.97031 445.00169,105.18825 C 445.57586,105.40122 444.8996,105.87415 444.50244,105.60512 C 443.96236,105.32178 443.56923,105.97494 443.51342,106.40783 C 443.60537,106.63441 443.64493,106.85095 443.617,107.095 z \"";
         map += "           id=\"Montenegro\" /><path";
         map += "           d=\"M 430.73001,96.731003 C 431.27912,96.707237 431.78288,96.871295 432.30436,96.897772 C 432.874,97.202053 433.16016,96.70486 433.66859,96.512991 C 434.17335,96.283432 434.78334,96.738157 435.20801,96.322998 C 435.96057,96.564683 435.99793,96.325586 436.27595,95.987106 C 436.92429,95.624159 436.86609,96.610462 437.37701,96.811996 C 436.82324,96.355884 436.83097,97.126578 436.44601,96.973999 C 436.18532,97.407927 435.49469,97.192254 435.26199,97.587997 C 435.65566,97.798442 435.54618,98.388839 435.05547,98.263377 C 434.48491,98.362999 434.70538,98.550744 434.61714,98.846673 C 434.77316,99.300619 434.10454,99.084252 433.87799,98.986 C 433.59823,99.100837 433.23065,99.004084 433.04501,98.689003 C 432.84334,98.684703 432.55329,99.209505 432.12299,99.013 C 431.72619,98.947669 431.58383,99.061637 431.20992,99.078656 C 430.27939,99.106594 431.25883,99.128093 431.298,98.607002 C 430.62273,98.448305 430.78169,97.952768 430.51518,97.794505 C 431.39961,97.408401 429.62314,97.359785 430.54871,97.068719 C 430.76167,96.950224 430.94572,96.969085 430.73001,96.731003 z \"";
         map += "           id=\"Slovenie\" /><path";

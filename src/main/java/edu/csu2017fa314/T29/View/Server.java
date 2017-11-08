@@ -51,9 +51,12 @@ import static spark.Spark.post;
 *       The problem arises with the way
 *          we do the client/server interaction
 *       Trey fetches only twice and expects all of the info
-*           by the end of the second fetch. This means I have to be creative and by creative I mean hack a solution
+*           by the end of the second fetch.
+*           This means I have to be creative and by creative I mean hack a solution
 *       If Trey sets the request equal to the opcode,
-*           then we can bypass nonlocal variables (I would have to store the opcode when changed and reflect the change in another serve method)
+*           then we can bypass nonlocal variables
+*           (I would have to store the opcode when changed and
+*           reflect the change in another serve method)
 *       It also means that I'm given all of the information
 *           I need when he sends me the location IDs
 *
@@ -176,7 +179,7 @@ public class Server {
      * @param res : template that will eventually be returned
      *            listen on a specific port and create a dynamic response based on the input
      * @return a serve: basically an event handler based on the "request"
-     * value passed from the client
+     *              value passed from the client
      */
     private Object testing(Request rec, Response res) {
         setHeaders(res);
@@ -228,8 +231,9 @@ public class Server {
      */
     private Object serveSvg(String opcode, ArrayList<String> locs) {
         Gson gson = new Gson();
-        // Instead of writing the SVG to a file, we send it in plaintext back to the client to be rendered inline
-        //assumes that the user has input a query first
+        // Instead of writing the SVG to a file,
+        // we send it in plaintext back to the client to be rendered inline
+        // assumes that the user has input a query first
         QueryBuilder queryBuilder = new QueryBuilder("mjrerle", "829975763");
         String queryString = buildWithCode(locs);
         ArrayList<Location> temp = queryBuilder.query(queryString);
@@ -254,8 +258,8 @@ public class Server {
         //
         SVG svg = new SVG(locations);
         String map = svg.getContents();
-        int wid = (int) svg.getWIDTH();
-        int hei = (int) svg.getHEIGHT();
+        int wid = (int) svg.getWidth();
+        int hei = (int) svg.getHeight();
         ServerSvgResponse ssres = new ServerSvgResponse(wid, hei, map, locations);
 
         return gson.toJson(ssres, ServerSvgResponse.class);
@@ -318,10 +322,7 @@ public class Server {
      * @param searched : input passed from the client (e.target.value)
      * @return a ServerResponse, but also give it the optional Object[] parameter
      */
-    private Object serveQuery(String searched) {
-        Gson gson = new Gson();
-        QueryBuilder queryBuilder = new QueryBuilder("mjrerle", "829975763");
-        // Create new QueryBuilder instance and pass in credentials
+    private String makeQuery(String searched){
         String queryString = "SELECT airports.*, countries.*, regions.*, continents.* ";
         queryString += "FROM continents INNER JOIN countries ";
         queryString += "ON continents.code = countries.continent INNER JOIN regions ";
@@ -331,6 +332,13 @@ public class Server {
                 + searched + "%' " + " OR airports.name LIKE '%"
                 + searched + "%' " + " OR airports.type LIKE '%"
                 + searched + "%'";
+        return queryString;
+    }
+    private Object serveQuery(String searched) {
+        Gson gson = new Gson();
+        QueryBuilder queryBuilder = new QueryBuilder("mjrerle", "829975763");
+        // Create new QueryBuilder instance and pass in credentials
+        String queryString = makeQuery(searched);
         ArrayList<Location> queryResults = queryBuilder.query(queryString);
         if (queryResults.size() == 0) {
             System.out.println("Size of query results = 0, try a better search");

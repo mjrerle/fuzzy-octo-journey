@@ -10,21 +10,21 @@ import java.util.ArrayList;
 public class ServerSvgResponse {
     private String response = "svg";
     private String contents;
-    private final int WIDTH;
-    private final int HEIGHT;
+    private final int width;
+    private final int height;
     private ArrayList<Location> locations;
 
     /**
-     * @param WIDTH     : svg.getWIDTH() = 1024
-     * @param HEIGHT    : svg.getHEIGHT() = 512
+     * @param width     : svg.getWidth() = 1024
+     * @param height    : svg.getHeight() = 512
      * @param contents  : the entire svg string
      * @param locations : an ordered location list (based on optimization level)
      */
-    public ServerSvgResponse(int WIDTH, int HEIGHT, String contents,
+    public ServerSvgResponse(int width, int height, String contents,
                              ArrayList<Location> locations) {
         this.contents = contents;
-        this.WIDTH = WIDTH;
-        this.HEIGHT = HEIGHT;
+        this.width = width;
+        this.height = height;
         this.locations=locations;
         System.out.println(this.toString());
     }

@@ -51,9 +51,8 @@ public class ServerResponse {
      */
     @Override
     public String toString() {
-        return "ServerResponse{" +
-                "response='" + response + '\'' +
-                ", locations=" + locations +
-                '}';
+        return "ServerResponse{"
+                + "response='" + response + '\''
+                + ", locations=" + locations + '}';
     }
 }
