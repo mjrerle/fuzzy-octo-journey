@@ -1,7 +1,7 @@
 package edu.csu2017fa314.T29.Model;
 
 
-import java.util.*;
+import java.util.ArrayList;
 
 /**
  * Created by Trey Yu on 9/2/2017.
@@ -34,7 +34,9 @@ public class DistanceCalculator {
     //////////////////////////////////////////////////////////
     // Getters and Setters                                  //
     //////////////////////////////////////////////////////////
-    public ArrayList<Location> getLocations() {return locations;}
+    public ArrayList<Location> getLocations() {
+        return locations;
+    }
     public void setLocations(ArrayList<Location> locations) {this.locations = locations;}
 
 
@@ -309,7 +311,7 @@ public class DistanceCalculator {
      */
 
     public void setLocationDistances(ArrayList<Location> itinerary) {
-        for(int i = 0; i < itinerary.size() - 1; i++) {
+        for (int i = 0; i < itinerary.size() - 1; i++) {
             itinerary.get(i + 1).setDistance(calculateGreatCircleDistance(itinerary.get(i), itinerary.get(i + 1)));
         }
     }
@@ -335,7 +337,7 @@ public class DistanceCalculator {
     //////////////////////////////////////////////////////////
     // All of Matt's Code                                   //
     //////////////////////////////////////////////////////////
-    public Pair computeNearestNeighbor(Location node){
+    public Pair computeNearestNeighbor(Location node) {
         //this will return a Pair...
         // a pair is key value pair: ArrayList<Location> key, Integer value
         ArrayList<Location> unvisited = new ArrayList<>(locations);
@@ -358,7 +360,7 @@ public class DistanceCalculator {
             for (int i = 0; i < unvisited.size(); i++) {
 
                 int distance = calculateGreatCircleDistance(unvisited.get(i),
-                        visited.get(visited.size()-1));
+                        visited.get(visited.size() - 1));
                 distances.add(distance);
                 //populate distances arraylist
             }
@@ -391,14 +393,14 @@ public class DistanceCalculator {
         }
         Location last = new Location(node.getExtraInfo());
         //create last node to complete round trip
-        last.setDistance(calculateGreatCircleDistance(visited.get(visited.size()-1),node));
+        last.setDistance(calculateGreatCircleDistance(visited.get(visited.size() - 1), node));
         //set distance equal to last node added to visited and the given node
         visited.add(last);
         //add the last node to the ArrayList
-        sum+=last.getDistance();
+        sum += last.getDistance();
         //add last distance
 
-        return new Pair(visited,sum);
+        return new Pair(visited, sum);
         //associate the visited ArrayList and the total sum!
     }
     /**
@@ -408,7 +410,7 @@ public class DistanceCalculator {
      * @return ArrayList of the shortest Nearest Neighbor trip
      */
 
-    public ArrayList<Location> computeAllNearestNeighbors(){
+    public ArrayList<Location> computeAllNearestNeighbors() {
         ArrayList<Pair> permutations = new ArrayList<>();
         //list of lists
         ArrayList<Location> shortest;
@@ -457,22 +459,21 @@ public class DistanceCalculator {
         private ArrayList<Location> key;
         private Integer value;
 
-        public Pair(ArrayList<Location> key,Integer value)
-        {
+        public Pair(ArrayList<Location> key, Integer value) {
             this.key=key;
             this.value=value;
         }
 
-        public Pair(){
-            key=new ArrayList<>();
-            value=0;
+        public Pair() {
+            key = new ArrayList<>();
+            value = 0;
         }
 
         public ArrayList<Location> getKey() {
             return key;
         }
 
-        public void setKey(ArrayList<Location> newkey){
+        public void setKey(ArrayList<Location> newkey) {
             this.key=newkey;
         }
 

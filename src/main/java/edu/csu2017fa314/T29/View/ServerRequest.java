@@ -32,10 +32,10 @@ public class ServerRequest {
      */
     @Override
     public String toString() {
-        return "Request{" +
-                "request='" + request + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+        return "Request{"
+                + "request='" + request + '\''
+                + ", description='" + description + '\''
+                + '}';
     }
 
 }

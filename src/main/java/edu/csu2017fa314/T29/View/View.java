@@ -1,4 +1,5 @@
 package edu.csu2017fa314.T29.View;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import edu.csu2017fa314.T29.Model.Location;
@@ -10,13 +11,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.Set;
 import java.util.Map;
+import java.util.Set;
 
 public class View
 {
    private JSONArray list; // This is the overarching structure of the JSON
-   private ArrayList<Location> iti; // A LinkedList of Locations in the shortest order
+    private ArrayList<Location> iti; // A LinkedList of Locations in the shortest order
 
     /////////////////////////////////
     // Constructor                 //

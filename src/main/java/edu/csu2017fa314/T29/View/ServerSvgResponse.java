@@ -7,23 +7,24 @@ import java.util.ArrayList;
 /**
  * different response class
  */
-public class ServerSVGResponse {
+public class ServerSvgResponse {
     private String response = "svg";
     private String contents;
-    private int width;
-    private int height;
+    private final int WIDTH;
+    private final int HEIGHT;
     private ArrayList<Location> locations;
 
     /**
-     * @param width     : svg.getWidth() = 1024
-     * @param height    : svg.getHeight = 512
+     * @param WIDTH     : svg.getWIDTH() = 1024
+     * @param HEIGHT    : svg.getHEIGHT() = 512
      * @param contents  : the entire svg string
      * @param locations : an ordered location list (based on optimization level)
      */
-    public ServerSVGResponse(int width, int height, String contents, ArrayList<Location> locations) {
+    public ServerSvgResponse(int WIDTH, int HEIGHT, String contents,
+                             ArrayList<Location> locations) {
         this.contents = contents;
-        this.width = width;
-        this.height = height;
+        this.WIDTH = WIDTH;
+        this.HEIGHT = HEIGHT;
         this.locations=locations;
         System.out.println(this.toString());
     }
@@ -33,9 +34,9 @@ public class ServerSVGResponse {
      */
     @Override
     public String toString() {
-        return "ServerResponse{" +
-                "response='" + response + '\'' +
-                ", contents=" + contents +
-                '}';
+        return "ServerResponse{"
+                + "response='" + response + '\''
+                + ", contents=" + contents
+                + '}';
     }
 }

@@ -45,24 +45,32 @@ import static spark.Spark.post;
 *   upload is serveUpload(ArrayList<String> description)
 *   plan is more ambiguous with working with the current API: (will elaborate more in the method)
 *       serveSVG(String opcode, ArrayList<String> locations)
-*       to compensate with no extra fields in the response class and to make it easier for Trey to give me the data,
-*       basically I assume if the response type is not query or upload, that I want to plan.
-*       The problem arises with the way we do the client/server interaction
-*       Trey fetches only twice and expects all of the info by the end of the second fetch. This means I have to be creative and by creative I mean hack a solution
-*       If Trey sets the request equal to the opcode, then we can bypass nonlocal variables (I would have to store the opcode when changed and reflect the change in another serve method)
-*       It also means that I'm given all of the information I need when he sends me the location IDs
+*       to compensate with no extra fields in the response class and to make it easier for Trey...
+*          to give me the data,
+*          basically I assume if the response type is not query or upload, that I want to plan.
+*       The problem arises with the way
+*          we do the client/server interaction
+*       Trey fetches only twice and expects all of the info
+*           by the end of the second fetch. This means I have to be creative and by creative I mean hack a solution
+*       If Trey sets the request equal to the opcode,
+*           then we can bypass nonlocal variables (I would have to store the opcode when changed and reflect the change in another serve method)
+*       It also means that I'm given all of the information
+*           I need when he sends me the location IDs
 *
 *   serveSvg(String, ArrayList<String>)::
 *       most action occurs here
 *       take the arraylist of codes
-*       query the database with the codes (accounting for the joins and whatnot)
-*       now with all of the codes converted to locations, we are able to make an itinerary
-*       basically take the opcode (in the parameter list) and apply an optimization level
-*       now i have a list of locations in sorted(or non sorted) order and an svg. All i have to do is construct a response
+*       query the database with the codes
+*           (accounting for the joins and whatnot)
+*       now with all of the codes converted to locations,
+*           we are able to make an itinerary
+*       basically take the opcode (in the parameter list)
+*           and apply an optimization level
+*       now i have a list of locations in sorted(or non sorted)
+ *          order and an svg. All i have to do is construct a response
 *       return the constructed response
 *       send:
 *           {response:"svg", contents:String, width:int, height:int, locations:LinkedList<Location>}
-*       //TODO find appropriate optimization methods in Distance Calculator
 *
 *   buildWithCode(ArrayList<String>)::
 *       construct a query with the codes given
@@ -114,7 +122,8 @@ public class Server {
     }
 
     /**
-     * @param rec : request from the client, consists of a "request" : String, "description" : ArrayList<String> key pairs
+     * @param rec : request from the client, consists of a "request" : String,
+     *            "description" : ArrayList key pairs
      * @param res : response from the server, consists of a RawHttpServletResponse
      * @return raw HttpServletResponse with attached file
      */
@@ -123,27 +132,29 @@ public class Server {
         JsonParser parser = new JsonParser();
         JsonElement elm = parser.parse(rec.body()); //parse the rec
         Gson gson = new Gson();
-        ServerRequest sRec = gson.fromJson(elm, ServerRequest.class); //make a gson with the serverrequest.class template
+        ServerRequest srec = gson.fromJson(elm, ServerRequest.class);
+        //make a gson with the serverrequest.class template
 
         // Sending a file back requires different response headers
         setHeadersFile(res); //attach file to response
         // Write a file to the response
-        writeFile(res, sRec.getDescription()); //save to file
+        writeFile(res, srec.getDescription()); //save to file
 
         return res;
     }
 
     /**
-     * @param res       : passed from download, will be a HttpServletResponse type with an attached file
-     * @param locations : ArrayList<String> of locations passed from the client
+     * @param res       : passed from download,
+     *                  will be a HttpServletResponse type with an attached file
+     * @param locations : ArrayList of locations passed from the client
      */
     private void writeFile(Response res, ArrayList<String> locations) {
         try {
             // Write our file directly to the response rather than to a file
             PrintWriter fileWriter = new PrintWriter(res.raw().getOutputStream());
             // Ideally, the user will be able to name their own trips. We hard code it here:
-            fileWriter.println("{ \"title\" : \"The Coolest Trip\",\n" +
-                    "  \"destinations\" : [");
+            fileWriter.println("{ \"title\" : \"The Coolest Trip\",\n"
+                    + "  \"destinations\" : [");
             for (int i = 0; i < locations.size(); i++) {
                 if (i < locations.size() - 1) {
                     fileWriter.println("\"" + locations.get(i) + "\",");
@@ -164,7 +175,8 @@ public class Server {
      * @param rec : raw json passed from the client
      * @param res : template that will eventually be returned
      *            listen on a specific port and create a dynamic response based on the input
-     * @return a serve: basically an event handler based on the "request" value passed from the client
+     * @return a serve: basically an event handler based on the "request"
+     * value passed from the client
      */
     private Object testing(Request rec, Response res) {
         setHeaders(res);
@@ -180,24 +192,26 @@ public class Server {
 
         // Create new Object from received JsonElement elm
         // Note that both possible requests have the same format (see app.js)
-        ServerRequest sRec = gson.fromJson(elm, ServerRequest.class);
+        ServerRequest srec = gson.fromJson(elm, ServerRequest.class);
 
         // The object generated by the frontend should match whatever class you are reading into.
         // Notice how DataClass has name and ID and how the frontend is generating an object with name and ID.
-        System.out.println("Got \"" + sRec.toString() + "\" from server.");
+        System.out.println("Got \"" + srec.toString() + "\" from server.");
 
         // Because both possible requests from the client have the same format,
         // we can check the "type" of request we've received: either "query" or "svg"
-        if (sRec.getRequest().equals("query")) {
+        if (srec.getRequest().equals("query")) {
             // Set the return headers
-            return serveQuery(sRec.getDescription().get(0));
+            return serveQuery(srec.getDescription().get(0));
             // if the user uploads a file
-        } else if (sRec.getRequest().equals("upload")) {
-            return serveUpload(sRec.getDescription()); //assume that I am only getting an array of codes
+        } else if (srec.getRequest().equals("upload")) {
+            return serveUpload(srec.getDescription());
+            // assume that I am only getting an array of codes
             // assume if the request is not "query" it is "svg":
         } else {
             //serve the svg with the information in description (should be a bunch of destinations)
-            return serveSvg(sRec.getRequest(), sRec.getDescription()); //0 should be the opcode, next is my dests
+            return serveSvg(srec.getRequest(), srec.getDescription());
+            //0 should be the opcode, next is my dests
         }
     }
 
@@ -206,54 +220,60 @@ public class Server {
     /**
      * "description" is basically an arraylist of destinations, in this case we expect it to be the destination's codes
      *
-     * @param opcode : assumes that the "request" value is an opcode, that is, an optimization level (none, nearest neighbor, 2 opt, 3 opt)
-     * @param locs   : the "description" value passed from the client. must be an array of locations
+     * @param opcode : assumes that the "request" value is an opcode,
+     *               that is, an optimization level (none, nearest neighbor, 2 opt, 3 opt)
+     * @param locs   : the "description" value passed from the client.
+     *               must be an array of locations
      * @return an SVGResponse which is a response consisting of an svg and an array of locations
      */
     private Object serveSvg(String opcode, ArrayList<String> locs) {
         Gson gson = new Gson();
         // Instead of writing the SVG to a file, we send it in plaintext back to the client to be rendered inline
         //assumes that the user has input a query first
-        QueryBuilder q = new QueryBuilder("mjrerle", "829975763");
+        QueryBuilder queryBuilder = new QueryBuilder("mjrerle", "829975763");
         String queryString = buildWithCode(locs);
-        ArrayList<Location> temp = q.query(queryString);
+        ArrayList<Location> temp = queryBuilder.query(queryString);
         DistanceCalculator distanceCalculator = new DistanceCalculator(temp);
 
         ArrayList<Location> locations; //will be changed to ArrayList
         if (opcode.equals("Nearest Neighbor")) { //opcode is dependent on trey's code
             //figure out which method to call... depends on Tim's code
-            locations = new ArrayList<>();
+            locations = distanceCalculator.shortestNearestNeighborTrip();
         } else if (opcode.equals("2-Opt")) {
             //what is this method?
-            locations = new ArrayList<>();
+            locations = distanceCalculator.shortestTwoOptTrip();
         } else if (opcode.equals("3-Opt")) {
             //what is this method?
             locations = new ArrayList<>();
         } else {
-            //opcode is likely "none" so I want the raw order->need a method for this in Distance Calculator
+            //opcode is likely "none"
+            // so I want the raw order->need a method for this in Distance Calculator
             locations = new ArrayList<>();
         }
 
         //
         SVG svg = new SVG(locations);
         String map = svg.getContents();
-        ServerSVGResponse ssres = new ServerSVGResponse((int) svg.getWidth(), (int) svg.getHeight(), map, locations);
+        int wid = (int) svg.getWIDTH();
+        int hei = (int) svg.getHEIGHT();
+        ServerSvgResponse ssres = new ServerSvgResponse(wid, hei, map, locations);
 
-        return gson.toJson(ssres, ServerSVGResponse.class);
+        return gson.toJson(ssres, ServerSvgResponse.class);
     }
 
     /**
-     * @param locations : "description" value passed from the client, will consist of "code" for each destination, we use it to build a query string to pass to the sql server
+     * @param locations : "description" value passed from the client,
+     *                  will consist of "code" for each destination, we use it to build a query string to pass to the sql server
      * @return the built query string (ex: select {code} where code = '{code[i]}')
      */
-    private String buildWithCode(ArrayList<String> locations) { //makes locations given an arraylist of codes(ids like AXHS), quite useful
-        /*for reference:
-        * "SELECT airports.*, countries.*, regions.*, continents.* "
-        * "FROM continents INNER JOIN countries ON continents.code = countries.continent INNER JOIN regions ON countries.code = regions.iso_country INNER JOIN airports ON regions.code = airports.iso_region "
-        * joins all tables (in theory)
-        * */
+    private String buildWithCode(ArrayList<String> locations) {
+        //makes locations given an arraylist of codes(ids like AXHS), quite useful
+
         String queryString = "SELECT airports.*, countries.*, regions.*, continents.* ";
-        queryString += "FROM continents INNER JOIN countries ON continents.code = countries.continent INNER JOIN regions ON countries.code = regions.iso_country INNER JOIN airports ON regions.code = airports.iso_region ";
+        queryString += "FROM continents INNER JOIN countries ";
+        queryString += "ON continents.code = countries.continent INNER JOIN regions ";
+        queryString += "ON countries.code = regions.iso_country INNER JOIN airports ";
+        queryString += "ON regions.code = airports.iso_region ";
         queryString += "WHERE ";
         for (int i = 0; i < locations.size(); i++) {
             if (i == locations.size() - 1) {
@@ -272,13 +292,13 @@ public class Server {
     // if the user uploads a file
     private Object serveUpload(ArrayList<String> locations) {
         Gson gson = new Gson();
-        QueryBuilder q = new QueryBuilder("mjrerle", "829975763");
+        QueryBuilder queryBuilder = new QueryBuilder("mjrerle", "829975763");
 
         // Build a query of every code in the destinations file:
         String queryString = buildWithCode(locations);
 
         // Query database with queryString
-        ArrayList<Location> queryResults = q.query(queryString);
+        ArrayList<Location> queryResults = queryBuilder.query(queryString);
 
         // Same response structure as the query request
         ServerResponse serverResponse = new ServerResponse(queryResults);
@@ -292,18 +312,26 @@ public class Server {
 
     /**
      * search the database for the input
+     * The Object[] parameter is useful for Trey
+     * because he needs the keys in order to show attributes, may as well give it to him here
      *
      * @param searched : input passed from the client (e.target.value)
      * @return a ServerResponse, but also give it the optional Object[] parameter
-     * The Object[] parameter is useful for Trey because he needs the keys in order to show attributes, may as well give it to him here
      */
     private Object serveQuery(String searched) {
         Gson gson = new Gson();
-        QueryBuilder q = new QueryBuilder("mjrerle", "829975763"); // Create new QueryBuilder instance and pass in credentials
+        QueryBuilder queryBuilder = new QueryBuilder("mjrerle", "829975763");
+        // Create new QueryBuilder instance and pass in credentials
         String queryString = "SELECT airports.*, countries.*, regions.*, continents.* ";
-        queryString += "FROM continents INNER JOIN countries ON continents.code = countries.continent INNER JOIN regions ON countries.code = regions.iso_country INNER JOIN airports ON regions.code = airports.iso_region ";
-        queryString += "WHERE municipality LIKE '%" + searched + "%' " + " OR airports.name LIKE '%" + searched + "%' " + " OR airports.type LIKE '%" + searched + "%'";
-        ArrayList<Location> queryResults = q.query(queryString);
+        queryString += "FROM continents INNER JOIN countries ";
+        queryString += "ON continents.code = countries.continent INNER JOIN regions ";
+        queryString += "ON countries.code = regions.iso_country INNER JOIN airports ";
+        queryString += "ON regions.code = airports.iso_region ";
+        queryString += "WHERE municipality LIKE '%"
+                + searched + "%' " + " OR airports.name LIKE '%"
+                + searched + "%' " + " OR airports.type LIKE '%"
+                + searched + "%'";
+        ArrayList<Location> queryResults = queryBuilder.query(queryString);
         if (queryResults.size() == 0) {
             System.out.println("Size of query results = 0, try a better search");
             Object err = gson.toJson(new ServerResponse(null));
@@ -314,12 +342,12 @@ public class Server {
         // Create object with svg file path and array of matching database entries to return to server
         HashMap<String, String> map = queryResults.get(0).getExtraInfo();
         Object columns[] = map.keySet().toArray();
-        ServerResponse sRes = new ServerResponse(queryResults, columns);
-        sRes.setResponseType("query");
-        System.out.println("Sending \"" + sRes.toString() + "\" to server.");
+        ServerResponse sres = new ServerResponse(queryResults, columns);
+        sres.setResponseType("query");
+        System.out.println("Sending \"" + sres.toString() + "\" to server.");
 
         //Convert response to json
-        return gson.toJson(sRes, ServerResponse.class);
+        return gson.toJson(sres, ServerResponse.class);
     }
 
     /**
