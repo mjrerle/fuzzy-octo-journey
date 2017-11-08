@@ -29,7 +29,7 @@ public class ServerResponse {
      * */
 
     public ServerResponse(String svg, double width, double height,
-                          ArrayList<Location> locs, Object columns[]) {
+                          ArrayList<Location> locs, Object[] columns) {
         this.svg = svg;
         this.locs = locs;
         this.columns = columns;
