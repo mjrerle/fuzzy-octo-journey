@@ -207,7 +207,7 @@ public class Server {
             locations = new LinkedList<>();
         }
         else{
-            //this will most likely be replaced by the global variable destinations once i get SVG to accept an arraylist
+            //opcode is likely "none" so I want the raw order->need a method for this in Distance Calculator
             locations = new LinkedList<>();
         }
 
@@ -239,7 +239,7 @@ public class Server {
     // if the user uploads a file
     private Object serveUpload(ArrayList<String> locations) {
         Gson gson = new Gson();
-        QueryBuilder q = new QueryBuilder("mjrerle", "829975763"); 
+        QueryBuilder q = new QueryBuilder("mjrerle", "829975763");
 
         // Build a query of every code in the destinations file:
         String queryString = buildWithCode(locations);
