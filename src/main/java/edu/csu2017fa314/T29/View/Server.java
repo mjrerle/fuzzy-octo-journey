@@ -221,7 +221,8 @@ public class Server {
     // called by testing method if the client requests an svg
 
     /**
-     * "description" is basically an arraylist of destinations, in this case we expect it to be the destination's codes
+     * "description" is basically an arraylist of destinations,
+     * in this case we expect it to be the destination's codes
      *
      * @param opcode : assumes that the "request" value is an opcode,
      *               that is, an optimization level (none, nearest neighbor, 2 opt, 3 opt)
@@ -267,7 +268,9 @@ public class Server {
 
     /**
      * @param locations : "description" value passed from the client,
-     *                  will consist of "code" for each destination, we use it to build a query string to pass to the sql server
+     *                  will consist of "code" for each
+     *                  destination, we use it to build a query
+     *                  string to pass to the sql server
      * @return the built query string (ex: select {code} where code = '{code[i]}')
      */
     private String buildWithCode(ArrayList<String> locations) {
@@ -315,13 +318,11 @@ public class Server {
     // called by testing method if client requests a search
 
     /**
-     * search the database for the input
-     * The Object[] parameter is useful for Trey
-     * because he needs the keys in order to show attributes, may as well give it to him here
      *
-     * @param searched : input passed from the client (e.target.value)
-     * @return a ServerResponse, but also give it the optional Object[] parameter
+     * @param searched : input from event
+     * @return appropriate query
      */
+
     private String makeQuery(String searched){
         String queryString = "SELECT airports.*, countries.*, regions.*, continents.* ";
         queryString += "FROM continents INNER JOIN countries ";
@@ -334,6 +335,16 @@ public class Server {
                 + searched + "%'";
         return queryString;
     }
+
+    /**
+     * search the database for the input
+     * The Object[] parameter is useful for Trey
+     * because he needs the keys in order to show attributes, may as well give it to him here
+     *
+     * @param searched : input passed from the client (e.target.value)
+     * @return a ServerResponse, but also give it the optional Object[] parameter
+     */
+
     private Object serveQuery(String searched) {
         Gson gson = new Gson();
         QueryBuilder queryBuilder = new QueryBuilder("mjrerle", "829975763");
