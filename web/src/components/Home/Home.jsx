@@ -12,7 +12,7 @@ class Home extends React.Component {
             tags: [],
             options: [],
             op_level: "Nearest Neighbor",
-            selected:[],
+            selected: [],
         }
     }
 
@@ -68,53 +68,52 @@ class Home extends React.Component {
         let showmap;
         let showtable;
         let showtrip;
-        let selection=[];
+        let selection = [];
         let query = this.state.query;
         let searchedfor;
         //holds the fetched query
 
-        if(this.state.serverReturned) {
+        if (this.state.serverReturned) {
             //if the server returns show the trip
-            searchedfor=(<div>
-                            <h4>You searched for {query}</h4>
-                            <button name="show-itinerary" onClick={this.handleShowItinerary.bind(this)}>Show Trip</button>
-                        </div>);
+            searchedfor = (<div>
+                <h4>You searched for {query}</h4>
+                <button name="show-itinerary" onClick={this.handleShowItinerary.bind(this)}>Show Trip</button>
+            </div>);
 
-
-            showtrip = (<div style={{textAlign: "center"}}>
-                            <h4><strong>My Trip</strong></h4>
-                        <br/>
-                        </div>);
+            showtrip = (<footer>
+                <h4><strong>My Trip</strong></h4>
+            </footer>);
             //rest of trip details
 
-            header=<h4><strong>Show more information for {query}</strong></h4>;
+            header = (<div>
+                <h4><strong>Show more information for {query}</strong></h4>
+            </div>);
             //experimentation with jsx
 
-            extrainfo= <Select
+            extrainfo = <Select
                 options={this.state.options}
                 multi
                 onChange={this.handleTagSearch.bind(this)}
-                />;
-                //handles the input for the attribute selection
+            />;
+            //handles the input for the attribute selection
 
-            clearbutton =<button onClick={this.handleClearButton.bind(this)}>Clear Attributes</button>;
+            clearbutton = <button onClick={this.handleClearButton.bind(this)}>Clear Attributes</button>;
             //click button to clear all attributes selected (not required but done for debugging purposes)
 
             let array = this.props.pairs;
-            //{/*assigned it to a variable to make it easier to read, still insane*/
-            //}
+            {/*assigned it to a variable to make it easier to read, still insane*/}
 
             pairs = this.props.pairs;
             let jstring = JSON.parse(JSON.stringify(this.state.selected));
             //this is weird bear with me: this ensures that I have a json object stored in jstring... i need this to be able to iterate through the object and grab the keys
             let res = [];
 
-            for(let i in jstring){
+            for (let i in jstring) {
                 res.push(jstring[i][0].value);
                 //weird notation for a weirdly created json, but hey it works
             }
             // console.log("res: "+JSON.stringify(res));
-            res.forEach(function(ss){
+            res.forEach(function (ss) {
                 // console.log(ss);
                 selection.push(<li>{ss}</li>);
 
@@ -127,21 +126,21 @@ class Home extends React.Component {
             });
 
             //like before in app.js except this time we explicitly give it key value pairs
-            if(this.props.svg) {
+            if (this.props.svg) {
                 renderedSVG = (<InlineSVG src={this.props.svg}>SVG</InlineSVG>);
                 //svg magic
             }
-            if(renderedSVG){
+            if (renderedSVG) {
                 //if the map isn't null, make sure it renders
-                showmap=(<label style={{color:"blue"}}><strong><h4>Generated Map</h4></strong>
-                        <br/>
-                        {renderedSVG}
-                        </label>);
+                showmap = (<label style={{color: "blue"}}><strong><h4>Generated Map</h4></strong>
+                    <br/>
+                    {renderedSVG}
+                </label>);
             }
-            if(showmap){
-                total = (array[array.length-1].cumDist);
+            if (showmap) {
+                total = (array[array.length - 1].cumDist);
                 //this is switched on by the search event
-                showtable=(<table className="pair-table">
+                showtable = (<table className="pair-table">
                     <tbody>
                     <tr>
                         <td><h4 style={{color: "blue"}}>Start</h4></td>
@@ -162,73 +161,85 @@ class Home extends React.Component {
         }
         return (
             <div className="home-container">
-                <div className="header">
-                    {/* The Header of the Home Page */}
-                    <div className="row" style={{borderStyle:"solid"}}>
+
+                {/* The following code is the Header of the Home Page */}
+                <header className="header">
+                    <div className="row" style={{borderStyle: "solid"}}>
                         <div className="col" style={{textAlign: "center"}}><h2><strong>Team 29 - SPB</strong></h2></div>
-                        <div className="col" style={{textAlign: "center"}}><h3><strong>Itinerary Builder 3.0</strong></h3></div>
+                        <div className="col" style={{textAlign: "center"}}><h3><strong>Itinerary Builder 3.0</strong>
+                        </h3></div>
                     </div>
                     <br/>
+                </header>
 
-                    {/* The Main Body of the the Home Page, it has a Form layout */}
-                    <div className="body">
-                        <div style={{textAlign:"center"}}><h4><strong>Search</strong></h4>
-                            <form id="searchForm" action="">
-                                <input type="text" name="textField" placeholder="ie: Denver"/>
-                                <br/><br/>
+                {/* The following code is the Main Body of the the Home Page, it has a Form layout */}
+                <div className="main"y>
+                    <section style={{float: "left"}}><h4><strong>Search</strong></h4>
+                        <form id="searchForm" action="">
+                            <input type="text" name="textField" placeholder="ie: Denver"/>
+                            <br/><br/>
 
-
-                                <label><i>Choose Optimization Level</i><br/>
-                                    <label style={{color:"blue"}}>Nearest Neighbor<input name="opt-level" type="radio" value={"Nearest Neighbor"} onChange={this.handleOptimization.bind(this)}/>
-                                    </label><br/>
-                                    <label style={{color:"red"}}>2-Opt<input name="opt-level" type="radio" value={"2-Opt"} onChange={this.handleOptimization.bind(this)}/>
-                                    </label>
+                            <label><i>Choose Optimization Level</i><br/>
+                                <label style={{color: "blue"}}>Nearest Neighbor<input name="opt-level" type="radio"
+                                                                                      value={"Nearest Neighbor"}
+                                                                                      onChange={this.handleOptimization.bind(this)}/>
+                                </label><br/>
+                                <label style={{color: "red"}}>2-Opt<input name="opt-level" type="radio" value={"2-Opt"}
+                                                                          onChange={this.handleOptimization.bind(this)}/>
                                 </label>
-                                <br/>
+                            </label>
+                            <br/>
+
+                            <input type="button" name="searchButton" value="Search"
+                                   onClick={this.handleSearchEvent.bind(this)}/>
+
+                        </form>
 
 
-                                <input type="button" name="searchButton" value="Search" onClick={this.handleSearchEvent.bind(this)}/>
+                    </section>
 
-                            </form>
-
+                    <section className="searchedFor">
+                        <div style={{float: "center", marginRight: "50%"}}>
                             {searchedfor}
-
                         </div>
-                    </div>
+                    </section>
+
+                    <section className="extraInfo">
+                        <div style={{float: "right", marginRight: "10%"}}>
+                            {header}
+                            {extrainfo}
+                            {clearbutton}
+                        </div>
+                    </section>
+
+                </div>
+
+                {selection}
+
+                <div id="trip">
 
                     <br/>
-                    {header}
-                    {extrainfo}
-                    <br/>
-                    {selection}
-                    <br/>
-                    {clearbutton}
                     <br/>
                     {showtrip}
-                    <div id= "trip">
-
-                        <br/>
-                        <br/>
-                        {showmap}
-                        {showtable}
-                        <br/>
-                    </div>
+                    {showmap}
+                    {showtable}
+                    <br/>
                 </div>
             </div>
         )
     };
 
-    async getOptions(){
+    async getOptions() {
         //this will be called as soon as i get a response from the server
         let keys = this.state.serverReturned.columns;
-        let options =[];
-        for(let i=0;i<keys.length;i++){
-            options.push({label:keys[i], value:keys[i]});
+        let options = [];
+        for (let i = 0; i < keys.length; i++) {
+            options.push({label: keys[i], value: keys[i]});
         }
         //fill up my options array->make it into a state
         console.log(options);
         this.setState({
-            options:options,
+            options: options,
         })
     }
 
@@ -273,15 +284,16 @@ class Home extends React.Component {
     }
 
 
-    async handleClearButton(event){
+    async handleClearButton(event) {
         event.preventDefault();
         this.setState({
-            selected:[],
+            selected: [],
         });
         //make the selected array clear
     }
+
     async handleShowItinerary(event) {
-        if(!this.state.serverReturned)  return;
+        if (!this.state.serverReturned) return;
         event.preventDefault();
         let input = this.state.serverReturned;
         this.props.dataShowItinerary(input.locs);
@@ -290,39 +302,39 @@ class Home extends React.Component {
         //make the svg prop
     }
 
-    async handleTagSearch(event){
+    async handleTagSearch(event) {
         //this one is interesting and requires some attention
-        if(!this.state.serverReturned)  return;
+        if (!this.state.serverReturned) return;
         let input = event;
         //save the event
         let ss = this.state.selected;
         //selected is my current array of attributes
-        let bool=true;
+        let bool = true;
         //switch for later
-        for(let i=0;i<ss.length;i++){
-            if(JSON.stringify(ss[i])===JSON.stringify(input)){
+        for (let i = 0; i < ss.length; i++) {
+            if (JSON.stringify(ss[i]) === JSON.stringify(input)) {
                 //if i have an attribute selected, i don't want to display it twice... so ignore it
-                bool=false;
+                bool = false;
             }
             // console.log("bool:"+bool);
         }
-        if(ss && bool){
+        if (ss && bool) {
             //if both are on then add the input to the selected array
             ss.push(input);
             this.setState({
-                selected:ss,
+                selected: ss,
             })
         }
-        else if(ss){
+        else if (ss) {
             //if only ss is defined then this means do nothing
             this.setState({
                 selected: ss,
             });
         }
-        else{
+        else {
             //if ss is undefined then i have an array of one element, add it
             this.setState({
-                selected:input,
+                selected: input,
             })
         }
         // console.log("selected has been updated"+this.state.selected);
@@ -350,4 +362,5 @@ class Home extends React.Component {
 
 
 }
+
 export default Home

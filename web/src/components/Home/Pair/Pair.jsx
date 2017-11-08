@@ -37,9 +37,6 @@ class Pair extends React.Component {
 
         let rows = [];
             rows.push(<td><h4>{this.props.startInfo.extraInfo.name}</h4>{start} </td>);
-
-
-
             rows.push(<td><h4>{this.props.endInfo.extraInfo.name}</h4> {end}</td>);
             rows.push(<td><h4>{this.props.endInfo.distance}</h4></td>);
             rows.push(<td><h4>{this.props.cumDist}</h4></td>);
