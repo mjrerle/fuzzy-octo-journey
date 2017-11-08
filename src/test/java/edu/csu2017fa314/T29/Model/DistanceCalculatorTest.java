@@ -155,7 +155,7 @@ public class DistanceCalculatorTest {
 //        System.out.println("Size: "+ll.getKey().size());
         assertNotNull(ll1);
         assertEquals(ll1.getValue(),(Integer)1696);
-        assertEquals(ll1.getKey().get(0), locs.get(0));
+        assertEquals(ll1.getKey().get(0),locs.get(0));
         assertNotEquals(ll1.getKey().get(1),locs.get(0));
 
     }
@@ -270,8 +270,8 @@ public class DistanceCalculatorTest {
 
         DistanceCalculator.Pair treyPair = distanceCalculator.calculateTrips(locations.get(67), 67);
         DistanceCalculator.Pair mattPair = distanceCalculator.computeNearestNeighbor(locations.get(67));
-        ArrayList<Location> treyArrayList = treyPair.getKey();
-        ArrayList<Location> mattArrayList = mattPair.getKey();
+       ArrayList<Location> treyArrayList = treyPair.getKey();
+       ArrayList<Location> mattArrayList = mattPair.getKey();
 
         String treysTrip = distanceCalculator.toStringById(treyArrayList);
         String mattsTrip = distanceCalculator.toStringById(mattArrayList);
@@ -288,7 +288,7 @@ public class DistanceCalculatorTest {
         ArrayList<Location> locations = locationRecords.getLocations();
         DistanceCalculator distanceCalculator = new DistanceCalculator(locations);
 
-        ArrayList<Location> shortestTrip = distanceCalculator.shortestNearestNeighborTrip();
+       ArrayList<Location> shortestTrip = distanceCalculator.shortestNearestNeighborTrip();
 
         Assert.assertEquals("lyzhu", shortestTrip.get(0).getId());
     }

@@ -1,4 +1,5 @@
 package edu.csu2017fa314.T29.View;
+import static org.junit.Assert.*;
 
 import edu.csu2017fa314.T29.Model.DistanceCalculator;
 import edu.csu2017fa314.T29.Model.Location;
@@ -9,13 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import java.util.*;
 
 
 public class TestView

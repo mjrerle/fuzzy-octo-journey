@@ -1,7 +1,7 @@
 package edu.csu2017fa314.T29.Model;
 
 
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * Created by Trey Yu on 9/2/2017.
@@ -22,7 +22,7 @@ public class DistanceCalculator {
      * of the passed in ArrayList of the Location objects
      *
      * @param locations list of Location objects to create a trip from
-     */
+     * */
 
     public DistanceCalculator(ArrayList<Location> locations) {
         this.locations = locations;
@@ -34,10 +34,7 @@ public class DistanceCalculator {
     //////////////////////////////////////////////////////////
     // Getters and Setters                                  //
     //////////////////////////////////////////////////////////
-    public ArrayList<Location> getLocations() {
-        return locations;
-    }
-
+    public ArrayList<Location> getLocations() {return locations;}
     public void setLocations(ArrayList<Location> locations) {this.locations = locations;}
 
 
@@ -64,9 +61,10 @@ public class DistanceCalculator {
     }
 
 
+
     /**
      * !!Not used currently because I'm pretty sure it doesn't work!!
-     * <p></p>
+     *<p></p>
      * This creates a 2D array that contains all of the
      * distances from every locations to every other
      * locations. We list every location in every column and
@@ -77,7 +75,7 @@ public class DistanceCalculator {
      * are the distance of a location to itself.
      *
      * @return 2D array that contains the distances between all locations
-     */
+     * */
 
     public int[][] calculateAllDistances() {
         int locSize = locations.size();
@@ -97,7 +95,7 @@ public class DistanceCalculator {
      *
      * @param degree number that is a degree format
      * @return radian of the degree that was passed in
-     */
+     * */
 
     public double degreeToRadian (double degree) {
 
@@ -107,7 +105,7 @@ public class DistanceCalculator {
 
     /**
      * !!This doesn't work right now and is only called in testing!!
-     * <p></p>
+     *<p></p>
      * This Calculate Trips method calculates the itinerary
      * through a Dynamic Programming approach. We have a 2D
      * array that will help us determine the next closest
@@ -191,7 +189,7 @@ public class DistanceCalculator {
      * of permutations and finds the shortest trip.
      *
      * @return The shortest trip found of all Nearest
-     * Neighbor trips
+     *         Neighbor trips
      */
 
     public ArrayList<Location> shortestNearestNeighborTrip() {
@@ -208,6 +206,7 @@ public class DistanceCalculator {
         return permutations.get(index).getKey();
 
     }
+
 
 
     /**
@@ -239,13 +238,13 @@ public class DistanceCalculator {
     }
 
 
+
     /**
      * Additional method required for two opt, just a method
      * that swaps two locations.
-     *
-     * @param trip       unswapped Arraylist of locations
+     * @param trip unswapped Arraylist of locations
      * @param startIndex the start index to swapping values
-     * @param endIndex   the end index to end swapping values
+     * @param endIndex the end index to end swapping values
      */
 
     public void twoOptSwap(ArrayList<Location> trip, int startIndex, int endIndex) {
@@ -264,10 +263,9 @@ public class DistanceCalculator {
      * that is passed in. It looks for pairs that can be swapped
      * that make the distance between those points shorter and the
      * overall distance shorter
-     *
-     * @param trip The ArrayList Nearest Neighbor trip that twopt is
-     *             performed on.
-     * @return The Pair object that contains the twoOpt trip and distance of the trip
+     *@param trip The ArrayList Nearest Neighbor trip that twopt is
+     *            performed on.
+     *@return The Pair object that contains the twoOpt trip and distance of the trip
      */
 
     public Pair twoOpt(ArrayList<Location> trip) {
@@ -300,7 +298,6 @@ public class DistanceCalculator {
     // This is definitely a lot of extra work that needs to //
     // be optimized.                                        //
     //////////////////////////////////////////////////////////
-
     /**
      * A method for setting the distance between every
      * location in an itinerary, specifically for 2-Opt.
@@ -312,7 +309,7 @@ public class DistanceCalculator {
      */
 
     public void setLocationDistances(ArrayList<Location> itinerary) {
-        for (int i = 0; i < itinerary.size() - 1; i++) {
+        for(int i = 0; i < itinerary.size() - 1; i++) {
             itinerary.get(i + 1).setDistance(calculateGreatCircleDistance(itinerary.get(i), itinerary.get(i + 1)));
         }
     }
@@ -338,7 +335,7 @@ public class DistanceCalculator {
     //////////////////////////////////////////////////////////
     // All of Matt's Code                                   //
     //////////////////////////////////////////////////////////
-    public Pair computeNearestNeighbor(Location node) {
+    public Pair computeNearestNeighbor(Location node){
         //this will return a Pair...
         // a pair is key value pair: ArrayList<Location> key, Integer value
         ArrayList<Location> unvisited = new ArrayList<>(locations);
@@ -360,8 +357,8 @@ public class DistanceCalculator {
             //keeps track of distances between nodes
             for (int i = 0; i < unvisited.size(); i++) {
 
-                int distance =
-                        calculateGreatCircleDistance(unvisited.get(i), visited.get(visited.size() - 1));
+                int distance = calculateGreatCircleDistance(unvisited.get(i),
+                        visited.get(visited.size()-1));
                 distances.add(distance);
                 //populate distances arraylist
             }
@@ -394,24 +391,24 @@ public class DistanceCalculator {
         }
         Location last = new Location(node.getExtraInfo());
         //create last node to complete round trip
-        last.setDistance(calculateGreatCircleDistance(visited.get(visited.size() - 1), node));
+        last.setDistance(calculateGreatCircleDistance(visited.get(visited.size()-1),node));
         //set distance equal to last node added to visited and the given node
         visited.add(last);
         //add the last node to the ArrayList
-        sum +=last.getDistance();
+        sum+=last.getDistance();
         //add last distance
 
-        return new Pair(visited, sum);
+        return new Pair(visited,sum);
         //associate the visited ArrayList and the total sum!
     }
-
     /**
      * This method computes all the nearest Neighbor trips for
      * a given list and returns the shortest one
      *
      * @return ArrayList of the shortest Nearest Neighbor trip
      */
-    public ArrayList<Location> computeAllNearestNeighbors() {
+
+    public ArrayList<Location> computeAllNearestNeighbors(){
         ArrayList<Pair> permutations = new ArrayList<>();
         //list of lists
         ArrayList<Location> shortest;
@@ -442,10 +439,9 @@ public class DistanceCalculator {
 
     /**
      * Computes the distance of the itinerary passed in
-     *
      * @param path ArrayList of Location objects
      * @return The integer of the total distance of the trip
-     */
+     * */
 
     public int getTotal(ArrayList<Location> path) {
         int sum=0;
@@ -461,26 +457,29 @@ public class DistanceCalculator {
         private ArrayList<Location> key;
         private Integer value;
 
-        public Pair(ArrayList<Location> key, Integer value) {
+        public Pair(ArrayList<Location> key,Integer value)
+        {
             this.key=key;
             this.value=value;
         }
 
-        public Pair() {
-            key = new ArrayList<>();
-            value = 0;
+        public Pair(){
+            key=new ArrayList<>();
+            value=0;
         }
 
         public ArrayList<Location> getKey() {
             return key;
         }
 
-        public void setKey(ArrayList<Location> newkey) {
+        public void setKey(ArrayList<Location> newkey){
             this.key=newkey;
         }
+
         public Integer getValue() {
             return value;
         }
+
         public void setValue( Integer newValue){
             this.value=newValue;
         }
