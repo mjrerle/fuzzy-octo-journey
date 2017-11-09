@@ -23,5 +23,8 @@ Location.java:21 | Remove unnecessary setter method. | l | #250 | Elliott
 Location.java:22 | Remove unnecessary setter method. | l | #250 | Tim
 Location.java:23 | Remove unnecessary setter method. | l | #250 | Matt
 Location.java:35 | Remove unnecessary getter method. | l | #250 | Trey
-Location.java:36 | Method needs better documentation. | l | #251 | Elliott
-Location.java:37 | Rename method to be more readable. | l | #251 | Elliott
+Location.java:36 | Method needs better documentation. | l | #250 | Elliott
+Location.java:37 | Rename method to be more readable. | l | #250 | Tim
+Location.java:65 | Comment does not convey the correct description. | m | #252 | Matt
+Location.java:72-73 | Needs comments to explain function. | l | #253 | Trey
+Location.java:81-94 | Should consider improving for precision beyond 5 decimal digits. | m | #254 | Elliott
