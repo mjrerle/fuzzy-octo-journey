@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 // import Dropzone from 'react-dropzone';
 import Select from 'react-select';
 import Pair from './Pair/Pair.jsx';
@@ -12,7 +12,7 @@ class Home extends React.Component {
             tags: [],
             options: [],
             locationNames: [],
-            op_level: "Nearest Neighbor",
+            op_level: "none",
             selectedAttributes: [],
             selectedLocations: []
         }
@@ -114,6 +114,7 @@ class Home extends React.Component {
             resultLocations.forEach(function (temp) {
                selectionLocations.push(<li>{temp}</li>);
             });
+
             //this is for showing the currently selectedAttributes attributes
             // console.log("selection: "+selection);
 
@@ -199,6 +200,8 @@ class Home extends React.Component {
                             <input type="button" name="searchButton" value="Search"
                                    onClick={this.handleSearchEvent.bind(this)}/>
                         </form>
+                        <button name="plan" onClick={this.handlePlan.bind(this)}>Plan Trip</button>
+
                     </section>
 
                     <section className="extraInfo" style={{float: "right", marginRight: "10%"}}>
@@ -243,12 +246,13 @@ class Home extends React.Component {
 
     async getLocations() {
 
-        let response = this.state.serverReturned;
+        let response = this.state.serverReturned.locations;
+        console.log(response);
         let tempArray = [];
 
-        for(let i = 0; i < response.locs.length; i++) {
-            let value = response.locs[i].extraInfo.code;
-            let label = response.locs[i].extraInfo.name;
+        for(let i = 0; i < response.length; i++) {
+            let value = response[i].extraInfo.code;
+            let label = response[i].extraInfo.name;
             tempArray.push({label: label, value: value});
         }
 
@@ -262,21 +266,24 @@ class Home extends React.Component {
         // Create object to send to server
         /*  IMPORTANT: This object must match the structure of whatever
             object the server is reading into (in this case DataClass) */
-        let newMap = {
-            query: type,
-            input: input,
-            op_level: this.state.op_level,
-        };
+        let clientreq= {
+            request: type,
+            description: [input],
+            op_level:this.state.op_level
+            };
 
+
+        console.log(clientreq);
         try {
             // Attempt to send `newMap` via a POST request
             // Notice how the end of the url below matches what the server is listening on (found in java code)
             // By default, Spark uses port 4567
+            let serverUrl = window.location.href.substring(0, window.location.href.length - 6) + ":4567/testing";
             let jsonReturned = await
-                fetch(`http://localhost:4567/testing`,
+                fetch(serverUrl,
                     {
                         method: "POST",
-                        body: JSON.stringify(newMap)
+                        body: JSON.stringify(clientreq)
                     });
             // Wait for server to return and convert it to json.
             let ret = await
@@ -302,9 +309,13 @@ class Home extends React.Component {
     }
 
     async handleLoadItinerary(event) {
-        console.log("Fuck you")
-    }
 
+    }
+    async handlePlan(event){
+        event.preventDefault();
+        let selection = this.state.codes;
+        fetch("svg",selection);
+    }
     async handleClearButton(event) {
         event.preventDefault();
         this.setState({
@@ -333,21 +344,27 @@ class Home extends React.Component {
                 console.log(arrayLocation[i]);
             }
         }
-
+        let result=[];
+        for(let i =0;i<arrayLocation.length;i++){
+            result.push(JSON.parse(JSON.stringify(arrayLocation))[i][0].value);
+        }
         if(arrayLocation && !contains) { {/* If the arrayLocation exist AND does not contain the new location, add it */}
             arrayLocation.push(event);
             this.setState({
-                selectedLocations: arrayLocation
+                selectedLocations: arrayLocation,
+                codes: result,
             })
         }
         else if(arrayLocation) { {/* If the arrayLocation AND contains the new location, do nothing*/}
             this.setState({
-                selectedLocations: arrayLocation
+                selectedLocations: arrayLocation,
+                codes: result,
             })
         }
         else { {/* If the arrayLocation is empty/null, then we need to create a new one with the new location (event)*/}
             this.setState({
-                selectedLocations: event
+                selectedLocations: event,
+                codes: result
             })
 
         }
@@ -407,7 +424,7 @@ class Home extends React.Component {
             query: queryText,
         });
         //fetch the value
-        this.fetch(queryText); // Call fetch and pass whatever text is in the input box
+        this.fetch("query",queryText); // Call fetch and pass whatever text is in the input box
     }
 
 

@@ -13,7 +13,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static spark.Spark.port;
 import static spark.Spark.post;
 
 /**
@@ -113,7 +112,7 @@ public class Server {
      */
     public void serve() {
         Gson g = new Gson();
-        port(7892);
+
         post("/testing", (rec, res) -> {
             return g.toJson(testing(rec, res));
         });
