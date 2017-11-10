@@ -10,6 +10,12 @@ public class ServerRequest {
     private String request = "";
     private ArrayList<String> description;
 
+    public String getOpt() {
+        return opt;
+    }
+
+    private String opt="none";
+
     public ArrayList<String> getDescription() {
         return description;
     }
@@ -21,6 +27,13 @@ public class ServerRequest {
     public ServerRequest(String request, ArrayList<String> description) {
         this.request = request;
         this.description = description; //description is either a search or an array of destinations
+    }
+
+
+    public ServerRequest(String request, ArrayList<String> description, String opt) {
+        this.request = request;
+        this.description = description; //description is either a search or an array of destinations
+        this.opt=opt;
     }
 
     public String getRequest() {

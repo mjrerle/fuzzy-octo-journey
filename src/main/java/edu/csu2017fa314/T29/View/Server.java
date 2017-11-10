@@ -13,6 +13,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static spark.Spark.port;
 import static spark.Spark.post;
 
 /**
@@ -112,6 +113,7 @@ public class Server {
      */
     public void serve() {
         Gson g = new Gson();
+        port(7892);
         post("/testing", (rec, res) -> {
             return g.toJson(testing(rec, res));
         });
@@ -213,7 +215,7 @@ public class Server {
             // assume if the request is not "query" it is "svg":
         } else {
             //serve the svg with the information in description (should be a bunch of destinations)
-            return serveSvg(srec.getRequest(), srec.getDescription());
+            return serveSvg(srec.getOpt(), srec.getDescription());
             //0 should be the opcode, next is my dests
         }
     }
@@ -306,13 +308,14 @@ public class Server {
 
         // Query database with queryString
         ArrayList<Location> queryResults = queryBuilder.query(queryString);
-
+        SVG svg = new SVG(queryResults);
         // Same response structure as the query request
-        ServerResponse serverResponse = new ServerResponse(queryResults);
-        // set response type to upload
-        serverResponse.setResponseType("upload");
+        int wid = (int)svg.getWidth();
+        int hei = (int)svg.getHeight();
+        String contents = svg.getContents();
+        ServerSvgResponse serverSvgResponse = new ServerSvgResponse(wid,hei,contents,queryResults);
 
-        return gson.toJson(serverResponse, ServerResponse.class);
+        return gson.toJson(serverSvgResponse, ServerSvgResponse.class);
     }
 
     // called by testing method if client requests a search
