@@ -1,5 +1,4 @@
 package edu.csu2017fa314.T29.View;
-import static org.junit.Assert.*;
 
 import edu.csu2017fa314.T29.Model.DistanceCalculator;
 import edu.csu2017fa314.T29.Model.Location;
@@ -7,13 +6,16 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 public class TestView
@@ -23,7 +25,7 @@ public class TestView
     View view;
     Map<String,String> extraInfo = new HashMap<String,String>();
     ArrayList<Location> locationArrayList = new ArrayList<Location>();
-    LinkedList<Location> linkedList = new LinkedList<Location>();
+    ArrayList<Location> arrayList = new ArrayList<>();
     Location brewery1;
     Location brewery2;
     Location brewery3;
@@ -58,8 +60,8 @@ public class TestView
         locationArrayList.add(brewery3);
         distanceCalculator = new DistanceCalculator(locationArrayList);
 
-        linkedList = distanceCalculator.computeAllNearestNeighbors();
-        view = new View(linkedList);
+        arrayList = distanceCalculator.computeAllNearestNeighbors();
+        view = new View(arrayList);
     }
 
     @Test
@@ -99,7 +101,7 @@ public class TestView
 
         JSONObject expected = new JSONObject(tempMap);
 
-        JSONObject actual = view.createLocationInfo(linkedList.getFirst());
+        JSONObject actual = view.createLocationInfo(arrayList.get(0));
 
         assertEquals(expected, actual);
     }

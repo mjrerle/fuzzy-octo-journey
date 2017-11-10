@@ -1,39 +1,56 @@
 package edu.csu2017fa314.T29.View;
 
+import java.util.ArrayList;
+
 /**
  * Created by sswensen on 10/1/17.
  */
 
 public class ServerRequest {
-    private String query = "";
-    private String op_level = "";
+    private String request = "";
+    private ArrayList<String> description;
 
-    public ServerRequest(String query, String op_level) {
-        this.query = query;
-        this.op_level = op_level;
-    }
-
-    public String getQuery() {
-        return query;
-    }
-
-    public void setQuery(String query) {
-        this.query = query;
-    }
-
-    public String getOpLevel() {
+    public String getOp_level() {
         return op_level;
     }
 
-    public void setOpLevel(String id) {
-        this.op_level = id;
+    private String op_level ="None";
+
+    public ArrayList<String> getDescription() {
+        return description;
     }
 
+    /**
+     * @param request     : either "query" or "upload"
+     * @param description : a list of strings consisting of Destination Codes (AXHS,COBE,ERAW)
+     */
+    public ServerRequest(String request, ArrayList<String> description) {
+        this.request = request;
+        this.description = description; //description is either a search or an array of destinations
+
+    }
+
+
+    public ServerRequest(String request, ArrayList<String> description, String op_level) {
+        this.request = request;
+        this.description = description; //description is either a search or an array of destinations
+        this.op_level = op_level;
+    }
+
+    public String getRequest() {
+        return request;
+    }
+
+    /**
+     * @return json formatted string
+     */
     @Override
     public String toString() {
-        return "Request{" +
-                "query='" + query + '\'' +
-                ", id='" + op_level + '\'' +
-                '}';
+        return "Request{"
+                + "request='" + request + '\''
+                + ", description='" + description + '\''
+                + ", op_level='"+ op_level +'\''
+                + '}';
     }
+
 }

@@ -25,6 +25,7 @@ export default class App extends React.Component {
 
     async dataShowItinerary(data){
         //this just makes the pairs, nothing new
+        console.log("data: "+data);
         let input=data;
         let pairs = [];
         let runDist = 0;
