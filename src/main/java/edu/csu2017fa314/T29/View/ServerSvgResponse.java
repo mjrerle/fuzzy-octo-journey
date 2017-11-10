@@ -37,6 +37,8 @@ public class ServerSvgResponse {
         return "ServerResponse{"
                 + "response='" + response + '\''
                 + ", contents=" + contents
+                + ", height=" + height
+                + ", width=" + width
                 + '}';
     }
 }

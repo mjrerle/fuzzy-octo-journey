@@ -260,7 +260,6 @@ public class Server {
         //
         SVG svg = new SVG(locations);
         String map = svg.getContents();
-        System.out.println(svg.getContents());
         int wid = (int) svg.getWidth();
         int hei = (int) svg.getHeight();
         ServerSvgResponse ssres = new ServerSvgResponse(wid, hei, map, locations);
