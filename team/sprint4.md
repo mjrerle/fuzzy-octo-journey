@@ -53,28 +53,27 @@ Date | Tasks done this time | Tasks done next time | Impediments | Confidence
 ## Review
 
 #### Completed user stories (epics) in Sprint Backlog 
-* *user story*:  *comments*
-* 
+* *website transition*
+* *clean up and documentation*
+* *world wide trips*
 
 Completed *number of issues completed* issues associated with these user stories.
 
 #### Incomplete user stories / epics in Sprint Backlog 
-* *user story*: *Explanation...*
-*
+* implement stage 2: Javascript syntax and understanding of code is lacking
+* optimization and selection: Running into infinite loops
 
 #### What went well
-* *something*
-*
+* Database query worked
 
 #### Problems encountered and resolutions
-* *something*
-*
+* **_Commuinication_** 
+* Port address being used
 
 ## Retrospective
 
 Topic | Teamwork | Process | Tools
 :--- | :--- | :--- | :---
-What we will change this time |  |  | 
-What we did well |  |  | 
-What we need to work on |  |  |
-What we will change next time |  |  | 
+What we will change this time | Handle change better, get together more often | Start earlier | Take advice from code climate
+What we did well | Helped each other out when asked | We organized our meetings and had daily scrums | Used code climate to clean up code
+What we need to work on | Collaborating, understand each other's code | Meet together more often | Listen code smells
