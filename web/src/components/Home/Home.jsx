@@ -14,7 +14,8 @@ class Home extends React.Component {
             locationNames: [],
             op_level: "none",
             selectedAttributes: [],
-            selectedLocations: []
+            selectedLocations: [],
+            codes:[]
         }
     }
 
@@ -266,11 +267,22 @@ class Home extends React.Component {
         // Create object to send to server
         /*  IMPORTANT: This object must match the structure of whatever
             object the server is reading into (in this case DataClass) */
-        let clientreq= {
-            request: type,
-            description: [input],
-            op_level:this.state.op_level
+        let clientreq;
+        if (type === "query") {
+            clientreq = {
+                request: type,
+                description: [input],
+                op_level: this.state.op_level
             };
+        }
+        else{
+            clientreq = {
+                request: type,
+                description:input,
+                op_level:this.state.op_level
+            }
+        }
+
 
 
         console.log(clientreq);
@@ -314,7 +326,8 @@ class Home extends React.Component {
     async handlePlan(event){
         event.preventDefault();
         let selection = this.state.codes;
-        fetch("svg",selection);
+        console.log("selection: "+selection);
+        this.fetch("svg",selection);
     }
     async handleClearButton(event) {
         event.preventDefault();
@@ -328,7 +341,7 @@ class Home extends React.Component {
         if (!this.state.serverReturned) return;
         event.preventDefault();
         let input = this.state.serverReturned;
-        this.props.dataShowItinerary(input.locs);
+        this.props.dataShowItinerary(input.locations);
         //make the raw pairs
         this.props.showSVG(this.state.serverReturned.svg);
         //make the svg prop
@@ -352,22 +365,22 @@ class Home extends React.Component {
             arrayLocation.push(event);
             this.setState({
                 selectedLocations: arrayLocation,
-                codes: result,
             })
         }
         else if(arrayLocation) { {/* If the arrayLocation AND contains the new location, do nothing*/}
             this.setState({
                 selectedLocations: arrayLocation,
-                codes: result,
             })
         }
         else { {/* If the arrayLocation is empty/null, then we need to create a new one with the new location (event)*/}
             this.setState({
                 selectedLocations: event,
-                codes: result
             })
 
         }
+        this.setState({
+            codes:result
+        })
     }
 
     async handleTagSearch(event) {

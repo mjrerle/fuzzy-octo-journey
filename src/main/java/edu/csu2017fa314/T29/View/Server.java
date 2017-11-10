@@ -214,7 +214,7 @@ public class Server {
             // assume if the request is not "query" it is "svg":
         } else {
             //serve the svg with the information in description (should be a bunch of destinations)
-            return serveSvg(srec.getOpt(), srec.getDescription());
+            return serveSvg(srec.getOp_level(), srec.getDescription());
             //0 should be the opcode, next is my dests
         }
     }
@@ -260,6 +260,7 @@ public class Server {
         //
         SVG svg = new SVG(locations);
         String map = svg.getContents();
+        System.out.println(svg.getContents());
         int wid = (int) svg.getWidth();
         int hei = (int) svg.getHeight();
         ServerSvgResponse ssres = new ServerSvgResponse(wid, hei, map, locations);

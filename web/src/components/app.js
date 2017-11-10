@@ -18,8 +18,6 @@ export default class App extends React.Component {
                     svg={this.state.svg}
                     showSVG={this.showSVG.bind(this)}
                     dataShowItinerary={this.dataShowItinerary.bind(this)}
-                    makePlan={this.makePlan.bind(this)}
-                    codes={this.state.codes}
                 />
             </div>
         )
@@ -27,7 +25,7 @@ export default class App extends React.Component {
 
     async dataShowItinerary(data){
         //this just makes the pairs, nothing new
-        console.log(data);
+        console.log("data: "+data);
         let input=data;
         let pairs = [];
         let runDist = 0;
@@ -45,11 +43,7 @@ export default class App extends React.Component {
         });
 
     }
-    async makePlan(locations){
-        this.setState({
-            codes:locations
-        })
-    }
+
     async showSVG(data){
         this.setState({
             svg:data,

@@ -10,11 +10,11 @@ public class ServerRequest {
     private String request = "";
     private ArrayList<String> description;
 
-    public String getOpt() {
-        return opt;
+    public String getOp_level() {
+        return op_level;
     }
 
-    private String opt="none";
+    private String op_level ="None";
 
     public ArrayList<String> getDescription() {
         return description;
@@ -27,13 +27,14 @@ public class ServerRequest {
     public ServerRequest(String request, ArrayList<String> description) {
         this.request = request;
         this.description = description; //description is either a search or an array of destinations
+
     }
 
 
-    public ServerRequest(String request, ArrayList<String> description, String opt) {
+    public ServerRequest(String request, ArrayList<String> description, String op_level) {
         this.request = request;
         this.description = description; //description is either a search or an array of destinations
-        this.opt=opt;
+        this.op_level = op_level;
     }
 
     public String getRequest() {
@@ -48,6 +49,7 @@ public class ServerRequest {
         return "Request{"
                 + "request='" + request + '\''
                 + ", description='" + description + '\''
+                + ", op_level='"+ op_level +'\''
                 + '}';
     }
 
