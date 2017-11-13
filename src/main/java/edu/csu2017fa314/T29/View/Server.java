@@ -277,7 +277,7 @@ public class Server {
     private String buildWithCode(ArrayList<String> locations) {
         //makes locations given an arraylist of codes(ids like AXHS), quite useful
 
-        String queryString = "SELECT airports.*, countries.*, regions.*, continents.* ";
+        String queryString = "SELECT airports.* ";
         queryString += "FROM continents INNER JOIN countries ";
         queryString += "ON continents.code = countries.continent INNER JOIN regions ";
         queryString += "ON countries.code = regions.iso_country INNER JOIN airports ";
@@ -285,9 +285,9 @@ public class Server {
         queryString += "WHERE ";
         for (int i = 0; i < locations.size(); i++) {
             if (i == locations.size() - 1) {
-                queryString += "code = '" + locations.get(i) + "';";
+                queryString += "airports.code = '" + locations.get(i) + "';";
             } else {
-                queryString += "code = '" + locations.get(i) + "' OR ";
+                queryString += "airports.code = '" + locations.get(i) + "' OR ";
             }
         }
         return queryString;
@@ -326,7 +326,7 @@ public class Server {
      */
 
     private String makeQuery(String searched){
-        String queryString = "SELECT airports.*, countries.*, regions.*, continents.* ";
+        String queryString = "SELECT airports.*";
         queryString += "FROM continents INNER JOIN countries ";
         queryString += "ON continents.code = countries.continent INNER JOIN regions ";
         queryString += "ON countries.code = regions.iso_country INNER JOIN airports ";
@@ -334,6 +334,9 @@ public class Server {
         queryString += "WHERE municipality LIKE '%"
                 + searched + "%' " + " OR airports.name LIKE '%"
                 + searched + "%' " + " OR airports.type LIKE '%"
+                + searched + "%' " + " OR continents.name LIKE '%"
+                + searched + "%' " + " OR countries.name LIKE '%"
+                + searched + "%' " + " OR regions.name LIKE '%"
                 + searched + "%'";
         return queryString;
     }
