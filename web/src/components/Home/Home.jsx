@@ -309,7 +309,7 @@ class Home extends React.Component {
         for (let i = 0; i < locations.length; i++) {
             let value = locations[i];
             codes.push(value.extraInfo.code);
-            codeOptions.push({label: <button>value.extraInfo.name</button>, value: value.extraInfo.code});
+            codeOptions.push({label: <button>{value.extraInfo.name}</button>, value: value.extraInfo.code});
         }
 
 
