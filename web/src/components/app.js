@@ -6,7 +6,7 @@ export default class App extends React.Component {
         super(props);
         this.state = {
             pairs:[],
-
+            sysFile: [],
         }
     };
 
@@ -18,6 +18,8 @@ export default class App extends React.Component {
                     svg={this.state.svg}
                     showSVG={this.showSVG.bind(this)}
                     dataShowItinerary={this.dataShowItinerary.bind(this)}
+                    browseFile={this.browseFile.bind(this)}
+                    sysFile={this.state.sysFile}
                 />
             </div>
         )
@@ -42,6 +44,13 @@ export default class App extends React.Component {
             pairs:pairs,
         });
 
+    }
+
+    async browseFile(file) {
+        console.log("Got file:", file);
+        this.setState({
+            sysFile: file
+        })
     }
 
     async showSVG(data){

@@ -3,7 +3,6 @@ package edu.csu2017fa314.T29.View;
 import edu.csu2017fa314.T29.Model.Location;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  * creates the svg
@@ -58,6 +57,7 @@ public class SVG {
      */
     public SVG(ArrayList<Location> locations) {
         this.locations = locations;
+        this.map = getMap();
         writeContents();
     }
 
@@ -108,12 +108,8 @@ public class SVG {
         contents += "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
         contents += "<svg xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\"" +
                 " version=\"1.0\" width=\"1024\" height=\"512\" id=\"svgUno\">";
-        Scanner scan = new Scanner(getMap());
-        scan.nextLine();
-        while (scan.hasNextLine()) {
-            String line = scan.nextLine();
-            contents += line;
-        }
+        contents+=map;
+
         for (int i = 0; i < locations.size(); i++) {
             if (i == locations.size() - 1) {
                 contents += String.format("<line id=\"%d\" "
