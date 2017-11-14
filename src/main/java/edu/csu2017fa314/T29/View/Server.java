@@ -255,7 +255,7 @@ public class Server {
         } else {
             //opcode is likely "none"
             // so I want the raw order->need a method for this in Distance Calculator
-            locations = distanceCalculator.getLocations();
+            locations = distanceCalculator.noOptimization();
         }
         ArrayList<Location> queryResults = queryBuilder.query(queryString);
         HashMap<String, String> extra = queryResults.get(0).getExtraInfo();

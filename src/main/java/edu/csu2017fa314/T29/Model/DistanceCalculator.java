@@ -39,6 +39,15 @@ public class DistanceCalculator {
     }
     public void setLocations(ArrayList<Location> locations) {this.locations = locations;}
 
+    /* Calculates distance between each location */
+    public ArrayList<Location> noOptimization(){
+        ArrayList<Location> result = locations;
+        for(int i = 0; i < locations.size()-1; i++){
+            result.get(i).setDistance(calculateGreatCircleDistance(locations.get(i), locations.get(i+1)));
+        }
+        result.get(locations.size()-1).setDistance(calculateGreatCircleDistance(locations.get(locations.size()-1), locations.get(0)));
+        return result;
+    }
 
     //////////////////////////////////////////////////////////
     // Great Circle Distance calculation                    //
