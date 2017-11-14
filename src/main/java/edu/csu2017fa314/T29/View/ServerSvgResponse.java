@@ -13,6 +13,7 @@ public class ServerSvgResponse {
     private final int width;
     private final int height;
     private ArrayList<Location> locations;
+    private Object[] columns;
 
     /**
      * @param width     : svg.getWidth() = 1024
@@ -21,11 +22,12 @@ public class ServerSvgResponse {
      * @param locations : an ordered location list (based on optimization level)
      */
     public ServerSvgResponse(int width, int height, String contents,
-                             ArrayList<Location> locations) {
+                             ArrayList<Location> locations, Object[] columns) {
         this.contents = contents;
         this.width = width;
         this.height = height;
         this.locations=locations;
+        this.columns = columns;
         System.out.println(this.toString());
     }
 
@@ -37,6 +39,7 @@ public class ServerSvgResponse {
         return "ServerResponse{"
                 + "response='" + response + '\''
                 + ", contents=" + contents
+                + ", columns=" + columns
                 + ", height=" + height
                 + ", width=" + width
                 + '}';

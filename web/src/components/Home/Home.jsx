@@ -1,5 +1,5 @@
 import React from 'react';
-// import Dropzone from 'react-dropzone';
+import Dropzone from 'react-dropzone';
 import Select from 'react-select';
 import Pair from './Pair/Pair.jsx';
 import InlineSVG from "svg-inline-react";
@@ -11,7 +11,7 @@ class Home extends React.Component {
             serverReturned: null,
             tags: [],
             options: [],
-            locationNames: [],
+            locationCodes: [],
             op_level: "none",
             selectedAttributes: [],
             selectedLocations: [],
@@ -26,13 +26,16 @@ class Home extends React.Component {
         let renderedSVG;
         let extrainfo;
         let extraInfoHeader;
-        let clearButton;
+        let clearAttributesButton;
+        let addAllAttributesButton;
+        let clearLocationsButton;
+        let addAllLocationsButton;
         let showmap;
         let showtable;
         let tripHeader;
 
-        let selectionAttributes = [];
-        let selectionLocations = [];
+        let displayAttributes = [];
+        let displayLocations = [];
 
         let query = this.state.query;
         let searchedHeaderText;
@@ -61,17 +64,17 @@ class Home extends React.Component {
 
             extraInfoHeader = (
             <div>
-                <h4><strong>Show more information for {query}</strong></h4>
+                <h4><strong>Show more information for {query} ({this.state.locationCodes.length} results)</strong></h4>
             </div>);
 
-            clearButton = <button onClick={this.handleClearButton.bind(this)}>Clear Attributes</button>;
+            clearAttributesButton =
+                <button onClick={this.handleClearAttributesButton.bind(this)}>Clear Attributes</button>;
             //click button to clear all attributes selectedAttributes (not required but done for debugging purposes)
-
-            console.log(this.state.locationNames);
-
+            addAllAttributesButton =
+                <button onClick={this.handleAddAllAttributesButton.bind(this)}>Add All Attributes</button>;
             possibleLocations =
                 <Select
-                    options={this.state.locationNames}
+                    options={this.state.locationCodeOptions}
                     multi
                     onChange={this.handleSelectedLocation.bind(this)}
                 />;
@@ -83,44 +86,25 @@ class Home extends React.Component {
                     onChange={this.handleTagSearch.bind(this)}
                 />;
             //handles the input for the attribute selection
-
-            let array = this.props.pairs;
-            {/*assigned it to a variable to make it easier to read, still insane*/}
+            addAllLocationsButton =
+                <button onClick={this.handleAddAllLocationsButton.bind(this)}>Add All Locations</button>;
+            clearLocationsButton =
+                <button onClick={this.handleClearLocationsButton.bind(this)}>Clear Locations</button>;
 
             pairs = this.props.pairs;
 
-            console.log(this.state.selectedLocations);
-
-            let jstring = JSON.parse(JSON.stringify(this.state.selectedAttributes));
-            let jstring2 = JSON.parse(JSON.stringify(this.state.selectedLocations));
-            console.log("This is jstring: " + jstring2);
-            //this is weird bear with me: this ensures that I have a json object stored in jstring... i need this to be able to iterate through the object and grab the keys
-            let resultAttributes = [];
-            let resultLocations = [];
-
-            for (let i in jstring) {
-                resultAttributes.push(jstring[i][0].value);
-                //weird notation for a weirdly created json, but hey it works
-            }
-
-            for (let j in jstring2) {
-                resultLocations.push(jstring2[j][0].value);
-            }
-
-            //console.log("resultAttributes: "+JSON.strinify(resultAttributes));
-            resultAttributes.forEach(function (ss) {
-                selectionAttributes.push(<li>{ss}</li>);
-
+            let selectedAttributes = this.state.selectedAttributes;
+            selectedAttributes.forEach((att) => {
+                displayAttributes.push(<li>{att}</li>)
             });
-            resultLocations.forEach(function (temp) {
-               selectionLocations.push(<li>{temp}</li>);
+            let selectedLocations = this.state.selectedLocations;
+            selectedLocations.forEach((loc) => {
+                displayLocations.push(<li>{loc}</li>)
             });
-
             //this is for showing the currently selectedAttributes attributes
             // console.log("selection: "+selection);
-
             p = pairs.map((pp) => {
-                return <Pair keys={(resultAttributes)} cumDist={pp.cumDist} startInfo={pp.startInfo}
+                return <Pair keys={(selectedAttributes)} cumDist={pp.cumDist} startInfo={pp.startInfo}
                              endInfo={pp.endInfo}/>;
             });
             //like before in app.js except this time we explicitly give it key value pairs
@@ -136,7 +120,7 @@ class Home extends React.Component {
                 </label>);
             }
             if (showmap) {
-                total = (array[array.length - 1].cumDist);
+                total = (pairs[pairs.length - 1].cumDist);
                 //this is switched on by the search event
                 showtable = (<table className="pair-table">
                     <tbody>
@@ -164,20 +148,25 @@ class Home extends React.Component {
                 <extraInfoHeader className="header">
                     <div className="row" style={{borderStyle: "solid"}}>
                         <div className="col" style={{textAlign: "center"}}><h2><strong>Team 29 - SPB</strong></h2></div>
-                        <div className="col" style={{textAlign: "center"}}><h3><strong>Itinerary Builder 3.0</strong>
+                        <div className="col" style={{textAlign: "center"}}><h3><strong>Itinerary Builder 4.0</strong>
                         </h3></div>
                     </div>
                     <br/>
                 </extraInfoHeader>
 
                 {/* The following code is the Main Body of the the Home Page, it has a Form layout */}
-                <div className="main"y>
+                <div className="main">
                     <section style={{float: "left"}}>
                         <h4><strong>Search</strong></h4>
                         <form id="searchForm" action="">
                             <input type="text" name="textField" placeholder="ie: Denver"/>
                             <i> or </i>
-                            <button name="load-itinerary" onClick={this.handleLoadItinerary.bind(this)}>Load Trip</button>
+                            <Dropzone className="dropzone-style" onDrop={this.handleLoadItinerary.bind(this)}>
+                                <button type="button">Upload a location file</button>
+                            </Dropzone>
+                            <button name="save-itinerary" onClick={this.handleSaveItinerary.bind(this)}>Save Trip
+                            </button>
+
 
                             <br/><br/>
 
@@ -201,15 +190,20 @@ class Home extends React.Component {
                             <input type="button" name="searchButton" value="Search"
                                    onClick={this.handleSearchEvent.bind(this)}/>
                         </form>
-                        <button name="plan" onClick={this.handlePlan.bind(this)}>Plan Trip</button>
 
                     </section>
 
                     <section className="extraInfo" style={{float: "right", marginRight: "10%"}}>
                             {extraInfoHeader}
                             {extrainfo}
-                            {clearButton}
-                            {selectionAttributes}
+                        <br/>
+                        {addAllAttributesButton}
+                        {clearAttributesButton}
+                        <table>
+                            <tr>
+                                {displayAttributes}
+                            </tr>
+                        </table>
                     </section>
                 </div>
 
@@ -217,7 +211,9 @@ class Home extends React.Component {
                 <section className="searchedFor" style={{float: "left", clear: "both"}}>
                     {searchedHeaderText}
                     {possibleLocations}
-                    {selectionLocations}
+                    {addAllLocationsButton}
+                    {clearLocationsButton}
+                    {displayLocations}
                 </section>
 
 
@@ -231,35 +227,96 @@ class Home extends React.Component {
         )
     };
 
-    async getOptions() {
+    async handleSaveItinerary(event) {
+        event.preventDefault();
+        this.getFile();
+    }
+
+    // download a file of the array a query returns
+    async getFile() {
+        // assign all the airport codes of the displayed locations to an array
+        let locs = this.state.selectedLocations;
+
+        // create an object in the format of the download file:
+        let locationFile = {
+            title: "selection",
+            destinations: locs
+        };
+
+        // stringify the object
+        let asJSONString = JSON.stringify(locationFile);
+
+        // Javascript code to create an <a> element with a link to the file
+        let pom = document.createElement('a');
+        pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(asJSONString));
+        // Download the file instead of opening it:
+        pom.setAttribute('download', "download.json");
+
+        // Javascript to click the hidden link we created, causing the file to download
+        if (document.createEvent) {
+            let event = document.createEvent('MouseEvents');
+            event.initEvent('click', true, true);
+            pom.dispatchEvent(event);
+        } else {
+            pom.click();
+        }
+
+        // remove hidden link from page
+        pom.parentNode.removeChild(pom);
+
+    }
+
+    async handleLoadItinerary(acceptedFiles) {
+        console.log("Accepting drop");
+        acceptedFiles.forEach(file => {
+            console.log("Filename:", file.name, "File:", file);
+            console.log(JSON.stringify(file));
+            let fr = new FileReader();
+            fr.onload = (function () {
+                return function (e) {
+                    let JsonObj = JSON.parse(e.target.result);
+                    console.log(JsonObj);
+                    // Do something with the file:
+                    this.props.browseFile(JsonObj);
+                    this.fetch("upload", this.props.sysFile.destinations);
+
+                };
+            })(file).bind(this);
+            fr.readAsText(file);
+
+        });
+
+    }
+
+    async setOptions() {
         //this will be called as soon as i get a response from the server
         let keys = this.state.serverReturned.columns;
         let options = [];
         for (let i = 0; i < keys.length; i++) {
-            options.push({label: keys[i], value: keys[i]});
+            options.push({label: <button>{keys[i]}</button>, value: keys[i]});
         }
         //fill up my options array->make it into a state
-        console.log(options);
         this.setState({
             options: options,
         })
     }
 
-    async getLocations() {
+    async setLocations() {
 
-        let response = this.state.serverReturned.locations;
-        console.log(response);
-        let tempArray = [];
-
-        for(let i = 0; i < response.length; i++) {
-            let value = response[i].extraInfo.code;
-            let label = response[i].extraInfo.name;
-            tempArray.push({label: label, value: value});
+        let locations = this.state.serverReturned.locations;
+        let codes = [];
+        let codeOptions = [];
+        for (let i = 0; i < locations.length; i++) {
+            let value = locations[i];
+            codes.push(value.extraInfo.code);
+            codeOptions.push({label: <button>value.extraInfo.name</button>, value: value.extraInfo.code});
         }
 
 
         this.setState({
-            locationNames: tempArray
+            locationCodes: codes,
+            locationCodeOptions: codeOptions,
+            locations: locations,
         })
     }
 
@@ -290,7 +347,7 @@ class Home extends React.Component {
             // Attempt to send `newMap` via a POST request
             // Notice how the end of the url below matches what the server is listening on (found in java code)
             // By default, Spark uses port 4567
-            let serverUrl = window.location.href.substring(0, window.location.href.length - 6) + ":4567/testing";
+            let serverUrl = window.location.href.substring(0, window.location.href.length - 6) + ":3333/testing";
             let jsonReturned = await
                 fetch(serverUrl,
                     {
@@ -306,8 +363,15 @@ class Home extends React.Component {
             });
             //(tags isn't really used, it is mostly for debugging purposes)
             /*serverReturned has svg, locations, columns*/
-            this.getOptions();
-            this.getLocations();
+            if (JSON.parse(ret).response == "query" || JSON.parse(ret).response == "upload") {
+                this.setOptions();
+            }
+            if (JSON.parse(ret).response == "upload") {
+                this.setState({
+                    responseType: upload
+                })
+            }
+            this.setLocations();
             // Log the received JSON to the browser console
             console.log("Got back ", JSON.parse(ret));
             // set the serverReturned state variable to the received json.
@@ -320,16 +384,7 @@ class Home extends React.Component {
         }
     }
 
-    async handleLoadItinerary(event) {
-
-    }
-    async handlePlan(event){
-        event.preventDefault();
-        let selection = this.state.codes;
-        console.log("selection: "+selection);
-        this.fetch("svg",selection);
-    }
-    async handleClearButton(event) {
+    async handleClearAttributesButton(event) {
         event.preventDefault();
         this.setState({
             selectedAttributes: [],
@@ -337,50 +392,75 @@ class Home extends React.Component {
         //make the selectedAttributes array clear
     }
 
+    async handleClearLocationsButton(event) {
+        event.preventDefault();
+        this.setState({
+            selectedLocations: [],
+        })
+    }
+
+    async handleAddAllAttributesButton(event) {
+        event.preventDefault();
+        this.setState({
+            selectedAttributes: this.state.serverReturned.columns,
+        })
+    }
+
+    async handleAddAllLocationsButton(event) {
+        event.preventDefault();
+        this.setState({
+            selectedLocations: this.state.locationCodes,
+        })
+    }
     async handleShowItinerary(event) {
         if (!this.state.serverReturned) return;
         event.preventDefault();
+        let selection = this.state.selectedLocations;
+        if (this.props.sysFile) {
+            selection = this.state.locationCodes;
+        }
+
+        this.fetch("svg", selection);
         let input = this.state.serverReturned;
         this.props.dataShowItinerary(input.locations);
         //make the raw pairs
-        this.props.showSVG(this.state.serverReturned.svg);
+        this.props.showSVG(input.contents);
         //make the svg prop
     }
 
-    async handleSelectedLocation(event) {
-        let arrayLocation = this.state.selectedLocations;
+    async handleSelectedLocation(input) {
+        let selectedLocations = this.state.selectedLocations;
         let contains = false;
 
-        for(let i = 0; i < arrayLocation.length; i++) {
-            if(JSON.stringify(arrayLocation[i]) === JSON.stringify(event)) {
+        for (let i = 0; i < selectedLocations.length; i++) {
+            if (selectedLocations[i] === input[0].value) {
                 contains = true;
-                console.log(arrayLocation[i]);
             }
         }
-        let result=[];
-        for(let i =0;i<arrayLocation.length;i++){
-            result.push(JSON.parse(JSON.stringify(arrayLocation))[i][0].value);
-        }
-        if(arrayLocation && !contains) { {/* If the arrayLocation exist AND does not contain the new location, add it */}
-            arrayLocation.push(event);
+
+        if (selectedLocations && !contains) {
+            {/* If the arrayLocation exist AND does not contain the new location, add it */
+            }
+            selectedLocations.push(input[0].value);
             this.setState({
-                selectedLocations: arrayLocation,
+                selectedLocations: selectedLocations,
             })
         }
-        else if(arrayLocation) { {/* If the arrayLocation AND contains the new location, do nothing*/}
+        else if (selectedLocations) {
+            {/* If the arrayLocation AND contains the new location, do nothing*/
+            }
             this.setState({
-                selectedLocations: arrayLocation,
+                selectedLocations: selectedLocations,
             })
         }
-        else { {/* If the arrayLocation is empty/null, then we need to create a new one with the new location (event)*/}
+        else {
+            {/* If the arrayLocation is empty/null, then we need to create a new one with the new location (event)*/
+            }
             this.setState({
-                selectedLocations: event,
+                selectedLocations: input[0].value,
             })
 
         }
-        this.setState({
-            codes:result
-        })
     }
 
     async handleTagSearch(event) {
@@ -388,34 +468,34 @@ class Home extends React.Component {
         if (!this.state.serverReturned) return;
         let input = event;
         //save the event
-        let ss = this.state.selectedAttributes;
+        let selectedAttributes = this.state.selectedAttributes;
         //selectedAttributes is my current array of attributes
         let bool = true;
         //switch for later
-        for (let i = 0; i < ss.length; i++) {
-            if (JSON.stringify(ss[i]) === JSON.stringify(input)) {
+        for (let i = 0; i < selectedAttributes.length; i++) {
+            if (selectedAttributes[i] === input[0].value) {
                 //if i have an attribute selectedAttributes, i don't want to display it twice... so ignore it
                 bool = false;
             }
             // console.log("bool:"+bool);
         }
-        if (ss && bool) {
+        if (selectedAttributes && bool) {
             //if both are on then add the input to the selectedAttributes array
-            ss.push(input);
+            selectedAttributes.push(input[0].value);
             this.setState({
-                selectedAttributes: ss,
+                selectedAttributes: selectedAttributes,
             })
         }
-        else if (ss) {
+        else if (selectedAttributes) {
             //if only ss is defined then this means do nothing
             this.setState({
-                selectedAttributes: ss,
+                selectedAttributes: selectedAttributes,
             });
         }
         else {
             //if ss is undefined then i have an array of one element, add it
             this.setState({
-                selectedAttributes: input,
+                selectedAttributes: input[0].value,
             })
         }
     }

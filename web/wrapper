@@ -1,7 +1,74 @@
 #!/bin/bash
-cd ..
-mvn package
-cd web
-npm install
-npm run build
-./ss "java -cp ../target/T29-4.0.0.jar edu.csu2017fa314.T29.TripCo" "npm start"
+usage(){
+  echo "$0: [optional: <client/server>] [optional: <-b, -r>]
+  b: build (recompile and run)
+  r: run (just run)" 2>&1
+  exit 1
+}
+package(){
+ cd ..
+ mvn package
+ cd web
+}
+ports(){
+  checkports 3333 #server listening port
+  checkports 9000 #client listening port
+}
+node(){
+  npm install
+  npm run build
+}
+runplainly(){
+  ports
+  ./ss "$runserver" "$runclient"
+}
+runserver="java -cp ../target/T29-4.0.0.jar edu.csu2017fa314.T29.TripCo"
+runclient="npm start"
+if (( $#==0 )); then
+  package
+  node
+  runplainly
+elif (( $#==1 )); then #specify client or server from the command line
+  machine=$1
+  if [[ "$machine" = "server" ]]; then
+    package
+    ports
+    exec $runserver
+  elif [[ "$machine" = "client" ]]; then
+    ports
+    node
+    exec $runclient
+  else
+    usage
+  fi
+elif (( $#==2 )); then #i want to run both but only compile one
+  machine=$1
+  option=$2 #-b or -r
+  if [[ "$machine" = "server" ]]; then
+    if [[ "$option" = "-b" ]]; then
+      package
+      runplainly
+    elif [[ "$option" = "-r" ]]; then
+      runplainly
+    else
+      usage
+    fi
+  elif [[ "$machine" = "client" ]]; then
+    if [[ "$option" = "-b" ]]; then
+      npm run build
+      runplainly
+    elif [[ "$option" = "-bi" ]]; then
+      node
+      runplainly
+    elif [[ "$option" = "-r" ]]; then
+      runplainly
+    else
+      usage
+    fi
+  else
+    usage
+  fi
+else
+  usage
+fi
+

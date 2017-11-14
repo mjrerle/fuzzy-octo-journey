@@ -13,6 +13,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static spark.Spark.port;
 import static spark.Spark.post;
 
 /**
@@ -112,7 +113,7 @@ public class Server {
      */
     public void serve() {
         Gson g = new Gson();
-
+        port(3333);
         post("/testing", (rec, res) -> {
             return g.toJson(testing(rec, res));
         });
@@ -254,15 +255,17 @@ public class Server {
         } else {
             //opcode is likely "none"
             // so I want the raw order->need a method for this in Distance Calculator
-            locations = new ArrayList<>();
+            locations = distanceCalculator.getLocations();
         }
-
+        ArrayList<Location> queryResults = queryBuilder.query(queryString);
+        HashMap<String, String> extra = queryResults.get(0).getExtraInfo();
+        Object columns[] = extra.keySet().toArray();
         //
         SVG svg = new SVG(locations);
         String map = svg.getContents();
         int wid = (int) svg.getWidth();
         int hei = (int) svg.getHeight();
-        ServerSvgResponse ssres = new ServerSvgResponse(wid, hei, map, locations);
+        ServerSvgResponse ssres = new ServerSvgResponse(wid, hei, map, locations, columns);
 
         return gson.toJson(ssres, ServerSvgResponse.class);
     }
@@ -307,12 +310,14 @@ public class Server {
 
         // Query database with queryString
         ArrayList<Location> queryResults = queryBuilder.query(queryString);
+        HashMap<String, String> map = queryResults.get(0).getExtraInfo();
+        Object columns[] = map.keySet().toArray();
         SVG svg = new SVG(queryResults);
         // Same response structure as the query request
         int wid = (int)svg.getWidth();
         int hei = (int)svg.getHeight();
         String contents = svg.getContents();
-        ServerSvgResponse serverSvgResponse = new ServerSvgResponse(wid,hei,contents,queryResults);
+        ServerSvgResponse serverSvgResponse = new ServerSvgResponse(wid, hei, contents, queryResults, columns);
 
         return gson.toJson(serverSvgResponse, ServerSvgResponse.class);
     }
