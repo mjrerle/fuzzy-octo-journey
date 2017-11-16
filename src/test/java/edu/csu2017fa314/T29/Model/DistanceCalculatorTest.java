@@ -293,4 +293,18 @@ public class DistanceCalculatorTest {
         Assert.assertEquals("lyzhu", shortestTrip.get(0).getId());
     }
 
+    @Test
+    public void testNoOptimization() {
+        locationRecords = new LocationRecords("data/test/FullTest.csv");
+        ArrayList<Location> locations = locationRecords.getLocations();
+        DistanceCalculator distanceCalculator = new DistanceCalculator(locations);
+
+        ArrayList<Location> trip = distanceCalculator.noOptimization();
+
+        Assert.assertNotNull(trip);
+        Assert.assertTrue(trip.get(0).getDistance() != 0);
+        Assert.assertTrue(trip.get(trip.size()-1).getDistance() != 0);
+        System.out.println("Distance from last node: " + trip.get(trip.size()-1).getDistance());
+    }
+
 }
