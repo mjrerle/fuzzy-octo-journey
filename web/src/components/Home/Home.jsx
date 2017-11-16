@@ -15,7 +15,8 @@ class Home extends React.Component {
             op_level: "none",
             selectedAttributes: [],
             selectedLocations: [],
-            codes:[]
+            codes:[],
+            uploadBool: false
         }
     }
 
@@ -279,6 +280,7 @@ class Home extends React.Component {
                     // Do something with the file:
                     this.props.browseFile(JsonObj);
                     this.fetch("upload", this.props.sysFile.destinations);
+                    this.state.uploadBool = true;
 
                 };
             })(file).bind(this);
@@ -309,7 +311,7 @@ class Home extends React.Component {
         for (let i = 0; i < locations.length; i++) {
             let value = locations[i];
             codes.push(value.extraInfo.code);
-            codeOptions.push({label: <button>value.extraInfo.name</button>, value: value.extraInfo.code});
+            codeOptions.push({label: <button>{value.extraInfo.name}</button>, value: value.extraInfo.code});
         }
 
 
@@ -416,8 +418,10 @@ class Home extends React.Component {
         if (!this.state.serverReturned) return;
         event.preventDefault();
         let selection = this.state.selectedLocations;
-        if (this.props.sysFile) {
+
+        if (this.props.uploadBool) {
             selection = this.state.locationCodes;
+            console.log("I ran props.sysFile");
         }
 
         this.fetch("svg", selection);
@@ -439,23 +443,20 @@ class Home extends React.Component {
         }
 
         if (selectedLocations && !contains) {
-            {/* If the arrayLocation exist AND does not contain the new location, add it */
-            }
+            {/* If the arrayLocation exist AND does not contain the new location, add it */}
             selectedLocations.push(input[0].value);
             this.setState({
                 selectedLocations: selectedLocations,
             })
         }
         else if (selectedLocations) {
-            {/* If the arrayLocation AND contains the new location, do nothing*/
-            }
+            {/* If the arrayLocation AND contains the new location, do nothing*/}
             this.setState({
                 selectedLocations: selectedLocations,
             })
         }
         else {
-            {/* If the arrayLocation is empty/null, then we need to create a new one with the new location (event)*/
-            }
+            {/* If the arrayLocation is empty/null, then we need to create a new one with the new location (event)*/}
             this.setState({
                 selectedLocations: input[0].value,
             })
