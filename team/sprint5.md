@@ -54,7 +54,7 @@ Epics planned for this release.
 
 Date | Tasks done now | Tasks done next | Impediments | Coverage | Smells | Duplication | Technical Debt Ratio
 :--- | :--- | :--- | :--- | ---: | ---: | ---: | ---:
-*date* | *issue numbers only* | *issue numbers only* | *High* | *50* | *10* | *20* | *15*
+11/15 | #263, #258 | #277, #272, #273, #274, #270 | 3-opt | 61% classes, 69% line coverage | 23 | 20 | 12.8
  | | | | | | | |
  
 
