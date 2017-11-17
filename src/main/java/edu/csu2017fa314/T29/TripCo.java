@@ -1,15 +1,6 @@
 package edu.csu2017fa314.T29;
 
-import edu.csu2017fa314.T29.Model.DistanceCalculator;
-import edu.csu2017fa314.T29.Model.Location;
-import edu.csu2017fa314.T29.Model.LocationRecords;
-import edu.csu2017fa314.T29.View.SVG;
 import edu.csu2017fa314.T29.View.Server;
-import edu.csu2017fa314.T29.View.View;
-import sun.awt.image.ImageWatched;
-
-import java.io.IOException;
-import java.util.LinkedList;
 
 public class TripCo {
 
