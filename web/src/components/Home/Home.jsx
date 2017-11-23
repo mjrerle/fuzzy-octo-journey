@@ -4,6 +4,16 @@ import Select from 'react-select';
 import Pair from './Pair/Pair.jsx';
 import InlineSVG from "svg-inline-react";
 
+function searchedHeaderText (query) {
+
+    /* The following div is some text that will
+      * describe the section in which the user will
+      * select the locations that was returned from the query */
+    return (<div>
+            <h4><strong>You searched for {query}, please select which locations you would like to add: </strong></h4>
+        </div>);
+}
+
 class Home extends React.Component {
     constructor(props) {
         super(props);
@@ -18,6 +28,22 @@ class Home extends React.Component {
             codes:[],
             uploadBool: false
         }
+    };
+
+
+
+    webHeader() {
+        return (
+            /* The following code is the Header of the Home Page */
+        <div className="header" style={{position: "relative"}}>
+            <div className="row" style={{borderStyle: "solid"}}>
+                <div className="teamName" style={{textAlign: "center"}}><h2><strong>Team 29 - SPB</strong></h2></div>
+                <div className="col" style={{textAlign: "center"}}><h3><strong>Itinerary Builder 5.0</strong>
+                </h3></div>
+            </div>
+            <br/>
+        </div>
+        )
     }
 
     render() {
@@ -34,12 +60,12 @@ class Home extends React.Component {
         let showmap;
         let showtable;
         let tripHeader;
+        let webHeader = this.webHeader();
 
         let displayAttributes = [];
         let displayLocations = [];
 
         let query = this.state.query;
-        let searchedHeaderText;
         let possibleLocations;
 
         //holds the fetched query
@@ -53,15 +79,17 @@ class Home extends React.Component {
             searchedHeaderText = (
             <div>
                 <h4><strong>You searched for {query}, please select which locations you would like to add: </strong></h4>
-            </div>
-            );
+            </div>);
 
+            {/* The following footer will sit below the searchedHeaderText,
+              * and contains a button that will plan/show the itinerary */}
             tripHeader = (
             <footer>
                 <h4><strong>My Trip</strong></h4>
                 <button name="show-itinerary" onClick={this.handleShowItinerary.bind(this)}>Show Trip</button>
-            </footer>
-            );
+            </footer>);
+
+
 
             extraInfoHeader = (
             <div>
@@ -70,9 +98,10 @@ class Home extends React.Component {
 
             clearAttributesButton =
                 <button onClick={this.handleClearAttributesButton.bind(this)}>Clear Attributes</button>;
-            //click button to clear all attributes selectedAttributes (not required but done for debugging purposes)
             addAllAttributesButton =
                 <button onClick={this.handleAddAllAttributesButton.bind(this)}>Add All Attributes</button>;
+
+
             possibleLocations =
                 <Select
                     options={this.state.locationCodeOptions}
@@ -144,22 +173,13 @@ class Home extends React.Component {
         }
         return (
             <div className="home-container">
-
-                {/* The following code is the Header of the Home Page */}
-                <extraInfoHeader className="header">
-                    <div className="row" style={{borderStyle: "solid"}}>
-                        <div className="col" style={{textAlign: "center"}}><h2><strong>Team 29 - SPB</strong></h2></div>
-                        <div className="col" style={{textAlign: "center"}}><h3><strong>Itinerary Builder 4.0</strong>
-                        </h3></div>
-                    </div>
-                    <br/>
-                </extraInfoHeader>
+                {webHeader}
 
                 {/* The following code is the Main Body of the the Home Page, it has a Form layout */}
-                <div className="main">
-                    <section style={{float: "left"}}>
-                        <h4><strong>Search</strong></h4>
-                        <form id="searchForm" action="">
+                <div className="main" style={{position: "relative"}}>
+                    <section>
+                        <form id="searchForm" action="" style={{position: "relative", float: "left"}}>
+                            <h4><strong>Search</strong></h4>
                             <input type="text" name="textField" placeholder="ie: Denver"/>
                             <i> or </i>
                             <Dropzone className="dropzone-style" onDrop={this.handleLoadItinerary.bind(this)}>
@@ -167,7 +187,6 @@ class Home extends React.Component {
                             </Dropzone>
                             <button name="save-itinerary" onClick={this.handleSaveItinerary.bind(this)}>Save Trip
                             </button>
-
 
                             <br/><br/>
 
@@ -191,39 +210,38 @@ class Home extends React.Component {
                             <input type="button" name="searchButton" value="Search"
                                    onClick={this.handleSearchEvent.bind(this)}/>
                         </form>
-
-                    </section>
-
-                    <section className="extraInfo" style={{float: "right", marginRight: "10%"}}>
+                        <section className="extraInfo" style={{position: "relative", float: "right", marginRight: "10%"}}>
                             {extraInfoHeader}
                             {extrainfo}
-                        <br/>
-                        {addAllAttributesButton}
-                        {clearAttributesButton}
-                        <table>
-                            <tr>
-                                {displayAttributes}
-                            </tr>
-                        </table>
+                            <br/>
+                            {addAllAttributesButton}
+                            {clearAttributesButton}
+                            <table>
+                                <tr>
+                                    {displayAttributes}
+                                </tr>
+                            </table>
+                        </section>
                     </section>
                 </div>
 
 
-                <section className="searchedFor" style={{float: "left", clear: "both"}}>
-                    {searchedHeaderText}
+                <section className="searchedFor" style={{clear: "both", position: "relative"}}>
+                    {searchedHeaderText(this.state.query)}
                     {possibleLocations}
+                    <br/>
                     {addAllLocationsButton}
                     {clearLocationsButton}
                     {displayLocations}
                 </section>
 
-
-                <div id="trip" style={{bottom: 0, position: "absolute", height: "25%"}}>
+                <br/><br/>
+                <section id="trip" style={{bottom: 0, position: "relative", height: "10%"}}>
                     {tripHeader}
                     {showmap}
                     {showtable}
                     <br/>
-                </div>
+                </section>
             </div>
         )
     };
