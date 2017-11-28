@@ -120,24 +120,24 @@ public class SVG {
         contents += "</svg>";
     }
 
-    private void drawLine(int i) {
+    private void drawLine(int index) {
         contents += String.format("<line id=\"%d\" "
                         + "x1=\"%f\" y1=\"%f\" "
                         + "x2=\"%f\" y2=\"%f\" "
                         + "stroke-width=\"1.5\" "
                         + "stroke=\"#0000FF\"/>\n"
-                , i
-                , longitudeToSVG(locations.get(i).getLongitude()), latitudeToSVG(locations.get(i).getLatitude())
-                , longitudeToSVG(locations.get(i + 1).getLongitude()), latitudeToSVG(locations.get(i + 1).getLatitude()));
+                , index
+                , longitudeToSVG(locations.get(index).getLongitude()), latitudeToSVG(locations.get(index).getLatitude())
+                , longitudeToSVG(locations.get(index + 1).getLongitude()), latitudeToSVG(locations.get(index + 1).getLatitude()));
     }
 
-    private void drawLastLine(int i) {
+    private void drawLastLine(int index) {
         contents += String.format("<line id=\"%d\" "
                         + "x1=\"%f\" y1=\"%f\" x2=\"%f\" "
                         + "y2=\"%f\" stroke-width=\"1.5\" "
                         + "stroke=\"#0000FF\"/>\n"
-                , i
-                , longitudeToSVG(locations.get(i).getLongitude()), latitudeToSVG(locations.get(i).getLatitude())
+                , index
+                , longitudeToSVG(locations.get(index).getLongitude()), latitudeToSVG(locations.get(index).getLatitude())
                 , longitudeToSVG(locations.get(0).getLongitude()), latitudeToSVG(locations.get(0).getLatitude()));
     }
     //big friggin string because io sucks

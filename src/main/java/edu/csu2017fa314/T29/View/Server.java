@@ -173,7 +173,8 @@ public class Server {
             // assume that I am only getting an array of codes
             // assume if the request is not "query" it is "svg":
             default:
-                //serve the svg with the information in description (should be a bunch of destinations)
+                //serve the svg with the information in description
+                // (should be a bunch of destinations)
                 return serveSvg(srec.getOp_level(), srec.getDescription());
             //0 should be the opcode, next is my dests
         }
@@ -218,12 +219,18 @@ public class Server {
         ArrayList<Location> temp = queryBuilder.query(queryString);
         DistanceCalculator distanceCalculator = new DistanceCalculator(temp);
 
-        ServerSvgResponse ssres = generateSVGResponse(opcode, queryBuilder, queryString, distanceCalculator);
+        ServerSvgResponse ssres = generateSvgResponse(opcode,
+                queryBuilder,
+                queryString,
+                distanceCalculator);
 
         return gson.toJson(ssres, ServerSvgResponse.class);
     }
 
-    private ServerSvgResponse generateSVGResponse(String opcode, QueryBuilder queryBuilder, String queryString, DistanceCalculator distanceCalculator) {
+    private ServerSvgResponse generateSvgResponse(String opcode,
+                                                  QueryBuilder queryBuilder,
+                                                  String queryString,
+                                                  DistanceCalculator distanceCalculator) {
         ArrayList<Location> locations;
         locations = checkOpcode(opcode, distanceCalculator);
         ArrayList<Location> queryResults = queryBuilder.query(queryString);
@@ -305,7 +312,8 @@ public class Server {
         return gson.toJson(serverSvgResponse, ServerSvgResponse.class);
     }
 
-    private ServerSvgResponse generateUploadResponse(QueryBuilder queryBuilder, String queryString) {
+    private ServerSvgResponse generateUploadResponse(QueryBuilder queryBuilder,
+                                                     String queryString) {
         ArrayList<Location> queryResults = queryBuilder.query(queryString);
         HashMap<String, String> map = queryResults.get(0).getExtraInfo();
         Object columns[] = map.keySet().toArray();

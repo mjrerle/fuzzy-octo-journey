@@ -9,8 +9,10 @@ import java.util.HashMap;
 public class QueryBuilder {
     private String user = "";
     private String pass = "";
-    private String myDriver = "com.mysql.jdbc.Driver"; // Add dependencies in pom.xml
-    private String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314"; // Use this line if connecting inside CSU's network
+    private String myDriver = "com.mysql.jdbc.Driver";
+    // Add dependencies in pom.xml
+    private String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
+    // Use this line if connecting inside CSU's network
 
     QueryBuilder(String user, String pass) {
         this.user = user;
@@ -39,8 +41,11 @@ public class QueryBuilder {
         }
     }
 
-    private void submitAQuery(String query, ArrayList<Location> locations, Statement st) throws SQLException {
-        try (ResultSet rs = st.executeQuery(query)) { //create a hashmap from all the column names in the table
+    private void submitAQuery(String query,
+                              ArrayList<Location> locations,
+                              Statement st) throws SQLException {
+        try (ResultSet rs = st.executeQuery(query)) {
+            //create a hashmap from all the column names in the table
             HashMap<String, String> info = new HashMap<>();
 
             ResultSetMetaData md = rs.getMetaData();
@@ -50,7 +55,9 @@ public class QueryBuilder {
         }
     }
 
-    private void makeLocations(ArrayList<Location> locations, ResultSet rs, HashMap<String, String> info) throws SQLException {
+    private void makeLocations(ArrayList<Location> locations,
+                               ResultSet rs,
+                               HashMap<String, String> info) throws SQLException {
         while (rs.next()) {
             for (String keys : info.keySet()) {
                 info.put(keys, rs.getString(keys));//then assign the values to the column name keys
