@@ -19,6 +19,10 @@ public class QueryBuilder {
         this.pass = pass;
     }
 
+    /**
+     * @param query a simple search like "denver" to be examined by the database
+     * @return an arraylist of locations (raw order, no distances calculated)
+     */
     public ArrayList<Location> query(String query) {
         // Command line args contain username and password
         ArrayList<Location> locations = new ArrayList<>();
