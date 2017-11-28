@@ -84,15 +84,15 @@ public class SVG {
         return svgx;
     }
 
-    public double getWidth() {
+    double getWidth() {
         return width;
     }
 
-    public double getHeight() {
+    double getHeight() {
         return height;
     }
 
-    public String getContents() {
+    String getContents() {
         return contents;
     }
 
@@ -104,7 +104,7 @@ public class SVG {
      * then, draw the lines given the arraylist of locations
      * for each line, convert the coordinate to an svg coordinate and draw
      */
-    public void writeContents() {
+    private void writeContents() {
         contents += "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
         contents += "<svg xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\"" +
                 " version=\"1.0\" width=\"1024\" height=\"512\" id=\"svgUno\">";
@@ -112,25 +112,33 @@ public class SVG {
 
         for (int i = 0; i < locations.size(); i++) {
             if (i == locations.size() - 1) {
-                contents += String.format("<line id=\"%d\" "
-                                + "x1=\"%f\" y1=\"%f\" x2=\"%f\" "
-                                + "y2=\"%f\" stroke-width=\"1.5\" "
-                                + "stroke=\"#0000FF\"/>\n"
-                        , i
-                        , longitudeToSVG(locations.get(i).getLongitude()), latitudeToSVG(locations.get(i).getLatitude())
-                        , longitudeToSVG(locations.get(0).getLongitude()), latitudeToSVG(locations.get(0).getLatitude()));
+                drawLastLine(i);
             } else {
-                contents += String.format("<line id=\"%d\" "
-                                + "x1=\"%f\" y1=\"%f\" "
-                                + "x2=\"%f\" y2=\"%f\" "
-                                + "stroke-width=\"1.5\" "
-                                + "stroke=\"#0000FF\"/>\n"
-                        , i
-                        , longitudeToSVG(locations.get(i).getLongitude()), latitudeToSVG(locations.get(i).getLatitude())
-                        , longitudeToSVG(locations.get(i + 1).getLongitude()), latitudeToSVG(locations.get(i + 1).getLatitude()));
+                drawLine(i);
             }
         }
         contents += "</svg>";
+    }
+
+    private void drawLine(int i) {
+        contents += String.format("<line id=\"%d\" "
+                        + "x1=\"%f\" y1=\"%f\" "
+                        + "x2=\"%f\" y2=\"%f\" "
+                        + "stroke-width=\"1.5\" "
+                        + "stroke=\"#0000FF\"/>\n"
+                , i
+                , longitudeToSVG(locations.get(i).getLongitude()), latitudeToSVG(locations.get(i).getLatitude())
+                , longitudeToSVG(locations.get(i + 1).getLongitude()), latitudeToSVG(locations.get(i + 1).getLatitude()));
+    }
+
+    private void drawLastLine(int i) {
+        contents += String.format("<line id=\"%d\" "
+                        + "x1=\"%f\" y1=\"%f\" x2=\"%f\" "
+                        + "y2=\"%f\" stroke-width=\"1.5\" "
+                        + "stroke=\"#0000FF\"/>\n"
+                , i
+                , longitudeToSVG(locations.get(i).getLongitude()), latitudeToSVG(locations.get(i).getLatitude())
+                , longitudeToSVG(locations.get(0).getLongitude()), latitudeToSVG(locations.get(0).getLatitude()));
     }
     //big friggin string because io sucks
 
