@@ -19,10 +19,12 @@ public class QueryBuilder {
         this.pass = pass;
     }
 
-    public ArrayList<Location> query(String query) { // Command line args contain username and password
+    public ArrayList<Location> query(String query) {
+        // Command line args contain username and password
         ArrayList<Location> locations = new ArrayList<>();
 
-        //String myUrl = "jdbc:mysql://localhost/cs314"; // Use this line if tunneling 3306 traffic through shell
+        //String myUrl = "jdbc:mysql://localhost/cs314";
+        // Use this line if tunneling 3306 traffic through shell
         try { // Connect to the database
             Class.forName(myDriver);
             connect(query, locations);
@@ -34,8 +36,10 @@ public class QueryBuilder {
     }
 
     private void connect(String query, ArrayList<Location> locations) throws SQLException {
-        try (Connection conn = DriverManager.getConnection(myUrl, user, pass)) { // Create a statement
-            try (Statement st = conn.createStatement()) { // Submit a query
+        try (Connection conn = DriverManager.getConnection(myUrl, user, pass)) {
+            // Create a statement
+            try (Statement st = conn.createStatement()) {
+                // Submit a query
                 submitAQuery(query, locations, st);
             }
         }
@@ -49,7 +53,7 @@ public class QueryBuilder {
             HashMap<String, String> info = new HashMap<>();
 
             ResultSetMetaData md = rs.getMetaData();
-            makeHashMap(info, md);
+            modifyHashMap(info, md);
 
             makeLocations(locations, rs, info);
         }
@@ -60,15 +64,18 @@ public class QueryBuilder {
                                HashMap<String, String> info) throws SQLException {
         while (rs.next()) {
             for (String keys : info.keySet()) {
-                info.put(keys, rs.getString(keys));//then assign the values to the column name keys
+                info.put(keys, rs.getString(keys));
+                //then assign the values to the column name keys
             }
             locations.add(new Location(info));
         }
     }
 
-    private void makeHashMap(HashMap<String, String> info, ResultSetMetaData md) throws SQLException {
+    private void modifyHashMap(HashMap<String, String> info,
+                               ResultSetMetaData md) throws SQLException {
         int columnNumber = md.getColumnCount();
-        for (int i = 1; i <= columnNumber; i++) { //<= because the first column is 1
+        for (int i = 1; i <= columnNumber; i++) {
+            //<= because the first column is 1
             info.put(md.getColumnName(i), "");
         }
     }

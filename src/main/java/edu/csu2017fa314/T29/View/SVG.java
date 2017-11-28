@@ -125,20 +125,24 @@ public class SVG {
                         + "x1=\"%f\" y1=\"%f\" "
                         + "x2=\"%f\" y2=\"%f\" "
                         + "stroke-width=\"1.5\" "
-                        + "stroke=\"#0000FF\"/>\n"
-                , index
-                , longitudeToSVG(locations.get(index).getLongitude()), latitudeToSVG(locations.get(index).getLatitude())
-                , longitudeToSVG(locations.get(index + 1).getLongitude()), latitudeToSVG(locations.get(index + 1).getLatitude()));
+                        + "stroke=\"#0000FF\"/>\n",
+                index,
+                longitudeToSVG(locations.get(index).getLongitude()),
+                latitudeToSVG(locations.get(index).getLatitude()),
+                longitudeToSVG(locations.get(index + 1).getLongitude()),
+                latitudeToSVG(locations.get(index + 1).getLatitude()));
     }
 
     private void drawLastLine(int index) {
         contents += String.format("<line id=\"%d\" "
                         + "x1=\"%f\" y1=\"%f\" x2=\"%f\" "
                         + "y2=\"%f\" stroke-width=\"1.5\" "
-                        + "stroke=\"#0000FF\"/>\n"
-                , index
-                , longitudeToSVG(locations.get(index).getLongitude()), latitudeToSVG(locations.get(index).getLatitude())
-                , longitudeToSVG(locations.get(0).getLongitude()), latitudeToSVG(locations.get(0).getLatitude()));
+                        + "stroke=\"#0000FF\"/>\n",
+                index,
+                longitudeToSVG(locations.get(index).getLongitude()),
+                latitudeToSVG(locations.get(index).getLatitude()),
+                longitudeToSVG(locations.get(0).getLongitude()),
+                latitudeToSVG(locations.get(0).getLatitude()));
     }
     //big friggin string because io sucks
 
