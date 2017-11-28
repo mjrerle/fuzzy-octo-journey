@@ -4,16 +4,6 @@ import Select from 'react-select';
 import Pair from './Pair/Pair.jsx';
 import InlineSVG from "svg-inline-react";
 
-function searchedHeaderText (query) {
-
-    /* The following div is some text that will
-      * describe the section in which the user will
-      * select the locations that was returned from the query */
-    return (<div>
-            <h4><strong>You searched for {query}, please select which locations you would like to add: </strong></h4>
-        </div>);
-}
-
 class Home extends React.Component {
     constructor(props) {
         super(props);
@@ -30,45 +20,190 @@ class Home extends React.Component {
         }
     };
 
-
-
     webHeader() {
+        /* The following code is the Header of the Home Page */
+        return(
+            <div className="header" style={{position: "relative"}}>
+                <div className="row" style={{borderStyle: "solid"}}>
+                    <div className="teamName" style={{textAlign: "center"}}><h2><strong>Team 29 - SPB</strong></h2></div>
+                    <div className="col" style={{textAlign: "center"}}><h3><strong>Itinerary Builder 5.0</strong>
+                    </h3></div>
+                </div>
+                <br/>
+            </div>);
+    }
+
+    searchedHeaderText (hideShow) {
+        /* The following div is some text that will
+          * describe the section in which the user will
+          * select the locations that was returned from the query */
         return (
-            /* The following code is the Header of the Home Page */
-        <div className="header" style={{position: "relative"}}>
-            <div className="row" style={{borderStyle: "solid"}}>
-                <div className="teamName" style={{textAlign: "center"}}><h2><strong>Team 29 - SPB</strong></h2></div>
-                <div className="col" style={{textAlign: "center"}}><h3><strong>Itinerary Builder 5.0</strong>
-                </h3></div>
+            <div style = {{display: hideShow}} >
+                <h4><strong>You searched for {this.state.query}, please select which locations you would like to add: </strong></h4>
+            </div>);
+    }
+
+    extraInfoHeader(hideShow) {
+        return (
+            <div style = {{display: hideShow}} >
+                <h4><strong>Show more information for {this.state.query} ({this.state.locationCodes.length} results)</strong></h4>
+            </div>);
+    }
+
+    extraInfo(hideShow) {
+        return (
+            <Select
+                options={this.state.options}
+                multi
+                onChange={this.handleTagSearch.bind(this)}
+            />);
+    }
+
+    possibleLocations(hideShow) {
+        return(
+            <Select style={{display: hideShow}}
+                options={this.state.locationCodeOptions}
+                multi
+                onChange={this.handleSelectedLocation.bind(this)}
+            />);
+    }
+
+    tripHeader(hideShow) {
+        return(
+            <footer style={{display: hideShow}}>
+                <h4><strong>My Trip</strong></h4>
+                <button name="show-itinerary" onClick={this.handleShowItinerary.bind(this)}>Show Trip</button>
+            </footer>);
+    }
+
+    clearButton(type) {
+        if (type === "Attributes") {
+            return (
+                <button onClick={this.handleClearAttributesButton.bind(this)}>Clear Attributes</button>
+            )
+        } else {
+            return (
+                <button onClick={this.handleClearLocationsButton.bind(this)}>Clear Locations</button>
+            )
+        }
+    }
+
+    addAllButton(type) {
+        if (type === "Attributes") {
+            return (
+                <button onClick={this.handleAddAllAttributesButton.bind(this)}>Add All Attributes</button>
+            )
+        } else {
+            return (
+                <button onClick={this.handleAddAllLocationsButton.bind(this)}>Add All Locations</button>
+            )
+        }
+    }
+
+    itineraryTable(pairs, selectedAttributes) {
+        let total;
+        let p;
+
+        p = pairs.map((pp) => {
+            return <Pair keys={(selectedAttributes)} cumDist={pp.cumDist} startInfo={pp.startInfo}
+                         endInfo={pp.endInfo}/>;
+        });
+
+        total = (pairs[pairs.length - 1].cumDist);
+        //this is switched on by the search event
+        return (<table className="pair-table">
+            <tbody>
+            <tr>
+                <td><h4 style={{color: "blue"}}>Start</h4></td>
+                <td><h4 style={{color: "red"}}>End</h4></td>
+                <td><h4 style={{color: "black"}}>Distance (mi)</h4></td>
+                <td><h4 style={{color: "green"}}>Running Total (mi)</h4></td>
+            </tr>
+            </tbody>
+            {p}
+            <tbody>
+            <tr>
+                <td colSpan="3"><h3 style={{color: "purple"}}>Total miles:</h3></td>
+                <td>{total}</td>
+            </tr>
+            </tbody>
+        </table>);
+    }
+
+    webMain(hideShow, extraInfo, addAllAttributesButton, clearAttributesButton, displayAttributes) {
+
+        return (
+            <div className="main" style={{position: "relative"}}>
+                <section>
+                    <form id="searchForm" action="" style={{position: "relative", float: "left"}}>
+                        <h4><strong>Search</strong></h4>
+                        <input type="text" name="textField" placeholder="ie: Denver"/>
+                        <i> or </i>
+                        <Dropzone className="dropzone-style" onDrop={this.handleLoadItinerary.bind(this)}>
+                            <button type="button">Upload a location file</button>
+                        </Dropzone>
+                        <button name="save-itinerary" onClick={this.handleSaveItinerary.bind(this)}>Save Trip
+                        </button>
+
+                        <br/><br/>
+
+                        <label><i>Choose Optimization Level</i><br/>
+                            <label style={{color: "black"}}>None<input name="opt-level" type="radio" value={"None"}
+                                                                       onChange={this.handleOptimization.bind(this)}/>
+                            </label> <br/>
+                            <label style={{color: "blue"}}>Nearest Neighbor<input name="opt-level" type="radio"
+                                                                                  value={"Nearest Neighbor"}
+                                                                                  onChange={this.handleOptimization.bind(this)}/>
+                            </label><br/>
+                            <label style={{color: "red"}}>2-Opt<input name="opt-level" type="radio" value={"2-Opt"}
+                                                                      onChange={this.handleOptimization.bind(this)}/>
+                            </label><br/>
+                            <label style={{color: "green"}}>3-Opt<input name="opt-level" type="radio" value={"3-Opt"}
+                                                                        onChange={this.handleOptimization.bind(this)}/>
+                            </label>
+                        </label>
+
+                        <br/>
+                        <input type="button" name="searchButton" value="Search"
+                               onClick={this.handleSearchEvent.bind(this)}/>
+                    </form>
+                    {this.webExtraInfo(hideShow, extraInfo, addAllAttributesButton, clearAttributesButton, displayAttributes)}
+                </section>
             </div>
-            <br/>
-        </div>
         )
     }
 
+    webExtraInfo(hideShow, extraInfo, addAllAttributesButton, clearAttributesButton, displayAttributes) {
+        return (
+            <section className="extraInfo" style={{position: "relative", float: "right", marginRight: "10%"}}>
+                {this.extraInfoHeader(hideShow)}
+                {extraInfo}
+                <br/>
+                {addAllAttributesButton}
+                {clearAttributesButton}
+                <table>
+                    <tr>
+                        {displayAttributes}
+                    </tr>
+                </table>
+            </section>
+        )
+    }
     render() {
-        let total = 0;
-        let pairs;
-        let p;
+        let hideShow = "none"
+
         let renderedSVG;
-        let extrainfo;
-        let extraInfoHeader;
+        let extraInfo;
         let clearAttributesButton;
         let addAllAttributesButton;
         let clearLocationsButton;
         let addAllLocationsButton;
-        let showmap;
-        let showtable;
-        let tripHeader;
-        let webHeader = this.webHeader();
-
+        let showMap;
+        let itineraryTable;
+        let possibleLocations = this.possibleLocations(hideShow);
+        let tripHeader = this.tripHeader(hideShow);
         let displayAttributes = [];
         let displayLocations = [];
-
-        let query = this.state.query;
-        let possibleLocations;
-
-        //holds the fetched query
 
         {/* If the server returned some value, then we have
           * information that we queried for, and thus can display
@@ -76,52 +211,27 @@ class Home extends React.Component {
           * and any relevant information with it */}
         if (this.state.serverReturned) {
 
-            searchedHeaderText = (
-            <div>
-                <h4><strong>You searched for {query}, please select which locations you would like to add: </strong></h4>
-            </div>);
+            {/* There are certain sections that should only be displayed
+              * once the server has returned. We control this by using a
+              * variable that is called hideShow.
+              */}
+            hideShow = "block"; {/* When hideShow is "none", the element will be hidden
+                                  * and when it is set to "block", it will be displayed */}
 
-            {/* The following footer will sit below the searchedHeaderText,
-              * and contains a button that will plan/show the itinerary */}
-            tripHeader = (
-            <footer>
-                <h4><strong>My Trip</strong></h4>
-                <button name="show-itinerary" onClick={this.handleShowItinerary.bind(this)}>Show Trip</button>
-            </footer>);
+            {/* We need to reset the state of these web elements with the updated
+              * hideShow value so that they will be displayed with the new information */}
+            possibleLocations = this.possibleLocations(hideShow);
+            tripHeader = this.tripHeader(hideShow);
+            extraInfo = this.extraInfo(hideShow);
 
+            {/* These buttons allow to add/clear all attributes related to the locations */}
+            clearAttributesButton = this.clearButton("Attributes");
+            addAllAttributesButton = this.addAllButton("Attributes");
 
+            {/* These buttons allow to add/clear all locations to the selected locations */}
+            clearLocationsButton = this.clearButton("Locations");
+            addAllLocationsButton = this.addAllButton("Locations");
 
-            extraInfoHeader = (
-            <div>
-                <h4><strong>Show more information for {query} ({this.state.locationCodes.length} results)</strong></h4>
-            </div>);
-
-            clearAttributesButton =
-                <button onClick={this.handleClearAttributesButton.bind(this)}>Clear Attributes</button>;
-            addAllAttributesButton =
-                <button onClick={this.handleAddAllAttributesButton.bind(this)}>Add All Attributes</button>;
-
-
-            possibleLocations =
-                <Select
-                    options={this.state.locationCodeOptions}
-                    multi
-                    onChange={this.handleSelectedLocation.bind(this)}
-                />;
-
-            extrainfo =
-                <Select
-                    options={this.state.options}
-                    multi
-                    onChange={this.handleTagSearch.bind(this)}
-                />;
-            //handles the input for the attribute selection
-            addAllLocationsButton =
-                <button onClick={this.handleAddAllLocationsButton.bind(this)}>Add All Locations</button>;
-            clearLocationsButton =
-                <button onClick={this.handleClearLocationsButton.bind(this)}>Clear Locations</button>;
-
-            pairs = this.props.pairs;
 
             let selectedAttributes = this.state.selectedAttributes;
             selectedAttributes.forEach((att) => {
@@ -131,12 +241,8 @@ class Home extends React.Component {
             selectedLocations.forEach((loc) => {
                 displayLocations.push(<li>{loc}</li>)
             });
-            //this is for showing the currently selectedAttributes attributes
-            // console.log("selection: "+selection);
-            p = pairs.map((pp) => {
-                return <Pair keys={(selectedAttributes)} cumDist={pp.cumDist} startInfo={pp.startInfo}
-                             endInfo={pp.endInfo}/>;
-            });
+
+
             //like before in app.js except this time we explicitly give it key value pairs
             if (this.props.svg) {
                 renderedSVG = (<InlineSVG src={this.props.svg}>SVG</InlineSVG>);
@@ -144,90 +250,24 @@ class Home extends React.Component {
             }
             if (renderedSVG) {
                 //if the map isn't null, make sure it renders
-                showmap = (<label style={{color: "blue"}}><strong><h4>Generated Map</h4></strong>
+                showMap = (<label style={{color: "blue"}}><strong><h4>Generated Map</h4></strong>
                     <br/>
                     {renderedSVG}
                 </label>);
             }
-            if (showmap) {
-                total = (pairs[pairs.length - 1].cumDist);
-                //this is switched on by the search event
-                showtable = (<table className="pair-table">
-                    <tbody>
-                    <tr>
-                        <td><h4 style={{color: "blue"}}>Start</h4></td>
-                        <td><h4 style={{color: "red"}}>End</h4></td>
-                        <td><h4 style={{color: "black"}}>Distance (mi)</h4></td>
-                        <td><h4 style={{color: "green"}}>Running Total (mi)</h4></td>
-                    </tr>
-                    </tbody>
-                    {p}
-                    <tbody>
-                    <tr>
-                        <td colSpan="3"><h3 style={{color: "purple"}}>Total miles:</h3></td>
-                        <td>{total}</td>
-                    </tr>
-                    </tbody>
-                </table>);
+            if (showMap) {
+                itineraryTable = this.itineraryTable(this.props.pairs, this.state.selectedAttributes);
             }
         }
         return (
             <div className="home-container">
-                {webHeader}
+                {this.webHeader()}
 
                 {/* The following code is the Main Body of the the Home Page, it has a Form layout */}
-                <div className="main" style={{position: "relative"}}>
-                    <section>
-                        <form id="searchForm" action="" style={{position: "relative", float: "left"}}>
-                            <h4><strong>Search</strong></h4>
-                            <input type="text" name="textField" placeholder="ie: Denver"/>
-                            <i> or </i>
-                            <Dropzone className="dropzone-style" onDrop={this.handleLoadItinerary.bind(this)}>
-                                <button type="button">Upload a location file</button>
-                            </Dropzone>
-                            <button name="save-itinerary" onClick={this.handleSaveItinerary.bind(this)}>Save Trip
-                            </button>
-
-                            <br/><br/>
-
-                            <label><i>Choose Optimization Level</i><br/>
-                                <label style={{color: "black"}}>None<input name="opt-level" type="radio" value={"None"}
-                                                                          onChange={this.handleOptimization.bind(this)}/>
-                                </label> <br/>
-                                <label style={{color: "blue"}}>Nearest Neighbor<input name="opt-level" type="radio"
-                                                                                      value={"Nearest Neighbor"}
-                                                                                      onChange={this.handleOptimization.bind(this)}/>
-                                </label><br/>
-                                <label style={{color: "red"}}>2-Opt<input name="opt-level" type="radio" value={"2-Opt"}
-                                                                          onChange={this.handleOptimization.bind(this)}/>
-                                </label><br/>
-                                <label style={{color: "green"}}>3-Opt<input name="opt-level" type="radio" value={"3-Opt"}
-                                                                          onChange={this.handleOptimization.bind(this)}/>
-                                </label>
-                            </label>
-
-                            <br/>
-                            <input type="button" name="searchButton" value="Search"
-                                   onClick={this.handleSearchEvent.bind(this)}/>
-                        </form>
-                        <section className="extraInfo" style={{position: "relative", float: "right", marginRight: "10%"}}>
-                            {extraInfoHeader}
-                            {extrainfo}
-                            <br/>
-                            {addAllAttributesButton}
-                            {clearAttributesButton}
-                            <table>
-                                <tr>
-                                    {displayAttributes}
-                                </tr>
-                            </table>
-                        </section>
-                    </section>
-                </div>
-
+                {this.webMain(hideShow, extraInfo, addAllAttributesButton, clearAttributesButton, displayAttributes)}
 
                 <section className="searchedFor" style={{clear: "both", position: "relative"}}>
-                    {searchedHeaderText(this.state.query)}
+                    {this.searchedHeaderText(hideShow)}
                     {possibleLocations}
                     <br/>
                     {addAllLocationsButton}
@@ -238,8 +278,8 @@ class Home extends React.Component {
                 <br/><br/>
                 <section id="trip" style={{bottom: 0, position: "relative", height: "10%"}}>
                     {tripHeader}
-                    {showmap}
-                    {showtable}
+                    {showMap}
+                    {itineraryTable}
                     <br/>
                 </section>
             </div>
