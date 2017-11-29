@@ -44,13 +44,15 @@ class Home extends React.Component {
     }
 
     extraInfoHeader(hideShow) {
+        /* The following code is the Header for the right section of the main that displays attributes */
         return (
             <div style = {{display: hideShow}} >
                 <h4><strong>Show more information for {this.state.query} ({this.state.locationCodes.length} results)</strong></h4>
             </div>);
     }
 
-    extraInfo(hideShow) {
+    extraInfo() {
+        /* The following is the Select element for Attributes on the right section of the main */
         return (
             <Select
                 options={this.state.options}
@@ -60,6 +62,7 @@ class Home extends React.Component {
     }
 
     possibleLocations(hideShow) {
+        /* The following is the Select element for Possible Locations for the itinerary planning */
         return(
             <Select style={{display: hideShow}}
                 options={this.state.locationCodeOptions}
@@ -69,6 +72,7 @@ class Home extends React.Component {
     }
 
     tripHeader(hideShow) {
+        /* A simple header for displaying the trip after locations have been selected */
         return(
             <footer style={{display: hideShow}}>
                 <h4><strong>My Trip</strong></h4>
@@ -76,26 +80,28 @@ class Home extends React.Component {
             </footer>);
     }
 
-    clearButton(type) {
+    buttonHandler(type, addClear) {
+        /* A function that handles all of the buttons that our web page has. It takes two
+         * arguments, a type, which represents whether the button handles Attributes selection
+         * or Location selection, and a string addClear, which specify whether the button adds
+         * all or clears all */
         if (type === "Attributes") {
+            if(addClear == "Add") {
+                return (
+                    <button onClick={this.handleAddAllAttributesButton.bind(this)}>Add All Attributes</button>
+                )
+            } else {
+                return (
+                    <button onClick={this.handleClearAttributesButton.bind(this)}>Clear Attributes</button>
+                )
+            }
+        } else if (addClear === "Add"){
             return (
-                <button onClick={this.handleClearAttributesButton.bind(this)}>Clear Attributes</button>
+                <button onClick={this.handleAddAllLocationsButton.bind(this)}>Add All Locations</button>
             )
         } else {
             return (
                 <button onClick={this.handleClearLocationsButton.bind(this)}>Clear Locations</button>
-            )
-        }
-    }
-
-    addAllButton(type) {
-        if (type === "Attributes") {
-            return (
-                <button onClick={this.handleAddAllAttributesButton.bind(this)}>Add All Attributes</button>
-            )
-        } else {
-            return (
-                <button onClick={this.handleAddAllLocationsButton.bind(this)}>Add All Locations</button>
             )
         }
     }
@@ -225,12 +231,12 @@ class Home extends React.Component {
             extraInfo = this.extraInfo(hideShow);
 
             {/* These buttons allow to add/clear all attributes related to the locations */}
-            clearAttributesButton = this.clearButton("Attributes");
-            addAllAttributesButton = this.addAllButton("Attributes");
+            clearAttributesButton = this.buttonHandler("Attributes", "Clear");
+            addAllAttributesButton = this.buttonHandler("Attributes", "Add");
 
             {/* These buttons allow to add/clear all locations to the selected locations */}
-            clearLocationsButton = this.clearButton("Locations");
-            addAllLocationsButton = this.addAllButton("Locations");
+            clearLocationsButton = this.buttonHandler("Locations", "Clear");
+            addAllLocationsButton = this.buttonHandler("Locations", "Add");
 
 
             let selectedAttributes = this.state.selectedAttributes;
