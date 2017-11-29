@@ -54,8 +54,12 @@ Epics planned for this release.
 
 Date | Tasks done now | Tasks done next | Impediments | Coverage | Smells | Duplication | Technical Debt Ratio
 :--- | :--- | :--- | :--- | ---: | ---: | ---: | ---:
+11/13 | None | #263, #258 | 3-opt | 61% classes, 69% line coverage | 23 | 20 | 12.8
 11/15 | #263, #258 | #277, #272, #273, #274, #270 | 3-opt | 61% classes, 69% line coverage | 23 | 20 | 12.8
-11/27 | #233, #235, #249 | #277, #272, #273, #274, #270| 3-opt |54% classes, 69% line coverage | 21 | 20 | 13.4
+11/17 | None | #277, #272, #273, #274, #270 | 3-opt | 61% classes, 69% line coverage | 23 | 20 | 12.8
+11/27 | #233, #235, #249 | #277, #272, #273, #274, #270| 3-opt | 54% classes, 69% line coverage | 21 | 20 | 13.4
+11/29 | #272, #285, #273, #274, #277 | #286, #287, #237, #248 | 3-opt | 54.5% classes, 67.6% line coverage | 20 | 20 | 12.9 
+ 
  
 
 ## Review
