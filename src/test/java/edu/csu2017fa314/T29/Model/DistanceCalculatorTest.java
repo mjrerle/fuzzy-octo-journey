@@ -115,7 +115,6 @@ public class DistanceCalculatorTest {
 
     @Test
     public void testCalculateGreatCircleDistance() {
-
         DistanceCalculator distanceCalculator = new DistanceCalculator(locations);
         int distance = distanceCalculator.calculateGreatCircleDistance(distanceCalculator.degreeToRadian(foCoLatitude),
                                                                         distanceCalculator.degreeToRadian(foCoLongitude),
@@ -127,31 +126,12 @@ public class DistanceCalculatorTest {
     }
 
 
-
-    public void utilityCompute(Location A, Location B){
-        locationRecords = new LocationRecords("data/test/FullTest.csv");
-        locations = locationRecords.getLocations();
-        DistanceCalculator d = new DistanceCalculator(locations);
-        int distance =d.calculateGreatCircleDistance(d.degreeToRadian(A.getLatitude()),d.degreeToRadian(A.getLongitude()), d.degreeToRadian(B.getLatitude()),d.degreeToRadian(B.getLongitude()));
-        System.out.printf("%04d ",distance);
-    }
-
     @Test
     public void testComputeNearestNeighbor(){
         locationRecords = new LocationRecords("data/test/FullTest.csv");
         ArrayList<Location> locs = locationRecords.getLocations();
         DistanceCalculator dist = new DistanceCalculator(locs);
         DistanceCalculator.Pair ll1 = dist.computeNearestNeighbor(locs.get(0));
-//        System.out.println();
-//        System.out.println("TEST result: ");
-//        for (int i=0;i<ll.getKey().size();i++){
-//            System.out.print(ll.getKey().get(i).getId()+" ");
-//            if(i%5==0){
-//                System.out.println();
-//            }
-//        }
-//        System.out.println();
-//        System.out.println("Size: "+ll.getKey().size());
         assertNotNull(ll1);
         assertEquals(ll1.getValue(),(Integer)1696);
         assertEquals(ll1.getKey().get(0), locs.get(0));
