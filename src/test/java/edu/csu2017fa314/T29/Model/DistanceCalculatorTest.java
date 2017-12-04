@@ -26,7 +26,6 @@ public class DistanceCalculatorTest {
     ArrayList<Location> breweries = new ArrayList<Location>();
 
     Map<String,String> extraInfo = new HashMap<String,String>();
-    LocationRecords locationRecords;
     Location brewery1;
     Location brewery2;
     Location brewery3;
