@@ -126,7 +126,7 @@ public class DistanceCalculatorTest {
     }
 
 
-    @Test
+    /*@Test
     public void testComputeNearestNeighbor(){
         locationRecords = new LocationRecords("data/test/FullTest.csv");
         ArrayList<Location> locs = locationRecords.getLocations();
@@ -284,6 +284,6 @@ public class DistanceCalculatorTest {
         Assert.assertTrue(trip.get(0).getDistance() != 0);
         Assert.assertTrue(trip.get(trip.size()-1).getDistance() != 0);
         System.out.println("Distance from last node: " + trip.get(trip.size()-1).getDistance());
-    }
+    }*/
 
 }
