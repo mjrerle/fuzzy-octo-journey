@@ -41,7 +41,7 @@ import static spark.Spark.post;
 *   query means call serveQuery(String query)
 *   upload is serveUpload(ArrayList<String> description)
 *   plan is more ambiguous with working with the current API: (will elaborate more in the method)
-*       serveSVG(String opcode, ArrayList<String> locations)
+*       serveKML(String opcode, ArrayList<String> locations)
 *       to compensate with no extra fields in the response class and to make it easier for Trey...
 *          to give me the data,
 *          basically I assume if the response type is not query or upload, that I want to plan.
@@ -57,7 +57,7 @@ import static spark.Spark.post;
 *       It also means that I'm given all of the information
 *           I need when he sends me the location IDs
 *
-*   serveSvg(String, ArrayList<String>)::
+*   serveKml(String, ArrayList<String>)::
 *       most action occurs here
 *       take the arraylist of codes
 *       query the database with the codes
@@ -67,10 +67,10 @@ import static spark.Spark.post;
 *       basically take the opcode (in the parameter list)
 *           and apply an optimization level
 *       now i have a list of locations in sorted(or non sorted)
- *          order and an svg. All i have to do is construct a response
+ *          order and an Kml. All i have to do is construct a response
 *       return the constructed response
 *       send:
-*           {response:"svg", contents:String, width:int, height:int, locations:LinkedList<Location>}
+*           {response:"Kml", contents:String, width:int, height:int, locations:LinkedList<Location>}
 *
 *   buildWithCode(ArrayList<String>)::
 *       construct a query with the codes given
@@ -162,7 +162,7 @@ public class Server {
         System.out.println("Got \"" + srec.toString() + "\" from server.");
 
         // Because both possible requests from the client have the same format,
-        // we can check the "type" of request we've received: either "query" or "svg"
+        // we can check the "type" of request we've received: either "query" or "kml"
         switch (srec.getRequest()) {
             case "query":
                 // Set the return headers
@@ -171,11 +171,11 @@ public class Server {
             case "upload":
                 return serveUpload(srec.getDescription());
             // assume that I am only getting an array of codes
-            // assume if the request is not "query" it is "svg":
+            // assume if the request is not "query" it is "kml":
             default:
-                //serve the svg with the information in description
+                //serve the kml with the information in description
                 // (should be a bunch of destinations)
-                return serveSvg(srec.getOp_level(), srec.getDescription());
+                return serveKml(srec.getOp_level(), srec.getDescription());
             //0 should be the opcode, next is my dests
         }
     }
@@ -197,7 +197,7 @@ public class Server {
         return gson.fromJson(elm, ServerRequest.class);
     }
 
-    // called by testing method if the client requests an svg
+    // called by testing method if the client requests an Kml
 
     /**
      * "description" is basically an arraylist of destinations,
@@ -207,11 +207,11 @@ public class Server {
      *               that is, an optimization level (none, nearest neighbor, 2 opt, 3 opt)
      * @param locs   : the "description" value passed from the client.
      *               must be an array of locations
-     * @return an SVGResponse which is a response consisting of an svg and an array of locations
+     * @return an KmlResponse which is a response consisting of an Kml and an array of locations
      */
-    private Object serveSvg(String opcode, ArrayList<String> locs) {
+    private Object serveKml(String opcode, ArrayList<String> locs) {
         Gson gson = new Gson();
-        // Instead of writing the SVG to a file,
+        // Instead of writing the Kml to a file,
         // we send it in plaintext back to the client to be rendered inline
         // assumes that the user has input a query first
         QueryBuilder queryBuilder = new QueryBuilder("mjrerle", "829975763");
@@ -219,15 +219,15 @@ public class Server {
         ArrayList<Location> temp = queryBuilder.query(queryString);
         DistanceCalculator distanceCalculator = new DistanceCalculator(temp);
 
-        ServerSvgResponse ssres = generateSvgResponse(opcode,
+        ServerKmlResponse ssres = generateKmlResponse(opcode,
                 queryBuilder,
                 queryString,
                 distanceCalculator);
 
-        return gson.toJson(ssres, ServerSvgResponse.class);
+        return gson.toJson(ssres, ServerKmlResponse.class);
     }
 
-    private ServerSvgResponse generateSvgResponse(String opcode,
+    private ServerKmlResponse generateKmlResponse(String opcode,
                                                   QueryBuilder queryBuilder,
                                                   String queryString,
                                                   DistanceCalculator distanceCalculator) {
@@ -237,11 +237,9 @@ public class Server {
         HashMap<String, String> extra = queryResults.get(0).getExtraInfo();
         Object columns[] = extra.keySet().toArray();
         //
-        SVG svg = new SVG(locations);
-        String map = svg.getContents();
-        int wid = (int) svg.getWidth();
-        int hei = (int) svg.getHeight();
-        return new ServerSvgResponse(wid, hei, map, locations, columns);
+        KML kml = new KML(locations);
+        String map = kml.getContents();
+        return new ServerKmlResponse(map, locations, columns);
     }
 
     private ArrayList<Location> checkOpcode(String opcode, DistanceCalculator distanceCalculator) {
@@ -257,7 +255,7 @@ public class Server {
                 break;
             case "3-Opt":
                 //what is this method?
-                locations = new ArrayList<>();
+                locations = distanceCalculator.shortestTwoOptTrip();
                 break;
             default:
                 //opcode is likely "none"
@@ -307,22 +305,20 @@ public class Server {
         String queryString = buildWithCode(locations);
 
         // Query database with queryString
-        ServerSvgResponse serverSvgResponse = generateUploadResponse(queryBuilder, queryString);
+        ServerKmlResponse serverKmlResponse = generateUploadResponse(queryBuilder, queryString);
 
-        return gson.toJson(serverSvgResponse, ServerSvgResponse.class);
+        return gson.toJson(serverKmlResponse, ServerKmlResponse.class);
     }
 
-    private ServerSvgResponse generateUploadResponse(QueryBuilder queryBuilder,
+    private ServerKmlResponse generateUploadResponse(QueryBuilder queryBuilder,
                                                      String queryString) {
         ArrayList<Location> queryResults = queryBuilder.query(queryString);
         HashMap<String, String> map = queryResults.get(0).getExtraInfo();
         Object columns[] = map.keySet().toArray();
-        SVG svg = new SVG(queryResults);
+        KML kml = new KML(queryResults);
         // Same response structure as the query request
-        int wid = (int)svg.getWidth();
-        int hei = (int)svg.getHeight();
-        String contents = svg.getContents();
-        return new ServerSvgResponse(wid, hei, contents, queryResults, columns);
+        String contents = kml.getContents();
+        return new ServerKmlResponse(contents, queryResults, columns);
     }
 
     // called by testing method if client requests a search
@@ -367,7 +363,7 @@ public class Server {
             return gson.toJson(new ServerResponse(null));
         }
 
-        // Create object with svg file path and array of matching database entries to return to server
+        // Create object with kml file path and array of matching database entries to return to server
         ServerResponse sres = generateQueryResponse(queryResults);
 
         //Convert response to json
