@@ -8,8 +8,6 @@ import edu.csu2017fa314.T29.Model.Location;
 import spark.Request;
 import spark.Response;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -114,39 +112,6 @@ public class Server {
 
     }
 
-
-    /**
-     * @param res       : passed from download,
-     *                  will be a HttpServletResponse type with an attached file
-     * @param locations : ArrayList of locations passed from the client
-     */
-    private void writeFile(Response res, ArrayList<String> locations) {
-        try {
-            // Write our file directly to the response rather than to a file
-            PrintWriter fileWriter = new PrintWriter(res.raw().getOutputStream());
-            // Ideally, the user will be able to name their own trips. We hard code it here:
-            fileWriter.println("{ \"title\" : \"The Coolest Trip\",\n"
-                    + "  \"destinations\" : [");
-            printLocations(locations, fileWriter);
-            // Important: flush and close the writer or a blank file will be sent
-            fileWriter.flush();
-            fileWriter.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void printLocations(ArrayList<String> locations, PrintWriter fileWriter) {
-        for (int i = 0; i < locations.size(); i++) {
-            if (i < locations.size() - 1) {
-                fileWriter.println("\"" + locations.get(i) + "\",");
-            } else {
-                fileWriter.println("\"" + locations.get(i) + "\"]}");
-            }
-        }
-    }
-
     /**
      * @param rec : raw json passed from the client
      * @param res : template that will eventually be returned
@@ -180,6 +145,11 @@ public class Server {
         }
     }
 
+    /**
+     * @param rec http request from client
+     * @param res empty http request: will be generated
+     * @return query request
+     */
     private ServerRequest makeServerRequest(Request rec, Response res) {
         setHeaders(res);
 
@@ -227,6 +197,14 @@ public class Server {
         return gson.toJson(ssres, ServerKmlResponse.class);
     }
 
+    /**
+     *
+     * @param opcode "3-opt", "2-opt", "Nearest Neighbor", "None"
+     * @param queryBuilder sql server
+     * @param queryString client request
+     * @param distanceCalculator mechanism to create ordered list
+     * @return ordered list, raw kml, record keys
+     */
     private ServerKmlResponse generateKmlResponse(String opcode,
                                                   QueryBuilder queryBuilder,
                                                   String queryString,
@@ -242,6 +220,12 @@ public class Server {
         return new ServerKmlResponse(map, locations, columns);
     }
 
+    /**
+     *
+     * @param opcode "3-opt", "2-opt", "Nearest Neighbor", "None"
+     * @param distanceCalculator mechanism to create ordered list
+     * @return ordered list
+     */
     private ArrayList<Location> checkOpcode(String opcode, DistanceCalculator distanceCalculator) {
         ArrayList<Location> locations;
         switch (opcode) {
@@ -310,6 +294,13 @@ public class Server {
         return gson.toJson(serverKmlResponse, ServerKmlResponse.class);
     }
 
+
+    /**
+     *
+     * @param queryBuilder sql operator
+     * @param queryString sent from client
+     * @return kml response with raw string
+     */
     private ServerKmlResponse generateUploadResponse(QueryBuilder queryBuilder,
                                                      String queryString) {
         ArrayList<Location> queryResults = queryBuilder.query(queryString);
@@ -371,6 +362,11 @@ public class Server {
         return gson.toJson(sres, ServerResponse.class);
     }
 
+    /**
+     *
+     * @param searched query from client
+     * @return list of records from the querybuilder class
+     */
     private ArrayList<Location> generateQuery(String searched) {
         QueryBuilder queryBuilder = new QueryBuilder("mjrerle", "829975763");
         // Create new QueryBuilder instance and pass in credentials
@@ -378,6 +374,11 @@ public class Server {
         return queryBuilder.query(queryString);
     }
 
+    /**
+     *
+     * @param queryResults ordered list
+     * @return stage 1 response
+     */
     private ServerResponse generateQueryResponse(ArrayList<Location> queryResults) {
         HashMap<String, String> map = queryResults.get(0).getExtraInfo();
         Object columns[] = map.keySet().toArray();
@@ -398,24 +399,5 @@ public class Server {
         // Ok for browser to call even if different host host
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "*");
-    }
-
-    /**
-     * attach a file (selection.json) and do a force download on the client
-     *
-     * @param res : a HttpServletResponse, we want the raw form
-     */
-    private void setHeadersFile(Response res) {
-        /* Unlike the other responses, the file request sends back an actual file. This means
-        that we have to work with the raw HttpServletRequest that Spark's Response class is built
-        on.
-         */
-        // First, add the same Access Control headers as before
-        res.raw().addHeader("Access-Control-Allow-Origin", "*");
-        res.raw().addHeader("Access-Control-Allow-Headers", "*");
-        // Set the content type to "force-download." Basically, we "trick" the browser with
-        // an unknown file type to make it download the file instead of opening it.
-        res.raw().setContentType("application/force-download");
-        res.raw().addHeader("Content-Disposition", "attachment; filename=\"selection.json\"");
     }
 }
