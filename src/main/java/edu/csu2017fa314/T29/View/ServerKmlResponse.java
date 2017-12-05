@@ -12,7 +12,8 @@ public class ServerKmlResponse {
     private String response = "kml";
 
     /**
-     * @param contents  : the entire svg string
+     * @param columns record keys
+     * @param contents  : the entire kml string
      * @param locations : an ordered location list (based on optimization level)
      */
     ServerKmlResponse(String contents,

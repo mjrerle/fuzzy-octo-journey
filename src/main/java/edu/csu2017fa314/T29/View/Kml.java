@@ -20,20 +20,17 @@ class Kml {
         writeContents();
     }
 
-
+    /**
+     * @return contents
+     */
     String getContents() {
         return contents;
     }
 
     /**
-     * contents is the outer layer
-     * map is the background layer
-     * add the svg header for contents before hand to signify that it is the outer layer
-     * scan the map, ignoring the first line and add everything to contents
-     * then, draw the lines given the arraylist of locations
-     * for each line, convert the coordinate to an svg coordinate and draw
+     *
+     * @return proper header info
      */
-
     private String header() {
         String line = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
         line += "<kml xmlns=\"http://earth.google.com/kml/2.1\">";
@@ -43,10 +40,18 @@ class Kml {
         return line;
     }
 
+    /**
+     *
+     * @return proper footer info
+     */
     private String footer() {
         return "</coordinates></LineString></Placemark></Document></kml>";
     }
 
+    /**
+     *
+     * @return a blue line
+     */
     private String makeLine() {
         String line = "<Style id=\"blueLine\">";
         line += "<LineStyle><color>\"ffff0000\"</color><width>\"4\"</width></LineStyle>";
@@ -54,6 +59,10 @@ class Kml {
         return line;
     }
 
+    /**
+     *
+     * @return placemark wrapper
+     */
     private String makePlacemark() {
         String line = "<Placemark>";
         line += "<name>\"Trip route\"</name>";
@@ -64,6 +73,9 @@ class Kml {
         return line;
     }
 
+    /**
+     * write to contents
+     */
     private void writeContents() {
         contents += header();
         contents += makeLine();
@@ -74,6 +86,10 @@ class Kml {
         contents += footer();
     }
 
+    /**
+     * create (lat,long) string and write to contents
+     * @param index will be accessing locations
+     */
     private void drawLine(int index) {
         String latitude = locations.get(index).getColumnValue("latitude");
         String longitude = locations.get(index).getColumnValue("longitude");
