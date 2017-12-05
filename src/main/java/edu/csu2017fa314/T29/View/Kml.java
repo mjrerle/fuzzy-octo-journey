@@ -4,52 +4,18 @@ import edu.csu2017fa314.T29.Model.Location;
 
 import java.util.ArrayList;
 
-class KML {
+class Kml {
     private ArrayList<Location> locations;
     private String contents = "";
     private String map = "";
 
-
-    //initial thoughts: svg coordinates are at the left corner of the map corresponding the 90,-180 on the geographic scale
-    //to get to my geographic point i will have to perform a conversion by scaling
-    //test points: [41,-109], [0,0], [90,-180], [-90, 180], [90, 180], [-90, -180]
-    // 0,0 -> this should transform into svg(512,256) 512 is height/2 and 256 is width/2
-    // perform longitude + 512, latitude + 256... easy
-    // 90, -180 -> should return svg(0,0) the origin
-    // perform longitude - 90, latitude + 180
-    // -90, 180 -> should return svg(1024,512)
-    // perform longitude + 90 + 1024, latitude - 180 + 512 (don't want to perform that math rn)
-    // 90, 180 -> svg(1024,0)
-    // perform longitude - 90 + 1024, latitude - 180
-    // -90, -180 -> svg(0,512)
-    // perform longitude + 90, latitude + 180
-    // 41, -109 -> should return svg(???)
-    // from what I see...
-    // if long/lat < 0
-    // hypothesis:
-    // svg(x) = (width - width*(longitude/-180))/2
-    // svg(y) = (height - height*(latitude/90))/2
-    // svg(201.955,139.377)
-    // preliminary testing in python interpreter!!:
-    //    carson-city:~$ ./convertToSVG 0 0
-    //            [512.0, 256.0]
-    //    carson-city:~$ ./convertToSVG -180 90
-    //            [0.0, 0.0]
-    //    carson-city:~$ ./convertToSVG -180 -90
-    //            [0.0, 512.0]
-    //    carson-city:~$ ./convertToSVG 180 90
-    //            [1024.0, 0.0]
-    //    carson-city:~$ ./convertToSVG 180 -90
-    //            [1024.0, 512.0]
-    //    carson-city:~$ ./convertToSVG -109 41
-    //            [201.95555555555558, 139.3777777777778]
 
     /**
      * does all of the hard labor for me
      *
      * @param locations : an ordered list
      */
-    KML(ArrayList<Location> locations) {
+    Kml(ArrayList<Location> locations) {
         this.locations = locations;
         writeContents();
     }

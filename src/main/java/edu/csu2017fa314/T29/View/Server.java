@@ -237,7 +237,7 @@ public class Server {
         HashMap<String, String> extra = queryResults.get(0).getExtraInfo();
         Object columns[] = extra.keySet().toArray();
         //
-        KML kml = new KML(locations);
+        Kml kml = new Kml(locations);
         String map = kml.getContents();
         return new ServerKmlResponse(map, locations, columns);
     }
@@ -315,7 +315,7 @@ public class Server {
         ArrayList<Location> queryResults = queryBuilder.query(queryString);
         HashMap<String, String> map = queryResults.get(0).getExtraInfo();
         Object columns[] = map.keySet().toArray();
-        KML kml = new KML(queryResults);
+        Kml kml = new Kml(queryResults);
         // Same response structure as the query request
         String contents = kml.getContents();
         return new ServerKmlResponse(contents, queryResults, columns);
@@ -363,7 +363,8 @@ public class Server {
             return gson.toJson(new ServerResponse(null));
         }
 
-        // Create object with kml file path and array of matching database entries to return to server
+        // Create object with kml file path and
+        // array of matching database entries to return to server
         ServerResponse sres = generateQueryResponse(queryResults);
 
         //Convert response to json
