@@ -3,13 +3,16 @@ package edu.csu2017fa314.T29.Model;
 import org.junit.Before;
 import org.junit.Test;
 
+
 import java.util.ArrayList;
 
 import java.util.HashMap;
 import java.util.Set;
 
 import java.util.HashSet;
+
 import static org.junit.Assert.*;
+
 
 public class LocationTest{
 
@@ -17,6 +20,7 @@ public class LocationTest{
     private Location location; // null pointer exception
     private ArrayList<Location> locations = new ArrayList<>();
 
+    /** Creates 3 new location objects and adds them to the arrayList Locations. */
     @Before
     public void setUp(){
         info.put("id","abee");
@@ -52,11 +56,11 @@ public class LocationTest{
 
     @Test
     public void testCorrectParsing() {
-        String ID = "abee";
+        String id = "abee";
         double latitude = 39.63527778;
         double longitude = -104.75888889;
 
-        assertEquals(ID, locations.get(0).getId());
+        assertEquals(id, locations.get(0).getId());
         assertEquals(latitude, locations.get(0).getLatitude(), 1);
         assertEquals(longitude, locations.get(0).getLongitude(), 1);
     }
