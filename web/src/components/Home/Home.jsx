@@ -18,7 +18,7 @@ class Home extends React.Component {
             codes:[],
             uploadBool: false,
             startShow: "none",
-            chooseStart: ""
+            startLocation: ""
         }
     };
 
@@ -263,9 +263,9 @@ class Home extends React.Component {
             });
             let selectedLocations = this.state.selectedLocations;
             selectedLocations.forEach((loc) => {
-                displayLocations.push(<li>{loc}    <button onCliCk={this.handleStartingLocationButton.bind(this)}>
-                                                Choose this as Starting Location </button>
-                                                </li>)
+                displayLocations.push(<li>{loc}    <label> Choose this as starting Location <input type="radio" value={loc}
+                                                            checked={this.state.startLocation === loc}
+                                                                                               onChange={this.handleStartingLocationButton.bind(this)}/></label></li>)
 
             });
 
@@ -420,6 +420,14 @@ class Home extends React.Component {
                 description: [input],
                 op_level: this.state.op_level
             };
+        }
+        else if (type === "startingLocation") {
+            clientreq = {
+                request: type,
+                description: input,
+                op_level: this.state.op_level,
+                locationCode: this.state.startLocation
+            }
         }
         else{
             clientreq = {
@@ -580,15 +588,18 @@ class Home extends React.Component {
         this.fetch("query",queryText); // Call fetch and pass whatever text is in the input box
     }
 
-    async handleSelectedStartLoc(){
-        console.log("Button click?")
-    }
-
     /* Section that handles all buttons*/
     async handleStartingLocationButton(event) {
+        event.preventDefault();
 
-        console.log("This is event value of the button: " + event)
+        this.setState({
+            startLocation: event.target.value,
+        })
+
+        this.fetch("startingLocation", this.state.selectedLocations)
+
     }
+
     async handleClearAttributesButton(event) {
         event.preventDefault();
         this.setState({
