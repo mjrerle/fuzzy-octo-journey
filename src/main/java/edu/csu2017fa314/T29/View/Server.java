@@ -133,7 +133,9 @@ public class Server {
                 // Set the return headers
                 return serveQuery(srec.getDescription().get(0));
             case "startingLocation":
-                return serveStartingLocation(srec.getLocationCode(), srec.getDescription(), srec.getLocationCode());
+                return serveStartingLocation(srec.getLocationCode(),
+                        srec.getDescription(),
+                        srec.getLocationCode());
             // if the user uploads a file
             case "upload":
                 return serveUpload(srec.getDescription());
@@ -155,7 +157,9 @@ public class Server {
      * @param locationCode one code
      * @return gson object kmlresponse
      */
-    private Object serveStartingLocation(String opcode, ArrayList<String> description, String locationCode) {
+    private Object serveStartingLocation(String opcode,
+                                         ArrayList<String> description,
+                                         String locationCode) {
         Gson gson = new Gson();
         Location startingLocation = generateQuery(locationCode).get(0);
         QueryBuilder queryBuilder = new QueryBuilder("mjrerle", "829975763");
@@ -166,11 +170,8 @@ public class Server {
         //in raw order
         //now check op level and apply
         DistanceCalculator distanceCalculator = new DistanceCalculator(rawOrder);
-        ServerKmlResponse ssres = generateKmlResponse(opcode,
-                queryBuilder,
-                queryAllLocations,
-                distanceCalculator,
-                startingLocation);
+        ServerKmlResponse ssres = generateKmlResponse(
+                new RawKml(opcode, queryBuilder, queryAllLocations, distanceCalculator, startingLocation));
         return gson.toJson(ssres, ServerKmlResponse.class);
     }
 
@@ -218,30 +219,20 @@ public class Server {
         ArrayList<Location> temp = queryBuilder.query(queryString);
         DistanceCalculator distanceCalculator = new DistanceCalculator(temp);
 
-        ServerKmlResponse ssres = generateKmlResponse(opcode,
-                queryBuilder,
-                queryString,
-                distanceCalculator,
-                null);
+        ServerKmlResponse ssres = generateKmlResponse(
+                new RawKml(opcode, queryBuilder, queryString, distanceCalculator, null));
 
         return gson.toJson(ssres, ServerKmlResponse.class);
     }
 
     /**
      *
-     * @param opcode "3-opt", "2-opt", "Nearest Neighbor", "None"
-     * @param queryBuilder sql server
-     * @param queryString client request
-     * @param distanceCalculator mechanism to create ordered list
-     * @return ordered list, raw kml, record keys
+     *
+     * @param rawKml@return ordered list, raw kml, record keys
      */
-    private ServerKmlResponse generateKmlResponse(String opcode,
-                                                  QueryBuilder queryBuilder,
-                                                  String queryString,
-                                                  DistanceCalculator distanceCalculator,
-                                                  Location startingLocation) {
-        ArrayList<Location> locations = checkOpcode(opcode, distanceCalculator, startingLocation);
-        ArrayList<Location> queryResults = queryBuilder.query(queryString);
+    private ServerKmlResponse generateKmlResponse(RawKml rawKml) {
+        ArrayList<Location> locations = checkOpcode(rawKml.getOpcode(), rawKml.getDistanceCalculator(), rawKml.getStartingLocation());
+        ArrayList<Location> queryResults = rawKml.getQueryBuilder().query(rawKml.getQueryString());
         HashMap<String, String> extra = queryResults.get(0).getExtraInfo();
         Object columns[] = extra.keySet().toArray();
         //
@@ -256,44 +247,78 @@ public class Server {
      * @param distanceCalculator mechanism to create ordered list
      * @return ordered list
      */
-    private ArrayList<Location> checkOpcode(String opcode, DistanceCalculator distanceCalculator, Location startingLocation) {
+    private ArrayList<Location> checkOpcode(String opcode,
+                                            DistanceCalculator distanceCalculator,
+                                            Location startingLocation) {
         ArrayList<Location> locations;
         switch (opcode) {
             case "Nearest Neighbor":  //opcode is dependent on trey's code
                 //figure out which method to call... depends on Tim's code
-                if (startingLocation != null) {
-                    locations = distanceCalculator.shortestNearestNeighborTrip();
-
-                    //method for finding this path
-                } else {
-                    locations = distanceCalculator.shortestNearestNeighborTrip();
-                }
+                locations = nearestNeighbor(distanceCalculator, startingLocation);
                 break;
             case "2-Opt":
                 //what is this method?
-                if (startingLocation != null) {
-                    locations = distanceCalculator.shortestTwoOptTrip();
-
-                    //method for finding this path
-                } else {
-                    locations = distanceCalculator.shortestTwoOptTrip();
-                }
+                locations = twoOpt(distanceCalculator, startingLocation);
                 break;
             case "3-Opt":
                 //what is this method?
-                if (startingLocation != null) {
-                    locations = new ArrayList<>();
-
-                    //method for finding this path
-                } else {
-                    locations = new ArrayList<>();
-                }
+                locations = threeOpt(startingLocation);
                 break;
             default:
                 //opcode is likely "none"
                 // so I want the raw order->need a method for this in Distance Calculator
                 locations = distanceCalculator.noOptimization();
                 break;
+        }
+        return locations;
+    }
+
+    /**
+     * @param startingLocation client
+     * @return three opted
+     */
+    private ArrayList<Location> threeOpt(Location startingLocation) {
+        ArrayList<Location> locations;
+        if (startingLocation != null) {
+            locations = new ArrayList<>();
+
+            //method for finding this path
+        } else {
+            locations = new ArrayList<>();
+        }
+        return locations;
+    }
+
+    /**
+     * @param distanceCalculator make trip
+     * @param startingLocation   client
+     * @return two opted
+     */
+    private ArrayList<Location> twoOpt(DistanceCalculator distanceCalculator, Location startingLocation) {
+        ArrayList<Location> locations;
+        if (startingLocation != null) {
+            locations = distanceCalculator.shortestTwoOptTrip();
+
+            //method for finding this path
+        } else {
+            locations = distanceCalculator.shortestTwoOptTrip();
+        }
+        return locations;
+    }
+
+    /**
+     * @param distanceCalculator make trip
+     * @param startingLocation   client
+     * @return nearest neighbor
+     */
+    private ArrayList<Location> nearestNeighbor(DistanceCalculator distanceCalculator, Location startingLocation) {
+        ArrayList<Location> locations;
+        if (startingLocation != null) {
+            locations = distanceCalculator.shortestNearestNeighborTrip();
+
+            //method for finding this path
+        } else {
+            locations = distanceCalculator.shortestNearestNeighborTrip();
         }
         return locations;
     }
@@ -447,5 +472,47 @@ public class Server {
         // Ok for browser to call even if different host host
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "*");
+    }
+
+    private static class RawKml {
+        private final String opcode;
+        private final QueryBuilder queryBuilder;
+        private final String queryString;
+        private final DistanceCalculator distanceCalculator;
+        private final Location startingLocation;
+
+        /**
+         * @param opcode             "3-opt", "2-opt", "Nearest Neighbor", "None"
+         * @param queryBuilder       sql server
+         * @param queryString        client request
+         * @param distanceCalculator mechanism to create ordered list
+         */
+        private RawKml(String opcode, QueryBuilder queryBuilder, String queryString, DistanceCalculator distanceCalculator, Location startingLocation) {
+            this.opcode = opcode;
+            this.queryBuilder = queryBuilder;
+            this.queryString = queryString;
+            this.distanceCalculator = distanceCalculator;
+            this.startingLocation = startingLocation;
+        }
+
+        String getOpcode() {
+            return opcode;
+        }
+
+        QueryBuilder getQueryBuilder() {
+            return queryBuilder;
+        }
+
+        String getQueryString() {
+            return queryString;
+        }
+
+        DistanceCalculator getDistanceCalculator() {
+            return distanceCalculator;
+        }
+
+        Location getStartingLocation() {
+            return startingLocation;
+        }
     }
 }
