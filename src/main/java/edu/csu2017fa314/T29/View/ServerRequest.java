@@ -2,21 +2,24 @@ package edu.csu2017fa314.T29.View;
 
 import java.util.ArrayList;
 
-/**
- * Created by sswensen on 10/1/17.
- */
 
+/**
+ * sent from client
+ */
 public class ServerRequest {
     private String request = "";
     private ArrayList<String> description;
 
     private String locationCode = "";
 
-    public ServerRequest(String request, ArrayList<String> description, String op_level, String locationCode) {
+    public ServerRequest(String request,
+                         ArrayList<String> description,
+                         String optLevel,
+                         String locationCode) {
         this.request = request;
         this.description = description;
         this.locationCode = locationCode;
-        this.op_level = op_level;
+        this.op_level = optLevel;
     }
 
     String getOp_level() {

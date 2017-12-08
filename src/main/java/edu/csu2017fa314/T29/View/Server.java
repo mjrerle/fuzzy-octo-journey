@@ -8,8 +8,6 @@ import edu.csu2017fa314.T29.Model.Location;
 import spark.Request;
 import spark.Response;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -41,7 +39,7 @@ import static spark.Spark.post;
 *   query means call serveQuery(String query)
 *   upload is serveUpload(ArrayList<String> description)
 *   plan is more ambiguous with working with the current API: (will elaborate more in the method)
-*       serveSVG(String opcode, ArrayList<String> locations)
+*       serveKML(String opcode, ArrayList<String> locations)
 *       to compensate with no extra fields in the response class and to make it easier for Trey...
 *          to give me the data,
 *          basically I assume if the response type is not query or upload, that I want to plan.
@@ -57,7 +55,7 @@ import static spark.Spark.post;
 *       It also means that I'm given all of the information
 *           I need when he sends me the location IDs
 *
-*   serveSvg(String, ArrayList<String>)::
+*   serveKml(String, ArrayList<String>)::
 *       most action occurs here
 *       take the arraylist of codes
 *       query the database with the codes
@@ -67,10 +65,10 @@ import static spark.Spark.post;
 *       basically take the opcode (in the parameter list)
 *           and apply an optimization level
 *       now i have a list of locations in sorted(or non sorted)
- *          order and an svg. All i have to do is construct a response
+ *          order and an Kml. All i have to do is construct a response
 *       return the constructed response
 *       send:
-*           {response:"svg", contents:String, width:int, height:int, locations:LinkedList<Location>}
+*           {response:"Kml", contents:String, width:int, height:int, locations:LinkedList<Location>}
 *
 *   buildWithCode(ArrayList<String>)::
 *       construct a query with the codes given
@@ -114,39 +112,6 @@ public class Server {
 
     }
 
-
-    /**
-     * @param res       : passed from download,
-     *                  will be a HttpServletResponse type with an attached file
-     * @param locations : ArrayList of locations passed from the client
-     */
-    private void writeFile(Response res, ArrayList<String> locations) {
-        try {
-            // Write our file directly to the response rather than to a file
-            PrintWriter fileWriter = new PrintWriter(res.raw().getOutputStream());
-            // Ideally, the user will be able to name their own trips. We hard code it here:
-            fileWriter.println("{ \"title\" : \"The Coolest Trip\",\n"
-                    + "  \"destinations\" : [");
-            printLocations(locations, fileWriter);
-            // Important: flush and close the writer or a blank file will be sent
-            fileWriter.flush();
-            fileWriter.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void printLocations(ArrayList<String> locations, PrintWriter fileWriter) {
-        for (int i = 0; i < locations.size(); i++) {
-            if (i < locations.size() - 1) {
-                fileWriter.println("\"" + locations.get(i) + "\",");
-            } else {
-                fileWriter.println("\"" + locations.get(i) + "\"]}");
-            }
-        }
-    }
-
     /**
      * @param rec : raw json passed from the client
      * @param res : template that will eventually be returned
@@ -162,27 +127,39 @@ public class Server {
         System.out.println("Got \"" + srec.toString() + "\" from server.");
 
         // Because both possible requests from the client have the same format,
-        // we can check the "type" of request we've received: either "query" or "svg"
+        // we can check the "type" of request we've received: either "query" or "kml"
         switch (srec.getRequest()) {
             case "query":
                 // Set the return headers
                 return serveQuery(srec.getDescription().get(0));
             case "startingLocation":
-                return serveStartingLocation(srec.getLocationCode(), srec.getDescription(), srec.getLocationCode());
+                return serveStartingLocation(srec.getLocationCode(),
+                        srec.getDescription(),
+                        srec.getLocationCode());
             // if the user uploads a file
             case "upload":
                 return serveUpload(srec.getDescription());
             // assume that I am only getting an array of codes
-            // assume if the request is not "query" it is "svg":
+            // assume if the request is not "query" it is "kml":
             default:
-                //serve the svg with the information in description
+                //serve the kml with the information in description
                 // (should be a bunch of destinations)
-                return serveSvg(srec.getOp_level(), srec.getDescription());
+                return serveKml(srec.getOp_level(), srec.getDescription());
             //0 should be the opcode, next is my dests
         }
     }
 
-    private Object serveStartingLocation(String opcode, ArrayList<String> description, String locationCode) {
+
+    /**
+     *
+     * @param opcode nn,2-opt,3-opt
+     * @param description list of codes
+     * @param locationCode one code
+     * @return gson object kmlresponse
+     */
+    private Object serveStartingLocation(String opcode,
+                                         ArrayList<String> description,
+                                         String locationCode) {
         Gson gson = new Gson();
         Location startingLocation = generateQuery(locationCode).get(0);
         QueryBuilder queryBuilder = new QueryBuilder("mjrerle", "829975763");
@@ -193,15 +170,16 @@ public class Server {
         //in raw order
         //now check op level and apply
         DistanceCalculator distanceCalculator = new DistanceCalculator(rawOrder);
-        ServerSvgResponse ssres = generateSvgResponse(opcode,
-                queryBuilder,
-                queryAllLocations,
-                distanceCalculator,
-                startingLocation);
-        return gson.toJson(ssres, ServerSvgResponse.class);
+        ServerKmlResponse ssres = generateKmlResponse(
+                new RawKml(opcode, queryBuilder, queryAllLocations, distanceCalculator, startingLocation));
+        return gson.toJson(ssres, ServerKmlResponse.class);
     }
 
-
+    /**
+     * @param rec http request from client
+     * @param res empty http request: will be generated
+     * @return query request
+     */
     private ServerRequest makeServerRequest(Request rec, Response res) {
         setHeaders(res);
 
@@ -219,7 +197,7 @@ public class Server {
         return gson.fromJson(elm, ServerRequest.class);
     }
 
-    // called by testing method if the client requests an svg
+    // called by testing method if the client requests an Kml
 
     /**
      * "description" is basically an arraylist of destinations,
@@ -229,11 +207,11 @@ public class Server {
      *               that is, an optimization level (none, nearest neighbor, 2 opt, 3 opt)
      * @param locs   : the "description" value passed from the client.
      *               must be an array of locations
-     * @return an SVGResponse which is a response consisting of an svg and an array of locations
+     * @return an KmlResponse which is a response consisting of an Kml and an array of locations
      */
-    private Object serveSvg(String opcode, ArrayList<String> locs) {
+    private Object serveKml(String opcode, ArrayList<String> locs) {
         Gson gson = new Gson();
-        // Instead of writing the SVG to a file,
+        // Instead of writing the Kml to a file,
         // we send it in plaintext back to the client to be rendered inline
         // assumes that the user has input a query first
         QueryBuilder queryBuilder = new QueryBuilder("mjrerle", "829975763");
@@ -241,70 +219,106 @@ public class Server {
         ArrayList<Location> temp = queryBuilder.query(queryString);
         DistanceCalculator distanceCalculator = new DistanceCalculator(temp);
 
-        ServerSvgResponse ssres = generateSvgResponse(opcode,
-                queryBuilder,
-                queryString,
-                distanceCalculator,
-                null);
+        ServerKmlResponse ssres = generateKmlResponse(
+                new RawKml(opcode, queryBuilder, queryString, distanceCalculator, null));
 
-        return gson.toJson(ssres, ServerSvgResponse.class);
+        return gson.toJson(ssres, ServerKmlResponse.class);
     }
 
-    private ServerSvgResponse generateSvgResponse(String opcode,
-                                                  QueryBuilder queryBuilder,
-                                                  String queryString,
-                                                  DistanceCalculator distanceCalculator,
-                                                  Location startingLocation) {
-        ArrayList<Location> locations = checkOpcode(opcode, distanceCalculator, startingLocation);
-        ArrayList<Location> queryResults = queryBuilder.query(queryString);
+    /**
+     *
+     *
+     * @param rawKml@return ordered list, raw kml, record keys
+     */
+    private ServerKmlResponse generateKmlResponse(RawKml rawKml) {
+        ArrayList<Location> locations = checkOpcode(rawKml.getOpcode(), rawKml.getDistanceCalculator(), rawKml.getStartingLocation());
+        ArrayList<Location> queryResults = rawKml.getQueryBuilder().query(rawKml.getQueryString());
         HashMap<String, String> extra = queryResults.get(0).getExtraInfo();
         Object columns[] = extra.keySet().toArray();
         //
-        SVG svg = new SVG(locations);
-        String map = svg.getContents();
-        int wid = (int) svg.getWidth();
-        int hei = (int) svg.getHeight();
-        return new ServerSvgResponse(wid, hei, map, locations, columns);
+        Kml kml = new Kml(locations);
+        String map = kml.getContents();
+        return new ServerKmlResponse(map, locations, columns);
     }
 
-    private ArrayList<Location> checkOpcode(String opcode, DistanceCalculator distanceCalculator, Location startingLocation) {
+    /**
+     *
+     * @param opcode "3-opt", "2-opt", "Nearest Neighbor", "None"
+     * @param distanceCalculator mechanism to create ordered list
+     * @return ordered list
+     */
+    private ArrayList<Location> checkOpcode(String opcode,
+                                            DistanceCalculator distanceCalculator,
+                                            Location startingLocation) {
         ArrayList<Location> locations;
         switch (opcode) {
             case "Nearest Neighbor":  //opcode is dependent on trey's code
                 //figure out which method to call... depends on Tim's code
-                if (startingLocation != null) {
-                    locations = distanceCalculator.shortestNearestNeighborTrip();
-
-                    //method for finding this path
-                } else {
-                    locations = distanceCalculator.shortestNearestNeighborTrip();
-                }
+                locations = nearestNeighbor(distanceCalculator, startingLocation);
                 break;
             case "2-Opt":
                 //what is this method?
-                if (startingLocation != null) {
-                    locations = distanceCalculator.shortestTwoOptTrip();
-
-                    //method for finding this path
-                } else {
-                    locations = distanceCalculator.shortestTwoOptTrip();
-                }
+                locations = twoOpt(distanceCalculator, startingLocation);
                 break;
             case "3-Opt":
                 //what is this method?
-                if (startingLocation != null) {
-                    locations = new ArrayList<>();
-
-                    //method for finding this path
-                } else {
-                    locations = new ArrayList<>();
-                }
+                locations = threeOpt(startingLocation);
                 break;
             default:
                 //opcode is likely "none"
                 // so I want the raw order->need a method for this in Distance Calculator
                 locations = distanceCalculator.noOptimization();
                 break;
+        }
+        return locations;
+    }
+
+    /**
+     * @param startingLocation client
+     * @return three opted
+     */
+    private ArrayList<Location> threeOpt(Location startingLocation) {
+        ArrayList<Location> locations;
+        if (startingLocation != null) {
+            locations = new ArrayList<>();
+
+            //method for finding this path
+        } else {
+            locations = new ArrayList<>();
+        }
+        return locations;
+    }
+
+    /**
+     * @param distanceCalculator make trip
+     * @param startingLocation   client
+     * @return two opted
+     */
+    private ArrayList<Location> twoOpt(DistanceCalculator distanceCalculator, Location startingLocation) {
+        ArrayList<Location> locations;
+        if (startingLocation != null) {
+            locations = distanceCalculator.shortestTwoOptTrip();
+
+            //method for finding this path
+        } else {
+            locations = distanceCalculator.shortestTwoOptTrip();
+        }
+        return locations;
+    }
+
+    /**
+     * @param distanceCalculator make trip
+     * @param startingLocation   client
+     * @return nearest neighbor
+     */
+    private ArrayList<Location> nearestNeighbor(DistanceCalculator distanceCalculator, Location startingLocation) {
+        ArrayList<Location> locations;
+        if (startingLocation != null) {
+            locations = distanceCalculator.shortestNearestNeighborTrip();
+
+            //method for finding this path
+        } else {
+            locations = distanceCalculator.shortestNearestNeighborTrip();
         }
         return locations;
     }
@@ -348,22 +362,27 @@ public class Server {
         String queryString = buildWithCode(locations);
 
         // Query database with queryString
-        ServerSvgResponse serverSvgResponse = generateUploadResponse(queryBuilder, queryString);
+        ServerKmlResponse serverKmlResponse = generateUploadResponse(queryBuilder, queryString);
 
-        return gson.toJson(serverSvgResponse, ServerSvgResponse.class);
+        return gson.toJson(serverKmlResponse, ServerKmlResponse.class);
     }
 
-    private ServerSvgResponse generateUploadResponse(QueryBuilder queryBuilder,
+
+    /**
+     *
+     * @param queryBuilder sql operator
+     * @param queryString sent from client
+     * @return kml response with raw string
+     */
+    private ServerKmlResponse generateUploadResponse(QueryBuilder queryBuilder,
                                                      String queryString) {
         ArrayList<Location> queryResults = queryBuilder.query(queryString);
         HashMap<String, String> map = queryResults.get(0).getExtraInfo();
         Object columns[] = map.keySet().toArray();
-        SVG svg = new SVG(queryResults);
+        Kml kml = new Kml(queryResults);
         // Same response structure as the query request
-        int wid = (int)svg.getWidth();
-        int hei = (int)svg.getHeight();
-        String contents = svg.getContents();
-        return new ServerSvgResponse(wid, hei, contents, queryResults, columns);
+        String contents = kml.getContents();
+        return new ServerKmlResponse(contents, queryResults, columns);
     }
 
     // called by testing method if client requests a search
@@ -408,13 +427,19 @@ public class Server {
             return gson.toJson(new ServerResponse(null));
         }
 
-        // Create object with svg file path and array of matching database entries to return to server
+        // Create object with kml file path and
+        // array of matching database entries to return to server
         ServerResponse sres = generateQueryResponse(queryResults);
 
         //Convert response to json
         return gson.toJson(sres, ServerResponse.class);
     }
 
+    /**
+     *
+     * @param searched query from client
+     * @return list of records from the querybuilder class
+     */
     private ArrayList<Location> generateQuery(String searched) {
         QueryBuilder queryBuilder = new QueryBuilder("mjrerle", "829975763");
         // Create new QueryBuilder instance and pass in credentials
@@ -422,6 +447,11 @@ public class Server {
         return queryBuilder.query(queryString);
     }
 
+    /**
+     *
+     * @param queryResults ordered list
+     * @return stage 1 response
+     */
     private ServerResponse generateQueryResponse(ArrayList<Location> queryResults) {
         HashMap<String, String> map = queryResults.get(0).getExtraInfo();
         Object columns[] = map.keySet().toArray();
@@ -444,22 +474,45 @@ public class Server {
         res.header("Access-Control-Allow-Headers", "*");
     }
 
-    /**
-     * attach a file (selection.json) and do a force download on the client
-     *
-     * @param res : a HttpServletResponse, we want the raw form
-     */
-    private void setHeadersFile(Response res) {
-        /* Unlike the other responses, the file request sends back an actual file. This means
-        that we have to work with the raw HttpServletRequest that Spark's Response class is built
-        on.
+    private static class RawKml {
+        private final String opcode;
+        private final QueryBuilder queryBuilder;
+        private final String queryString;
+        private final DistanceCalculator distanceCalculator;
+        private final Location startingLocation;
+
+        /**
+         * @param opcode             "3-opt", "2-opt", "Nearest Neighbor", "None"
+         * @param queryBuilder       sql server
+         * @param queryString        client request
+         * @param distanceCalculator mechanism to create ordered list
          */
-        // First, add the same Access Control headers as before
-        res.raw().addHeader("Access-Control-Allow-Origin", "*");
-        res.raw().addHeader("Access-Control-Allow-Headers", "*");
-        // Set the content type to "force-download." Basically, we "trick" the browser with
-        // an unknown file type to make it download the file instead of opening it.
-        res.raw().setContentType("application/force-download");
-        res.raw().addHeader("Content-Disposition", "attachment; filename=\"selection.json\"");
+        private RawKml(String opcode, QueryBuilder queryBuilder, String queryString, DistanceCalculator distanceCalculator, Location startingLocation) {
+            this.opcode = opcode;
+            this.queryBuilder = queryBuilder;
+            this.queryString = queryString;
+            this.distanceCalculator = distanceCalculator;
+            this.startingLocation = startingLocation;
+        }
+
+        String getOpcode() {
+            return opcode;
+        }
+
+        QueryBuilder getQueryBuilder() {
+            return queryBuilder;
+        }
+
+        String getQueryString() {
+            return queryString;
+        }
+
+        DistanceCalculator getDistanceCalculator() {
+            return distanceCalculator;
+        }
+
+        Location getStartingLocation() {
+            return startingLocation;
+        }
     }
 }
