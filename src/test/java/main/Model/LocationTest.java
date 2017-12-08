@@ -1,15 +1,12 @@
-package edu.csu2017fa314.T29.Model;
+package main.Model;
 
 import org.junit.Before;
 import org.junit.Test;
 
-
 import java.util.ArrayList;
-
 import java.util.HashMap;
-import java.util.Set;
-
 import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 

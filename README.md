@@ -1,14 +1,11 @@
-# DTR-29 - SPB
+# Fuzzy-Octo-Journey
+## An extension of a school project to fulfill my need to complete a project.
 
-* Elliott Roberts, ejrober, ejrober
-* Matt Erle, mjrerle, mjrerle
-* Tim Stroup, tstroup, TimStroup, l33t
-* Trey Yu, treyyu28, TreyYu168, 天暢
+### Plans:
+* 3-Opt working
+* Server overhaul
+* Front End overhaul
+* Database overhaul (and creation)
+* Add **a lot** more functionality
 
-Sprint # | Model - Data | Model - Itinerary | View - Server | View - Client
--------- | ------------ | ----------------- | ------------- | -------------
-1 | Elliott Roberts | Trey Yu | Matt Erle | Tim Stroup
-2 | Tim Stroup | Matt Erle | Trey Yu | Elliott Roberts
-3 | Elliott Roberts | Trey Yu | Tim Stroup | Matt Erle 
-4 | Elliott Roberts | Tim Stroup | Matt Erle | Trey Yu
-5 | Elliott Roberts | Tim Stroup | Matt Erle | Trey Yu
+© Matt Erle

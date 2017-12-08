@@ -1,6 +1,6 @@
-package edu.csu2017fa314.T29.View;
+package main.View;
 
-import edu.csu2017fa314.T29.Model.Location;
+import main.Model.Location;
 
 import java.util.ArrayList;
 
@@ -84,11 +84,11 @@ public class SVG {
         return svgx;
     }
 
-    double getWidth() {
+    private double getWidth() {
         return width;
     }
 
-    double getHeight() {
+    private double getHeight() {
         return height;
     }
 

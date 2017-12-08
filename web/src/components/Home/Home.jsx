@@ -4,9 +4,7 @@ import Select from 'react-select';
 import Pair from './Pair/Pair.jsx';
 import InlineSVG from "svg-inline-react";
 import Reorder from 'react-reorder';
-import reorderImmutable from 'react-reorder';
-import reorderFromToImmutable from 'react-reorder';
-import reorder from 'react-reorder'
+import reorder from 'react-reorder';
 
 class Home extends React.Component {
     constructor(props) {
@@ -26,13 +24,14 @@ class Home extends React.Component {
         }
     };
 
-    webHeader() {
+    static webHeader() {
         /* The following code is the Header of the Home Page */
         return(
             <div className="header" style={{position: "relative"}}>
                 <div className="row" style={{borderStyle: "solid"}}>
-                    <div className="teamName" style={{textAlign: "center"}}><h2><strong>Team 29 - SPB</strong></h2></div>
-                    <div className="col" style={{textAlign: "center"}}><h3><strong>Itinerary Builder 5.0</strong>
+                    <div className="teamName" style={{textAlign: "center"}}><h2><strong>Fuzzy-Octo-Journey</strong></h2>
+                    </div>
+                    <div className="col" style={{textAlign: "center"}}><h3><strong>Itinerary</strong>
                     </h3></div>
                 </div>
                 <br/>
@@ -87,41 +86,10 @@ class Home extends React.Component {
             </section>);
     }
 
-    buttonHandler(type, addClear) {
-        /* A function that handles all of the buttons that our web page has. It takes two
-         * arguments, a type, which represents whether the button handles Attributes selection
-         * or Location selection, and a string addClear, which specify whether the button adds
-         * all or clears all */
-        if (type === "Attributes") {
-            if(addClear === "Add") {
-                return (
-                    <button onClick={this.handleAddAllAttributesButton.bind(this)}>Add All Attributes</button>
-                )
-            } else {
-                return (
-                    <button onClick={this.handleClearAttributesButton.bind(this)}>Clear Attributes</button>
-                )
-            }
-        }
-        if (type === "Locations") {
-            if (addClear === "Add") {
-                return (
-                    <button onClick={this.handleAddAllLocationsButton.bind(this)}>Add All Locations</button>
-                )
-            }
-            else {
-                return (
-                    <button onClick={this.handleClearLocationsButton.bind(this)}>Clear Locations</button>
-                )
-            }
-        }
-        if (type === "Custom Ordering") {
-            return (
-                <button onClick={this.handleCustomOrderButton.bind(this)}>Custom Ordering</button>
-            )
-        } else {
-            console.log("Something went wrong with buttons")
-        }
+    /* Section that handles all buttons*/
+    static async handleCustomOrderButton(event) {
+        event.preventDefault();
+
 
     }
 
@@ -214,144 +182,44 @@ class Home extends React.Component {
             </section>
         )
     }
-    render() {
-        let hideShow = "none"
 
-        let renderedSVG;
-        let extraInfo;
-        let clearAttributesButton;
-        let addAllAttributesButton;
-        let clearLocationsButton;
-        let addAllLocationsButton;
-        let customOrderButton;
-        let showMap;
-        let itineraryTable;
-        let possibleLocations = this.possibleLocations(hideShow);
-        let tripHeader = this.tripHeader(hideShow);
-        let displayAttributes = [];
-        let displayLocations = [];
-
-        {/* If the server returned some value, then we have
-          * information that we queried for, and thus can display
-          * various information such as which locations were matched
-          * and any relevant information with it */}
-        if (this.state.serverReturned) {
-
-            {/* There are certain sections that should only be displayed
-              * once the server has returned. We control this by using a
-              * variable that is called hideShow.
-              */}
-            hideShow = "block"; {/* When hideShow is "none", the element will be hidden
-                                  * and when it is set to "block", it will be displayed */}
-
-            {/* We need to reset the state of these web elements with the updated
-              * hideShow value so that they will be displayed with the new information */}
-            possibleLocations = this.possibleLocations(hideShow);
-            tripHeader = this.tripHeader(hideShow);
-            extraInfo = this.extraInfo(hideShow);
-
-            {/* These buttons allow to add/clear all attributes related to the locations */}
-            clearAttributesButton = this.buttonHandler("Attributes", "Clear");
-            addAllAttributesButton = this.buttonHandler("Attributes", "Add");
-
-            {/* These buttons allow to add/clear all locations to the selected locations */}
-            clearLocationsButton = this.buttonHandler("Locations", "Clear");
-            addAllLocationsButton = this.buttonHandler("Locations", "Add");
-
-            //customOrderButton = this.buttonHandler("Starting Location", "");
-            customOrderButton = this.buttonHandler("Custom Ordering", "");
-
-            let selectedAttributes = this.state.selectedAttributes;
-            selectedAttributes.forEach((att) => {
-                displayAttributes.push(<li>{att}</li>)
-            });
-            let selectedLocations = this.state.selectedLocations;
-            selectedLocations.forEach((loc) => {
-                displayLocations.push(<li>{loc}    <label> Choose this as starting Location <input type="radio" value={loc}
-                                                            checked={this.state.startLocation === loc}
-                                                            onChange={this.handleStartingLocation.bind(this)}/></label></li>)
-
-            });
-
-
-            //like before in app.js except this time we explicitly give it key value pairs
-            if (this.props.svg) {
-                renderedSVG = (<InlineSVG src={this.props.svg}>SVG</InlineSVG>);
-                //svg magic
-            }
-            if (renderedSVG) {
-                //if the map isn't null, make sure it renders
-                showMap = (<label style={{color: "blue"}}><strong><h4>Generated Map</h4></strong>
-                    <br/>
-                    {renderedSVG}
-                </label>);
-            }
-            if (showMap) {
-                itineraryTable = this.itineraryTable(this.props.pairs, this.state.selectedAttributes);
+    buttonHandler(type, addClear) {
+        /* A function that handles all of the buttons that our web page has. It takes two
+         * arguments, a type, which represents whether the button handles Attributes selection
+         * or Location selection, and a string addClear, which specify whether the button adds
+         * all or clears all */
+        if (type === "Attributes") {
+            if (addClear === "Add") {
+                return (
+                    <button onClick={this.handleAddAllAttributesButton.bind(this)}>Add All Attributes</button>
+                )
+            } else {
+                return (
+                    <button onClick={this.handleClearAttributesButton.bind(this)}>Clear Attributes</button>
+                )
             }
         }
-        return (
-            <div className="home-container">
-                {this.webHeader()}
+        if (type === "Locations") {
+            if (addClear === "Add") {
+                return (
+                    <button onClick={this.handleAddAllLocationsButton.bind(this)}>Add All Locations</button>
+                )
+            }
+            else {
+                return (
+                    <button onClick={this.handleClearLocationsButton.bind(this)}>Clear Locations</button>
+                )
+            }
+        }
+        if (type === "Custom Ordering") {
+            return (
+                <button onClick={Home.handleCustomOrderButton.bind(this)}>Custom Ordering</button>
+            )
+        } else {
+            console.log("Something went wrong with buttons")
+        }
 
-                {/* The following code is the Main Body of the the Home Page, it has a Form layout */}
-                {this.webMain(hideShow, extraInfo, addAllAttributesButton, clearAttributesButton, displayAttributes)}
-
-                <section className="searchedFor" style={{clear: "both", position: "relative"}}>
-                    <section className="rightSide">
-                        {this.searchedHeaderText(hideShow)}
-                        {possibleLocations}
-                        <br/>
-                        {addAllLocationsButton}
-                        {clearLocationsButton}
-                        {customOrderButton}
-                        {displayLocations}
-                    </section>
-
-                    <section id="customOrdering" style={{position: "relative", float: "right", marginRight: "10%"}}>
-                        <h4><strong>Drag and Drop the order you would like!</strong></h4>
-                        <Reorder
-                            reorderId="my-list" // Unique ID that is used internally to track this list (required)
-                            reorderGroup="reorder-group" // A group ID that allows items to be dragged between lists of the same group (optional)
-                            //getRef={this.storeRef.bind(this)} // Function that is passed a reference to the root node when mounted (optional)
-                            component="ul" // Tag name or Component to be used for the wrapping element (optional), defaults to 'div'
-                            placeholderClassName="placeholder" // Class name to be applied to placeholder elements (optional), defaults to 'placeholder'
-                            draggedClassName="dragged" // Class name to be applied to dragged elements (optional), defaults to 'dragged'
-                            lock="horizontal" // Lock the dragging direction (optional): vertical, horizontal (do not use with groups)
-                            holdTime={500} // Default hold time before dragging begins (mouse & touch) (optional), defaults to 0
-                            touchHoldTime={500} // Hold time before dragging begins on touch devices (optional), defaults to holdTime
-                            mouseHoldTime={200} // Hold time before dragging begins with mouse (optional), defaults to holdTime
-                            onReorder={this.onReorder.bind(this)} // Callback when an item is dropped (you will need this to update your state)
-                            autoScroll={true} // Enable auto-scrolling when the pointer is close to the edge of the Reorder component (optional), defaults to true
-                            disabled={false} // Disable reordering (optional), defaults to false
-                            disableContextMenus={true} // Disable context menus when holding on touch devices (optional), defaults to true
-                            placeholder={
-                                <div className="custom-placeholder" /> // Custom placeholder element (optional), defaults to clone of dragged element
-                            }
-
-                        >
-                            {
-                                this.state.selectedLocations.map((item) => (
-                                    <li>
-                                        {item}
-                                    </li>
-                                ))
-                            }
-                        </Reorder>
-
-                    </section>
-                </section>
-
-                <section id="trip" style={{bottom: 0, position: "relative"}}>
-                    {tripHeader}
-                    {showMap}
-                    {itineraryTable}
-                    <br/>
-                </section>
-
-            </div>
-        )
-    };
+    }
 
     async handleSaveItinerary(event) {
         event.preventDefault();
@@ -446,77 +314,144 @@ class Home extends React.Component {
         })
     }
 
-    async fetch(type, input) {
-        // Create object to send to server
-        /*  IMPORTANT: This object must match the structure of whatever
-            object the server is reading into (in this case DataClass) */
-        let clientreq;
-        if (type === "query") {
-            clientreq = {
-                request: type,
-                description: [input],
-                op_level: this.state.op_level
-            };
-        }
-        else if (type === "startingLocation") {
-            clientreq = {
-                request: type,
-                description: input,
-                op_level: this.state.op_level,
-                locationCode: this.state.startLocation
-            }
-        }
-        else{
-            clientreq = {
-                request: type,
-                description:input,
-                op_level:this.state.op_level
-            }
-        }
+    render() {
+        let hideShow = "none";
 
-        console.log(clientreq);
-        try {
-            // Attempt to send `newMap` via a POST request
-            // Notice how the end of the url below matches what the server is listening on (found in java code)
-            // By default, Spark uses port 4567
-            let serverUrl = window.location.href.substring(0, window.location.href.length - 6) + ":3333/testing";
-            let jsonReturned = await
-                fetch(serverUrl,
-                    {
-                        method: "POST",
-                        body: JSON.stringify(clientreq)
-                    });
+        let renderedSVG;
+        let extraInfo;
+        let clearAttributesButton;
+        let addAllAttributesButton;
+        let clearLocationsButton;
+        let addAllLocationsButton;
+        let customOrderButton;
+        let showMap;
+        let itineraryTable;
+        let possibleLocations = this.possibleLocations(hideShow);
+        let tripHeader = this.tripHeader(hideShow);
+        let displayAttributes = [];
+        let displayLocations = [];
 
-            // Wait for server to return and convert it to json.
-            let ret = await
-                jsonReturned.json();
-            this.setState({
-                serverReturned: JSON.parse(ret),
-                tags: JSON.parse(ret).columns,
+        {/* If the server returned some value, then we have
+          * information that we queried for, and thus can display
+          * various information such as which locations were matched
+          * and any relevant information with it */}
+        if (this.state.serverReturned) {
+
+            {/* There are certain sections that should only be displayed
+              * once the server has returned. We control this by using a
+              * variable that is called hideShow.
+              */}
+            hideShow = "block"; {/* When hideShow is "none", the element will be hidden
+                                  * and when it is set to "block", it will be displayed */}
+
+            {/* We need to reset the state of these web elements with the updated
+              * hideShow value so that they will be displayed with the new information */}
+            possibleLocations = this.possibleLocations(hideShow);
+            tripHeader = this.tripHeader(hideShow);
+            extraInfo = this.extraInfo(hideShow);
+
+            {/* These buttons allow to add/clear all attributes related to the locations */}
+            clearAttributesButton = this.buttonHandler("Attributes", "Clear");
+            addAllAttributesButton = this.buttonHandler("Attributes", "Add");
+
+            {/* These buttons allow to add/clear all locations to the selected locations */}
+            clearLocationsButton = this.buttonHandler("Locations", "Clear");
+            addAllLocationsButton = this.buttonHandler("Locations", "Add");
+
+            //customOrderButton = this.buttonHandler("Starting Location", "");
+            customOrderButton = this.buttonHandler("Custom Ordering", "");
+
+            let selectedAttributes = this.state.selectedAttributes;
+            selectedAttributes.forEach((att) => {
+                displayAttributes.push(<li>{att}</li>)
+            });
+            let selectedLocations = this.state.selectedLocations;
+            selectedLocations.forEach((loc) => {
+                displayLocations.push(<li>{loc}    <label> Choose this as starting Location <input type="radio" value={loc}
+                                                            checked={this.state.startLocation === loc}
+                                                            onChange={this.handleStartingLocation.bind(this)}/></label></li>)
+
             });
 
-            //(tags isn't really used, it is mostly for debugging purposes)
-            /*serverReturned has svg, locations, columns*/
-            if (JSON.parse(ret).response == "query" || JSON.parse(ret).response == "upload") {
-                this.setOptions();
-            }
-            if (JSON.parse(ret).response == "upload") {
-                this.setState({
-                    responseType: upload
-                })
-            }
-            this.setLocations();
-            // Log the received JSON to the browser console
-            console.log("Got back ", JSON.parse(ret));
-            // set the serverReturned state variable to the received json.
-            // this way, attributes of the json can be accessed via this.state.serverReturned.[field]
 
-            // Update the state so we can see it on the web
-        } catch (e) {
-            console.error("Error talking to server");
-            console.error(e);
+            //like before in app.js except this time we explicitly give it key value pairs
+            if (this.props.svg) {
+                renderedSVG = (<InlineSVG src={this.props.svg}>SVG</InlineSVG>);
+                //svg magic
+            }
+            if (renderedSVG) {
+                //if the map isn't null, make sure it renders
+                showMap = (<label style={{color: "blue"}}><strong><h4>Generated Map</h4></strong>
+                    <br/>
+                    {renderedSVG}
+                </label>);
+            }
+            if (showMap) {
+                itineraryTable = this.itineraryTable(this.props.pairs, this.state.selectedAttributes);
+            }
         }
-    }
+        return (
+            <div className="home-container">
+                {Home.webHeader()}
+
+                {/* The following code is the Main Body of the the Home Page, it has a Form layout */}
+                {this.webMain(hideShow, extraInfo, addAllAttributesButton, clearAttributesButton, displayAttributes)}
+
+                <section className="searchedFor" style={{clear: "both", position: "relative"}}>
+                    <section className="rightSide">
+                        {this.searchedHeaderText(hideShow)}
+                        {possibleLocations}
+                        <br/>
+                        {addAllLocationsButton}
+                        {clearLocationsButton}
+                        {customOrderButton}
+                        {displayLocations}
+                    </section>
+
+                    <section id="customOrdering" style={{position: "relative", float: "right", marginRight: "10%"}}>
+                        <h4><strong>Drag and Drop the order you would like!</strong></h4>
+                        <Reorder
+                            reorderId="my-list" // Unique ID that is used internally to track this list (required)
+                            reorderGroup="reorder-group" // A group ID that allows items to be dragged between lists of the same group (optional)
+                            //getRef={this.storeRef.bind(this)} // Function that is passed a reference to the root node when mounted (optional)
+                            component="ul" // Tag name or Component to be used for the wrapping element (optional), defaults to 'div'
+                            placeholderClassName="placeholder" // Class name to be applied to placeholder elements (optional), defaults to 'placeholder'
+                            draggedClassName="dragged" // Class name to be applied to dragged elements (optional), defaults to 'dragged'
+                            lock="horizontal" // Lock the dragging direction (optional): vertical, horizontal (do not use with groups)
+                            holdTime={500} // Default hold time before dragging begins (mouse & touch) (optional), defaults to 0
+                            touchHoldTime={500} // Hold time before dragging begins on touch devices (optional), defaults to holdTime
+                            mouseHoldTime={200} // Hold time before dragging begins with mouse (optional), defaults to holdTime
+                            onReorder={this.onReorder.bind(this)} // Callback when an item is dropped (you will need this to update your state)
+                            autoScroll={true} // Enable auto-scrolling when the pointer is close to the edge of the Reorder component (optional), defaults to true
+                            disabled={false} // Disable reordering (optional), defaults to false
+                            disableContextMenus={true} // Disable context menus when holding on touch devices (optional), defaults to true
+                            placeholder={
+                                <div className="custom-placeholder" /> // Custom placeholder element (optional), defaults to clone of dragged element
+                            }
+
+                        >
+                            {
+                                this.state.selectedLocations.map((item) => (
+                                    <li>
+                                        {item}
+                                    </li>
+                                ))
+                            }
+                        </Reorder>
+
+                    </section>
+                </section>
+
+                <section id="trip" style={{bottom: 0, position: "relative"}}>
+                    {tripHeader}
+                    {showMap}
+                    {itineraryTable}
+                    <br/>
+                </section>
+
+            </div>
+        )
+    };
 
     async handleShowItinerary(event) {
         if (!this.state.serverReturned) return;
@@ -627,8 +562,80 @@ class Home extends React.Component {
         });
     }
 
+    async fetch(type, input) {
+        // Create object to send to server
+        /*  IMPORTANT: This object must match the structure of whatever
+            object the server is reading into (in this case DataClass) */
+        let clientreq;
+        if (type === "query") {
+            clientreq = {
+                request: type,
+                description: [input],
+                op_level: this.state.op_level
+            };
+        }
+        else if (type === "startingLocation") {
+            clientreq = {
+                request: type,
+                description: input,
+                op_level: this.state.op_level,
+                locationCode: this.state.startLocation
+            }
+        }
+        else {
+            clientreq = {
+                request: type,
+                description: input,
+                op_level: this.state.op_level
+            }
+        }
+
+        console.log(clientreq);
+        try {
+            // Attempt to send `newMap` via a POST request
+            // Notice how the end of the url below matches what the server is listening on (found in java code)
+            // By default, Spark uses port 4567
+            let serverUrl = window.location.href.substring(0, window.location.href.length - 6) + ":3333/testing";
+            let jsonReturned = await
+                fetch(serverUrl,
+                    {
+                        method: "POST",
+                        body: JSON.stringify(clientreq)
+                    });
+
+            // Wait for server to return and convert it to json.
+            let ret = await
+                jsonReturned.json();
+            this.setState({
+                serverReturned: JSON.parse(ret),
+                tags: JSON.parse(ret).columns,
+            });
+
+            //(tags isn't really used, it is mostly for debugging purposes)
+            /*serverReturned has svg, locations, columns*/
+            if (JSON.parse(ret).response === "query" || JSON.parse(ret).response === "upload") {
+                this.setOptions();
+            }
+            if (JSON.parse(ret).response === "upload") {
+                this.setState({
+                    responseType: upload
+                })
+            }
+            this.setLocations();
+            // Log the received JSON to the browser console
+            console.log("Got back ", JSON.parse(ret));
+            // set the serverReturned state variable to the received json.
+            // this way, attributes of the json can be accessed via this.state.serverReturned.[field]
+
+            // Update the state so we can see it on the web
+        } catch (e) {
+            console.error("Error talking to server");
+            console.error(e);
+        }
+    }
+
     async handleSearchEvent() {
-        var queryText = document.forms["searchForm"]["textField"].value;
+        const queryText = document.forms["searchForm"]["textField"].value;
 
         this.setState({
             //set the event value to query(for documentation purposes)
@@ -643,15 +650,9 @@ class Home extends React.Component {
 
         this.setState({
             startLocation: event.target.value,
-        })
+        });
 
         this.fetch("startingLocation", this.state.selectedLocations)
-
-    }
-    /* Section that handles all buttons*/
-    async handleCustomOrderButton(event) {
-        event.preventDefault();
-
 
     }
     async handleClearAttributesButton(event) {

@@ -1,4 +1,4 @@
-package edu.csu2017fa314.T29.View;
+package main.View;
 
 import java.util.ArrayList;
 

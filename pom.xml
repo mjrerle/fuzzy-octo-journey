@@ -9,12 +9,12 @@
          </properties>
 
          <modelVersion>4.0.0</modelVersion>
-         <groupId>edu.csu2017fa314.T29</groupId>
-         <artifactId>T29</artifactId>
+    <groupId>main</groupId>
+    <artifactId>fuzzy-octo-journey</artifactId>
          <packaging>jar</packaging>
-    <version>5.0.0</version>
-         <name>T29</name>
-         <url>https://github.com/csu2017fa314/T29/</url>
+    <version>1.0.0</version>
+    <name>fuzzy-octo-journey</name>
+    <url>https://github.com/mjrerle/fuzzy-octo-journey</url>
          <build>
                   <plugins>
                            <plugin>
@@ -25,7 +25,7 @@
                                              <archive>
                                                       <manifest>
                                                                <addClasspath>true</addClasspath>
-                                                               <mainClass>edu.csu2017fa314.T29</mainClass>
+                                                          <mainClass>main</mainClass>
                                                       </manifest>
                                              </archive>
                                     </configuration>

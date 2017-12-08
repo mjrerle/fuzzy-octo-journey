@@ -1,6 +1,6 @@
-package edu.csu2017fa314.T29.View;
+package main.View;
 
-import edu.csu2017fa314.T29.Model.Location;
+import main.Model.Location;
 
 import java.util.ArrayList;
 
@@ -17,7 +17,7 @@ public class ServerResponse {
      * @param locations : no order locations list, this is for the initial query
      * @param columns   : keys to the locations list, Trey needs this for the attribute selection
      */
-    public ServerResponse(ArrayList<Location> locations, Object[] columns) {
+    ServerResponse(ArrayList<Location> locations, Object[] columns) {
         this.locations = locations;
         this.columns = columns;
         System.out.println(this.toString());
@@ -28,7 +28,7 @@ public class ServerResponse {
      *
      * @param locations : no order locations list
      */
-    public ServerResponse(ArrayList<Location> locations) {
+    ServerResponse(ArrayList<Location> locations) {
         //this happens when i request an upload
         this.locations = locations;
         this.columns = new Object[1];
@@ -40,10 +40,9 @@ public class ServerResponse {
     //
 
     /**
-     * @param response : either "upload" or "query"
      */
-    public void setResponseType(String response) {
-        this.response = response;
+    void setResponseType() {
+        this.response = "query";
     }
 
     /**

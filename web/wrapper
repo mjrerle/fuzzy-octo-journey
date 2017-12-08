@@ -22,7 +22,7 @@ runplainly(){
   ports
   ./ss "$runserver" "$runclient"
 }
-runserver="java -cp ../target/T29-5.0.0.jar edu.csu2017fa314.T29.TripCo"
+runserver="java -cp ../target/fuzzy-octo-journey-1.0.0.jar main.TripCo"
 runclient="npm start"
 if (( $#==0 )); then
   package

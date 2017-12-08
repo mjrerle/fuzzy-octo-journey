@@ -1,6 +1,8 @@
-package edu.csu2017fa314.T29;
+package main;
 
-import edu.csu2017fa314.T29.View.Server;
+import main.View.Server;
+
+import java.util.Objects;
 
 public class TripCo {
 
@@ -13,7 +15,7 @@ public class TripCo {
 
     public String getMessage()
     {
-       if (name == "")
+        if (Objects.equals(name, ""))
        {
           return "Hello!";
        }

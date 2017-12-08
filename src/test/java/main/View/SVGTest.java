@@ -1,25 +1,28 @@
-package edu.csu2017fa314.T29.View;
+package main.View;
 
-import edu.csu2017fa314.T29.Model.DistanceCalculator;
-import edu.csu2017fa314.T29.Model.Location;
+import main.Model.Location;
+import main.Model.TripMaker;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 public class SVGTest {
 
-    DistanceCalculator distanceCalculator;
-    LinkedList<Location> locationLinkedList;
-    ArrayList<Location> locations;
-    SVG svg;
+    private TripMaker tripMaker;
+    private LinkedList<Location> locationLinkedList;
+    private ArrayList<Location> locations;
+    private SVG svg;
     @Before
     public void setUp() {
-        locations = new ArrayList<Location>();
+        locations = new ArrayList<>();
 
-        Map<String,String> extraInfo = new HashMap<String,String>();
+        Map<String, String> extraInfo = new HashMap<>();
         Location brewery1;
         Location brewery2;
         Location brewery3;
@@ -43,10 +46,10 @@ public class SVGTest {
         locations.add(brewery2);
         locations.add(brewery3);
 
-        distanceCalculator = new DistanceCalculator(locations);
-        locationLinkedList = new LinkedList<Location>();
+        tripMaker = new TripMaker(locations);
+        locationLinkedList = new LinkedList<>();
 
-        svg = new SVG(distanceCalculator.computeAllNearestNeighbors());
+        svg = new SVG(tripMaker.computeAllNearestNeighbors());
 
     }
     @Test

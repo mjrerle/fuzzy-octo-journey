@@ -1,11 +1,10 @@
-package edu.csu2017fa314.T29.Model;
+package main.Model;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,25 +13,35 @@ import static org.junit.Assert.*;
 /**
  * Created by treyy on 9/2/2017.
  */
-public class DistanceCalculatorTest {
+public class TripMakerTest {
 
-    double foCoLatitude = 40.585258;
-    double foCoLongitude = -105.084419;
-    double boraBoraLatitude = -16.5004126;
-    double boraBoraLongitude = -151.74149039999998;
+    private double foCoLatitude = 40.585258;
+    private double foCoLongitude = -105.084419;
+    private double boraBoraLatitude = -16.5004126;
+    private double boraBoraLongitude = -151.74149039999998;
 
-    ArrayList<Location> tLocations = new ArrayList<Location>();
-    ArrayList<Location> breweries = new ArrayList<Location>();
+    private ArrayList<Location> tLocations = new ArrayList<>();
+    private ArrayList<Location> breweries = new ArrayList<>();
 
-    Map<String,String> extraInfo = new HashMap<String,String>();
-    Location brewery1;
-    Location brewery2;
-    Location brewery3;
-    Location t1;Location t2;Location t3; Location t4; Location t5;Location t6; Location t7;
-    Location t8; Location t9; Location t01; Location t02; Location t03;
+    private Map<String, String> extraInfo = new HashMap<>();
+    private Location brewery1;
+    private Location brewery2;
+    private Location brewery3;
+    private Location t1;
+    private Location t2;
+    private Location t3;
+    private Location t4;
+    private Location t5;
+    private Location t6;
+    private Location t7;
+    private Location t8;
+    private Location t9;
+    private Location t01;
+    private Location t02;
+    private Location t03;
 
-    DistanceCalculator brewDistanceCalculator;
-    DistanceCalculator distanceCalculator;
+    private TripMaker brewTripMaker;
+    private TripMaker tripMaker;
 
     /** Needs to be refactored from 66 lines to 25. */
     @Before
@@ -52,12 +61,12 @@ public class DistanceCalculatorTest {
         t01 = locationBuilder("c1", "-999", "-999");
         t02 = locationBuilder("d1", "999", "-999");
         t03 = locationBuilder("e1", "-999", "999");
-        brewDistanceCalculator = new DistanceCalculator(breweries);
-        distanceCalculator = new DistanceCalculator(tLocations);
+        brewTripMaker = new TripMaker(breweries);
+        tripMaker = new TripMaker(tLocations);
     }
 
     /**For the tLocations ArrayList.*/
-    public Location locationBuilder(String id, String name, String latitude, String longitude) {
+    private Location locationBuilder(String id, String name, String latitude, String longitude) {
         extraInfo.put("id",id);
         extraInfo.put("name",name);
         extraInfo.put("latitude",latitude);
@@ -66,7 +75,8 @@ public class DistanceCalculatorTest {
         breweries.add(brewery);
         return brewery;
     }
-    public Location locationBuilder(String id, String latitude, String longitude) {
+
+    private Location locationBuilder(String id, String latitude, String longitude) {
         extraInfo.put("id",id);
         extraInfo.put("latitude",latitude);
         extraInfo.put("longitude",longitude);
@@ -77,38 +87,38 @@ public class DistanceCalculatorTest {
 
     @Test
     public void testDegreeToRadian(){
-        assertTrue(brewDistanceCalculator.degreeToRadian(0.0) == 0.0);
-        assertTrue(brewDistanceCalculator.degreeToRadian(90.0) == 1.5707963267948966);
-        assertTrue(brewDistanceCalculator.degreeToRadian(180.0) ==3.141592653589793);
-        assertTrue(brewDistanceCalculator.degreeToRadian(360.0) == 6.283185307179586);
+        assertTrue(brewTripMaker.degreeToRadian(0.0) == 0.0);
+        assertTrue(brewTripMaker.degreeToRadian(90.0) == 1.5707963267948966);
+        assertTrue(brewTripMaker.degreeToRadian(180.0) == 3.141592653589793);
+        assertTrue(brewTripMaker.degreeToRadian(360.0) == 6.283185307179586);
     }
 
     @Test
     public void testToStringById(){
-        System.out.println(brewDistanceCalculator.toStringById(breweries));
+        System.out.println(brewTripMaker.toStringById(breweries));
     }
 
     @Test
     public void testShortestTwoOptTrip(){
-        assertTrue(distanceCalculator.shortestNearestNeighborTrip().get(12).getDistance()
-                == distanceCalculator.shortestTwoOptTrip().get(12).getDistance());
-        assertTrue(brewDistanceCalculator.shortestNearestNeighborTrip().get(3).getDistance()
-                == brewDistanceCalculator.shortestTwoOptTrip().get(3).getDistance());
+        assertTrue(tripMaker.shortestNearestNeighborTrip().get(12).getDistance()
+                == tripMaker.shortestTwoOptTrip().get(12).getDistance());
+        assertTrue(brewTripMaker.shortestNearestNeighborTrip().get(3).getDistance()
+                == brewTripMaker.shortestTwoOptTrip().get(3).getDistance());
     }
 
 
     @Test
     public void testInstantiation() {
-        assertNotNull(distanceCalculator);
+        assertNotNull(tripMaker);
         System.out.println("Instantiation Test Passed");
     }
 
     @Test
     public void testCalculateGreatCircleDistance() {
-        int distance = distanceCalculator.calculateGreatCircleDistance(distanceCalculator.degreeToRadian(foCoLatitude),
-                                                                        distanceCalculator.degreeToRadian(foCoLongitude),
-                                                                        distanceCalculator.degreeToRadian(boraBoraLatitude),
-                                                                        distanceCalculator.degreeToRadian(boraBoraLongitude));
+        int distance = tripMaker.calculateGreatCircleDistance(tripMaker.degreeToRadian(foCoLatitude),
+                tripMaker.degreeToRadian(foCoLongitude),
+                tripMaker.degreeToRadian(boraBoraLatitude),
+                tripMaker.degreeToRadian(boraBoraLongitude));
 
         assertEquals(4949, distance, 2);
         System.out.println("Great Circle Distance Test Passed, calculated value was: " + Integer.toString(distance) + ", which is within a delta of 2 of 4949");
@@ -117,7 +127,7 @@ public class DistanceCalculatorTest {
 
     @Test
     public void testComputeNearestNeighbor(){
-        DistanceCalculator.Pair ll1 = brewDistanceCalculator.computeNearestNeighbor(breweries.get(0));
+        TripMaker.Pair ll1 = brewTripMaker.computeNearestNeighbor(breweries.get(0));
         assertNotNull(ll1);
         assertEquals(ll1.getValue(),(Integer)195);
         assertEquals(ll1.getKey().get(0), breweries.get(0));
@@ -127,24 +137,24 @@ public class DistanceCalculatorTest {
 
     @Test
     public void testGetTotal(){
-        ArrayList<Location> trip = brewDistanceCalculator.shortestNearestNeighborTrip();
+        ArrayList<Location> trip = brewTripMaker.shortestNearestNeighborTrip();
         int sum = 0;
         for(int i=0; i<trip.size(); i++){
-            sum += brewDistanceCalculator.shortestNearestNeighborTrip().get(i).getDistance();
+            sum += brewTripMaker.shortestNearestNeighborTrip().get(i).getDistance();
         }
-        assertTrue(sum == brewDistanceCalculator.getTotal(trip));
+        assertTrue(sum == brewTripMaker.getTotal(trip));
     }
 
 
     @Test
     public void testCalculateTrips() {
-        DistanceCalculator.Pair treyPair = distanceCalculator.calculateTrips(tLocations.get(11), 11);
-        DistanceCalculator.Pair mattPair = distanceCalculator.computeNearestNeighbor(tLocations.get(11));
+        TripMaker.Pair treyPair = tripMaker.calculateTrips(tLocations.get(11));
+        TripMaker.Pair mattPair = tripMaker.computeNearestNeighbor(tLocations.get(11));
         ArrayList<Location> treyArrayList = treyPair.getKey();
         ArrayList<Location> mattArrayList = mattPair.getKey();
 
-        String treysTrip = distanceCalculator.toStringById(treyArrayList);
-        String mattsTrip = distanceCalculator.toStringById(mattArrayList);
+        String treysTrip = tripMaker.toStringById(treyArrayList);
+        String mattsTrip = tripMaker.toStringById(mattArrayList);
         int treysDistance = treyPair.getValue();
         int mattsDistance = mattPair.getValue();
 
@@ -154,20 +164,20 @@ public class DistanceCalculatorTest {
 
     @Test
     public void testShortestNearestNeighborTrip() {
-        ArrayList<Location> shortestTrip = distanceCalculator.shortestNearestNeighborTrip();
+        ArrayList<Location> shortestTrip = tripMaker.shortestNearestNeighborTrip();
         Assert.assertEquals("b", shortestTrip.get(0).getId());
     }
 
     /** Function repeats the distance between the last locations.*/
     @Test
     public void testNoOptimization() {
-        ArrayList<Location> trip = distanceCalculator.noOptimization();
+        ArrayList<Location> trip = tripMaker.noOptimization();
 
         Assert.assertNotNull(trip);
         Assert.assertTrue(trip.get(0).getDistance() != 0);
         Assert.assertTrue(trip.get(trip.size()-1).getDistance() != 0);
         System.out.println("Distance from last node: " + trip.get(trip.size()-1).getDistance());
-        System.out.println("Total: " + distanceCalculator.getTotal(trip));
+        System.out.println("Total: " + tripMaker.getTotal(trip));
     }
 
 }

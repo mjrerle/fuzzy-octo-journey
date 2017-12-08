@@ -1,6 +1,4 @@
-package edu.csu2017fa314.T29.View;
-
-import edu.csu2017fa314.T29.Model.Location;
+package main.Model;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,7 +12,7 @@ public class QueryBuilder {
     private String myUrl = "jdbc:mysql://faure.cs.colostate.edu/cs314";
     // Use this line if connecting inside CSU's network
 
-    QueryBuilder(String user, String pass) {
+    public QueryBuilder(String user, String pass) {
         this.user = user;
         this.pass = pass;
     }

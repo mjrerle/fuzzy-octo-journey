@@ -1,10 +1,11 @@
-package edu.csu2017fa314.T29.View;
+package main.View;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import edu.csu2017fa314.T29.Model.DistanceCalculator;
-import edu.csu2017fa314.T29.Model.Location;
+import main.Model.Location;
+import main.Model.QueryBuilder;
+import main.Model.TripMaker;
 import spark.Request;
 import spark.Response;
 
@@ -169,9 +170,9 @@ public class Server {
         ArrayList<Location> rawOrder = generateQuery(queryAllLocations);
         //in raw order
         //now check op level and apply
-        DistanceCalculator distanceCalculator = new DistanceCalculator(rawOrder);
+        TripMaker tripMaker = new TripMaker(rawOrder);
         ServerKmlResponse ssres = generateKmlResponse(
-                new RawKml(opcode, queryBuilder, queryAllLocations, distanceCalculator, startingLocation));
+                new RawKml(opcode, queryBuilder, queryAllLocations, tripMaker, startingLocation));
         return gson.toJson(ssres, ServerKmlResponse.class);
     }
 
@@ -217,10 +218,10 @@ public class Server {
         QueryBuilder queryBuilder = new QueryBuilder("mjrerle", "829975763");
         String queryString = buildWithCode(locs);
         ArrayList<Location> temp = queryBuilder.query(queryString);
-        DistanceCalculator distanceCalculator = new DistanceCalculator(temp);
+        TripMaker tripMaker = new TripMaker(temp);
 
         ServerKmlResponse ssres = generateKmlResponse(
-                new RawKml(opcode, queryBuilder, queryString, distanceCalculator, null));
+                new RawKml(opcode, queryBuilder, queryString, tripMaker, null));
 
         return gson.toJson(ssres, ServerKmlResponse.class);
     }
@@ -231,7 +232,7 @@ public class Server {
      * @param rawKml@return ordered list, raw kml, record keys
      */
     private ServerKmlResponse generateKmlResponse(RawKml rawKml) {
-        ArrayList<Location> locations = checkOpcode(rawKml.getOpcode(), rawKml.getDistanceCalculator(), rawKml.getStartingLocation());
+        ArrayList<Location> locations = checkOpcode(rawKml.getOpcode(), rawKml.getTripMaker(), rawKml.getStartingLocation());
         ArrayList<Location> queryResults = rawKml.getQueryBuilder().query(rawKml.getQueryString());
         HashMap<String, String> extra = queryResults.get(0).getExtraInfo();
         Object columns[] = extra.keySet().toArray();
@@ -244,21 +245,21 @@ public class Server {
     /**
      *
      * @param opcode "3-opt", "2-opt", "Nearest Neighbor", "None"
-     * @param distanceCalculator mechanism to create ordered list
+     * @param tripMaker mechanism to create ordered list
      * @return ordered list
      */
     private ArrayList<Location> checkOpcode(String opcode,
-                                            DistanceCalculator distanceCalculator,
+                                            TripMaker tripMaker,
                                             Location startingLocation) {
         ArrayList<Location> locations;
         switch (opcode) {
             case "Nearest Neighbor":  //opcode is dependent on trey's code
                 //figure out which method to call... depends on Tim's code
-                locations = nearestNeighbor(distanceCalculator, startingLocation);
+                locations = nearestNeighbor(tripMaker, startingLocation);
                 break;
             case "2-Opt":
                 //what is this method?
-                locations = twoOpt(distanceCalculator, startingLocation);
+                locations = twoOpt(tripMaker, startingLocation);
                 break;
             case "3-Opt":
                 //what is this method?
@@ -267,7 +268,7 @@ public class Server {
             default:
                 //opcode is likely "none"
                 // so I want the raw order->need a method for this in Distance Calculator
-                locations = distanceCalculator.noOptimization();
+                locations = tripMaker.noOptimization();
                 break;
         }
         return locations;
@@ -290,35 +291,35 @@ public class Server {
     }
 
     /**
-     * @param distanceCalculator make trip
+     * @param tripMaker make trip
      * @param startingLocation   client
      * @return two opted
      */
-    private ArrayList<Location> twoOpt(DistanceCalculator distanceCalculator, Location startingLocation) {
+    private ArrayList<Location> twoOpt(TripMaker tripMaker, Location startingLocation) {
         ArrayList<Location> locations;
         if (startingLocation != null) {
-            locations = distanceCalculator.shortestTwoOptTrip();
+            locations = tripMaker.shortestTwoOptTrip();
 
             //method for finding this path
         } else {
-            locations = distanceCalculator.shortestTwoOptTrip();
+            locations = tripMaker.shortestTwoOptTrip();
         }
         return locations;
     }
 
     /**
-     * @param distanceCalculator make trip
+     * @param tripMaker make trip
      * @param startingLocation   client
      * @return nearest neighbor
      */
-    private ArrayList<Location> nearestNeighbor(DistanceCalculator distanceCalculator, Location startingLocation) {
+    private ArrayList<Location> nearestNeighbor(TripMaker tripMaker, Location startingLocation) {
         ArrayList<Location> locations;
         if (startingLocation != null) {
-            locations = distanceCalculator.shortestNearestNeighborTrip();
+            locations = tripMaker.shortestNearestNeighborTrip();
 
             //method for finding this path
         } else {
-            locations = distanceCalculator.shortestNearestNeighborTrip();
+            locations = tripMaker.shortestNearestNeighborTrip();
         }
         return locations;
     }
@@ -456,7 +457,7 @@ public class Server {
         HashMap<String, String> map = queryResults.get(0).getExtraInfo();
         Object columns[] = map.keySet().toArray();
         ServerResponse sres = new ServerResponse(queryResults, columns);
-        sres.setResponseType("query");
+        sres.setResponseType();
         System.out.println("Sending \"" + sres.toString() + "\" to server.");
         return sres;
     }
@@ -478,20 +479,20 @@ public class Server {
         private final String opcode;
         private final QueryBuilder queryBuilder;
         private final String queryString;
-        private final DistanceCalculator distanceCalculator;
+        private final TripMaker tripMaker;
         private final Location startingLocation;
 
         /**
          * @param opcode             "3-opt", "2-opt", "Nearest Neighbor", "None"
          * @param queryBuilder       sql server
          * @param queryString        client request
-         * @param distanceCalculator mechanism to create ordered list
+         * @param tripMaker mechanism to create ordered list
          */
-        private RawKml(String opcode, QueryBuilder queryBuilder, String queryString, DistanceCalculator distanceCalculator, Location startingLocation) {
+        private RawKml(String opcode, QueryBuilder queryBuilder, String queryString, TripMaker tripMaker, Location startingLocation) {
             this.opcode = opcode;
             this.queryBuilder = queryBuilder;
             this.queryString = queryString;
-            this.distanceCalculator = distanceCalculator;
+            this.tripMaker = tripMaker;
             this.startingLocation = startingLocation;
         }
 
@@ -507,8 +508,8 @@ public class Server {
             return queryString;
         }
 
-        DistanceCalculator getDistanceCalculator() {
-            return distanceCalculator;
+        TripMaker getTripMaker() {
+            return tripMaker;
         }
 
         Location getStartingLocation() {

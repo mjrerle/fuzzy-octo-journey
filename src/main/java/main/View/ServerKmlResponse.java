@@ -1,6 +1,6 @@
-package edu.csu2017fa314.T29.View;
+package main.View;
 
-import edu.csu2017fa314.T29.Model.Location;
+import main.Model.Location;
 
 import java.util.ArrayList;
 import java.util.Arrays;

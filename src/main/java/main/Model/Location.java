@@ -1,6 +1,7 @@
-package edu.csu2017fa314.T29.Model;
-import java.util.Map;
+package main.Model;
+
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class Location {
@@ -28,15 +29,10 @@ public class Location {
 
     public String getColumnValue(String columnName){
         columnName = columnName.toLowerCase();
-        if(extraInfo.containsKey(columnName)){
-            return extraInfo.get(columnName);
-        }
-        else{
-            return "Column not found";
-        }
+        return extraInfo.getOrDefault(columnName, "Column not found");
     }
 
-    public Set<String> getColumnNames(){
+    Set<String> getColumnNames() {
         return extraInfo.keySet();
     }
 
@@ -52,7 +48,7 @@ public class Location {
 
 
     // Takes a String of Latitude or Longitude and returns it in degrees as a double!
-    public double coordinatesToDouble(String latLong){
+    private double coordinatesToDouble(String latLong) {
 
         // This handles any Latitude and Longitude that are already in Decimal Degree form
         if(!(latLong.contains("N") || latLong.contains("E") || latLong.contains("S") || latLong.contains("W"))) {
@@ -72,9 +68,7 @@ public class Location {
         // If South or West make negative!
         if(direction.equalsIgnoreCase("S") || direction.equalsIgnoreCase("W")){
             result  *= -1.0;
-        } else if(direction.equalsIgnoreCase("N") || direction.equalsIgnoreCase("E")){
-            // Do nothing, keep positive!
-        } else {
+        } else if (!direction.equalsIgnoreCase("N") && !direction.equalsIgnoreCase("E")) {
             System.out.println("Direction not in correct format!");
         }
         return result;
@@ -116,7 +110,7 @@ public class Location {
     private String[] coordinateParser(String latLong) {
         // Parsing on °, ", ', " ", should provide degrees then minutes, then seconds, then direction.
         latLong = latLong.replaceAll("\\s+|\\t+", "");
-        String delimiters = "°|\"|\'|”|’";
+        String delimiters = "[°\"\'”’]";
         return latLong.split(delimiters);
     }
 
