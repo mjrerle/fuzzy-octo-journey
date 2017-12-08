@@ -122,7 +122,8 @@ public class DistanceCalculator {
      */
 
     public Pair calculateTrips(Location startNode, int startIndex) {
-        /** For calulateTrips to run without getting a null pointer error, calculateAllDistances must be called prior.*/
+        /** For calulateTrips to run without getting a null pointer error
+         * , calculateAllDistances must be called prior.*/
         calculateAllDistances();
         ArrayList<Location> itinerary = new ArrayList<>();
         Location currentLocation = startNode; // Starting Location

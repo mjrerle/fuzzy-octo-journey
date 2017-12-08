@@ -90,10 +90,10 @@ public class DistanceCalculatorTest {
 
     @Test
     public void testShortestTwoOptTrip(){
-        assertTrue(distanceCalculator.shortestNearestNeighborTrip().get(12).getDistance() ==
-                distanceCalculator.shortestTwoOptTrip().get(12).getDistance());
-        assertTrue(brewDistanceCalculator.shortestNearestNeighborTrip().get(3).getDistance()==
-                brewDistanceCalculator.shortestTwoOptTrip().get(3).getDistance());
+        assertTrue(distanceCalculator.shortestNearestNeighborTrip().get(12).getDistance()
+                == distanceCalculator.shortestTwoOptTrip().get(12).getDistance());
+        assertTrue(brewDistanceCalculator.shortestNearestNeighborTrip().get(3).getDistance()
+                == brewDistanceCalculator.shortestTwoOptTrip().get(3).getDistance());
     }
 
 
