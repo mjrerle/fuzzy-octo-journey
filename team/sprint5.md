@@ -30,16 +30,16 @@
 
 Statistic | Planned | Completed
 --- | ---: | ---:
-Tasks |  *value*   | *value* 
-Story Points |  *value*  | *value* 
+Tasks |  18   | 15 
+Story Points |  37  | 27 
 
 
 Statistic | Start | End
 --- | ---: | ---:
-Overall Test Coverage | *value* | *value* 
-Smells | *value* | *value* 
-Duplication | *value* | *value* 
-Technical Debt Ratio | *value* | *value* 
+Overall Test Coverage | 61% |  54%
+Smells | 23 | 21 
+Duplication | 20 | 17 
+Technical Debt Ratio | 12.8 | 12.2 
 
 ## Plan
 
@@ -67,26 +67,29 @@ Date | Tasks done now | Tasks done next | Impediments | Coverage | Smells | Dupl
 ## Review
 
 #### Completed user stories (epics) in Sprint Backlog 
-* *user story*:  *comments*
-* 
+* *Clean Code*:  
+* *Test Coverage*: *54% coverage could be better*
+* *Develop strategy to reduce code smells, duplication, and technical debt ratio*
+* *Select a starting Location*
+* *Map with zoom and pan*
 
 #### Incomplete user stories / epics in Sprint Backlog 
-* *user story*: *Explanation...*
-*
+* *3-opt*: *not understanding 3 opt transformation*
+* *trip destination selection*: *not prioritized*
 
 #### What went well
-* *something*
-*
+* *We got together at some points and talked about what we had to do*
+
 
 #### Problems encountered and resolutions
-* *something*
-*
+* *Communication*
+
 
 ## Retrospective
 
 Topic | Teamwork | Process | Tools
 :--- | :--- | :--- | :---
-What we will change this time |  |  | 
-What we did well |  |  | 
-What we need to work on |  |  |
-What we will change next time |  |  | 
+What we will change this time | *work earlier* | *ask questions* | *read the lecture slides*
+What we did well | *front end coordination* | *worked well at the end* | *learned react*
+What we need to work on | *communication* | *plan better* | *ask questions about the utility scripts*
+What we will change next time | *communicate earlier* | *plan more in depth* | *read more about scrum process*
