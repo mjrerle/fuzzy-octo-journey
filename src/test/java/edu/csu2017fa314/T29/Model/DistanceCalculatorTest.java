@@ -2,7 +2,6 @@ package edu.csu2017fa314.T29.Model;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -71,6 +70,13 @@ public class DistanceCalculatorTest {
         return location;
     }
 
+    @Test
+    public void testDegreeToRadian(){
+        DistanceCalculator distanceCalculator = new DistanceCalculator(breweries);
+        assertTrue(distanceCalculator.degreeToRadian(90.0) == 1.5707963267948966);
+
+    }
+
 
     @Test
     public void testInstantiation() {
@@ -106,14 +112,12 @@ public class DistanceCalculatorTest {
 
     }
 
-    /*@Test
-    public void testCalculateTrips() {
-        locationRecords = new LocationRecords("data/test/FullTest.csv");
-        ArrayList<Location> locations = locationRecords.getLocations();
-        DistanceCalculator distanceCalculator = new DistanceCalculator(locations);
 
-        DistanceCalculator.Pair treyPair = distanceCalculator.calculateTrips(locations.get(67), 67);
-        DistanceCalculator.Pair mattPair = distanceCalculator.computeNearestNeighbor(locations.get(67));
+    @Test
+    public void testCalculateTrips() {
+        DistanceCalculator distanceCalculator = new DistanceCalculator(tLocations);
+        DistanceCalculator.Pair treyPair = distanceCalculator.calculateTrips(tLocations.get(11), 11);
+        DistanceCalculator.Pair mattPair = distanceCalculator.computeNearestNeighbor(tLocations.get(11));
         ArrayList<Location> treyArrayList = treyPair.getKey();
         ArrayList<Location> mattArrayList = mattPair.getKey();
 
@@ -124,12 +128,10 @@ public class DistanceCalculatorTest {
 
         Assert.assertEquals(treysTrip, mattsTrip);
         Assert.assertEquals(treysDistance, mattsDistance);
-    }*/
+    }
 
     @Test
     public void testShortestNearestNeighborTrip() {
-        //locationRecords = new LocationRecords("data/test/FullTest.csv");
-        //ArrayList<Location> locations = locationRecords.getLocations();
         DistanceCalculator distanceCalculator = new DistanceCalculator(tLocations);
 
         ArrayList<Location> shortestTrip = distanceCalculator.shortestNearestNeighborTrip();
@@ -138,9 +140,6 @@ public class DistanceCalculatorTest {
 
     @Test
     public void testNoOptimization() {
-        /*locationRecords = new LocationRecords("data/test/FullTest.csv");
-        ArrayList<Location> locations = locationRecords.getLocations();*/
-
         DistanceCalculator distanceCalculator = new DistanceCalculator(tLocations);
 
         ArrayList<Location> trip = distanceCalculator.noOptimization();
