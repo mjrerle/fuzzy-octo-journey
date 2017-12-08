@@ -16,7 +16,9 @@ class Home extends React.Component {
             selectedAttributes: [],
             selectedLocations: [],
             codes:[],
-            uploadBool: false
+            uploadBool: false,
+            startShow: "none",
+            startLocation: ""
         }
     };
 
@@ -71,13 +73,14 @@ class Home extends React.Component {
             />);
     }
 
+
     tripHeader(hideShow) {
         /* A simple header for displaying the trip after locations have been selected */
         return(
-            <footer style={{display: hideShow}}>
+            <section style={{display: hideShow, position: "relative"}}>
                 <h4><strong>My Trip</strong></h4>
                 <button name="show-itinerary" onClick={this.handleShowItinerary.bind(this)}>Show Trip</button>
-            </footer>);
+            </section>);
     }
 
     buttonHandler(type, addClear) {
@@ -86,7 +89,7 @@ class Home extends React.Component {
          * or Location selection, and a string addClear, which specify whether the button adds
          * all or clears all */
         if (type === "Attributes") {
-            if(addClear == "Add") {
+            if(addClear === "Add") {
                 return (
                     <button onClick={this.handleAddAllAttributesButton.bind(this)}>Add All Attributes</button>
                 )
@@ -95,15 +98,27 @@ class Home extends React.Component {
                     <button onClick={this.handleClearAttributesButton.bind(this)}>Clear Attributes</button>
                 )
             }
-        } else if (addClear === "Add"){
+        }
+        if (type === "Locations") {
+            if (addClear === "Add") {
+                return (
+                    <button onClick={this.handleAddAllLocationsButton.bind(this)}>Add All Locations</button>
+                )
+            }
+            else {
+                return (
+                    <button onClick={this.handleClearLocationsButton.bind(this)}>Clear Locations</button>
+                )
+            }
+        }
+        if (type === "Starting Location") {
             return (
-                <button onClick={this.handleAddAllLocationsButton.bind(this)}>Add All Locations</button>
+                <button onClick={this.handleStartingLocationButton.bind(this)}>Choose Starting Location</button>
             )
         } else {
-            return (
-                <button onClick={this.handleClearLocationsButton.bind(this)}>Clear Locations</button>
-            )
+            console.log("Something went wrong with buttons")
         }
+
     }
 
     itineraryTable(pairs, selectedAttributes) {
@@ -204,6 +219,7 @@ class Home extends React.Component {
         let addAllAttributesButton;
         let clearLocationsButton;
         let addAllLocationsButton;
+        let startingLocationButton;
         let showMap;
         let itineraryTable;
         let possibleLocations = this.possibleLocations(hideShow);
@@ -238,6 +254,8 @@ class Home extends React.Component {
             clearLocationsButton = this.buttonHandler("Locations", "Clear");
             addAllLocationsButton = this.buttonHandler("Locations", "Add");
 
+            //startingLocationButton = this.buttonHandler("Starting Location", "");
+            startingLocationButton = this.buttonHandler("Starting Location", "");
 
             let selectedAttributes = this.state.selectedAttributes;
             selectedAttributes.forEach((att) => {
@@ -245,7 +263,10 @@ class Home extends React.Component {
             });
             let selectedLocations = this.state.selectedLocations;
             selectedLocations.forEach((loc) => {
-                displayLocations.push(<li>{loc}</li>)
+                displayLocations.push(<li>{loc}    <label> Choose this as starting Location <input type="radio" value={loc}
+                                                            checked={this.state.startLocation === loc}
+                                                                                               onChange={this.handleStartingLocationButton.bind(this)}/></label></li>)
+
             });
 
 
@@ -273,21 +294,24 @@ class Home extends React.Component {
                 {this.webMain(hideShow, extraInfo, addAllAttributesButton, clearAttributesButton, displayAttributes)}
 
                 <section className="searchedFor" style={{clear: "both", position: "relative"}}>
-                    {this.searchedHeaderText(hideShow)}
-                    {possibleLocations}
-                    <br/>
-                    {addAllLocationsButton}
-                    {clearLocationsButton}
-                    {displayLocations}
+                    <section className="rightSide">
+                        {this.searchedHeaderText(hideShow)}
+                        {possibleLocations}
+                        <br/>
+                        {addAllLocationsButton}
+                        {clearLocationsButton}
+                        {startingLocationButton}
+                        {displayLocations}
+                    </section>
+
+                    <section id="trip" style={{bottom: 0, position: "relative"}}>
+                        {tripHeader}
+                        {showMap}
+                        {itineraryTable}
+                        <br/>
+                    </section>
                 </section>
 
-                <br/><br/>
-                <section id="trip" style={{bottom: 0, position: "relative", height: "10%"}}>
-                    {tripHeader}
-                    {showMap}
-                    {itineraryTable}
-                    <br/>
-                </section>
             </div>
         )
     };
@@ -378,7 +402,6 @@ class Home extends React.Component {
             codeOptions.push({label: <button>{value.extraInfo.name}</button>, value: value.extraInfo.code});
         }
 
-
         this.setState({
             locationCodes: codes,
             locationCodeOptions: codeOptions,
@@ -398,6 +421,14 @@ class Home extends React.Component {
                 op_level: this.state.op_level
             };
         }
+        else if (type === "startingLocation") {
+            clientreq = {
+                request: type,
+                description: input,
+                op_level: this.state.op_level,
+                locationCode: this.state.startLocation
+            }
+        }
         else{
             clientreq = {
                 request: type,
@@ -405,8 +436,6 @@ class Home extends React.Component {
                 op_level:this.state.op_level
             }
         }
-
-
 
         console.log(clientreq);
         try {
@@ -420,6 +449,7 @@ class Home extends React.Component {
                         method: "POST",
                         body: JSON.stringify(clientreq)
                     });
+
             // Wait for server to return and convert it to json.
             let ret = await
                 jsonReturned.json();
@@ -427,6 +457,7 @@ class Home extends React.Component {
                 serverReturned: JSON.parse(ret),
                 tags: JSON.parse(ret).columns,
             });
+
             //(tags isn't really used, it is mostly for debugging purposes)
             /*serverReturned has svg, locations, columns*/
             if (JSON.parse(ret).response == "query" || JSON.parse(ret).response == "upload") {
@@ -450,34 +481,6 @@ class Home extends React.Component {
         }
     }
 
-    async handleClearAttributesButton(event) {
-        event.preventDefault();
-        this.setState({
-            selectedAttributes: [],
-        });
-        //make the selectedAttributes array clear
-    }
-
-    async handleClearLocationsButton(event) {
-        event.preventDefault();
-        this.setState({
-            selectedLocations: [],
-        })
-    }
-
-    async handleAddAllAttributesButton(event) {
-        event.preventDefault();
-        this.setState({
-            selectedAttributes: this.state.serverReturned.columns,
-        })
-    }
-
-    async handleAddAllLocationsButton(event) {
-        event.preventDefault();
-        this.setState({
-            selectedLocations: this.state.locationCodes,
-        })
-    }
     async handleShowItinerary(event) {
         if (!this.state.serverReturned) return;
         event.preventDefault();
@@ -485,7 +488,6 @@ class Home extends React.Component {
 
         if (this.props.uploadBool) {
             selection = this.state.locationCodes;
-            console.log("I ran props.sysFile");
         }
 
         this.fetch("svg", selection);
@@ -500,6 +502,7 @@ class Home extends React.Component {
         let selectedLocations = this.state.selectedLocations;
         let contains = false;
 
+        console.log("Adding a location to selectedLocation, it is currently: " + selectedLocations);
         for (let i = 0; i < selectedLocations.length; i++) {
             if (selectedLocations[i] === input[0].value) {
                 contains = true;
@@ -585,6 +588,46 @@ class Home extends React.Component {
         this.fetch("query",queryText); // Call fetch and pass whatever text is in the input box
     }
 
+    /* Section that handles all buttons*/
+    async handleStartingLocationButton(event) {
+        event.preventDefault();
+
+        this.setState({
+            startLocation: event.target.value,
+        })
+
+        this.fetch("startingLocation", this.state.selectedLocations)
+
+    }
+
+    async handleClearAttributesButton(event) {
+        event.preventDefault();
+        this.setState({
+            selectedAttributes: [],
+        });
+        //make the selectedAttributes array clear
+    }
+
+    async handleClearLocationsButton(event) {
+        event.preventDefault();
+        this.setState({
+            selectedLocations: [],
+        })
+    }
+
+    async handleAddAllAttributesButton(event) {
+        event.preventDefault();
+        this.setState({
+            selectedAttributes: this.state.serverReturned.columns,
+        })
+    }
+
+    async handleAddAllLocationsButton(event) {
+        event.preventDefault();
+        this.setState({
+            selectedLocations: this.state.locationCodes,
+        })
+    }
 
 }
 

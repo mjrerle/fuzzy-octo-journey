@@ -132,6 +132,8 @@ public class Server {
             case "query":
                 // Set the return headers
                 return serveQuery(srec.getDescription().get(0));
+            case "startingLocation":
+                return serveStartingLocation(srec.getLocationCode(), srec.getDescription(), srec.getLocationCode());
             // if the user uploads a file
             case "upload":
                 return serveUpload(srec.getDescription());
@@ -143,6 +145,33 @@ public class Server {
                 return serveKml(srec.getOp_level(), srec.getDescription());
             //0 should be the opcode, next is my dests
         }
+    }
+
+
+    /**
+     *
+     * @param opcode nn,2-opt,3-opt
+     * @param description list of codes
+     * @param locationCode one code
+     * @return gson object kmlresponse
+     */
+    private Object serveStartingLocation(String opcode, ArrayList<String> description, String locationCode) {
+        Gson gson = new Gson();
+        Location startingLocation = generateQuery(locationCode).get(0);
+        QueryBuilder queryBuilder = new QueryBuilder("mjrerle", "829975763");
+        //generate query makes an arraylist of locations,
+        //i just need the first one
+        String queryAllLocations = buildWithCode(description);
+        ArrayList<Location> rawOrder = generateQuery(queryAllLocations);
+        //in raw order
+        //now check op level and apply
+        DistanceCalculator distanceCalculator = new DistanceCalculator(rawOrder);
+        ServerKmlResponse ssres = generateKmlResponse(opcode,
+                queryBuilder,
+                queryAllLocations,
+                distanceCalculator,
+                startingLocation);
+        return gson.toJson(ssres, ServerKmlResponse.class);
     }
 
     /**
@@ -192,7 +221,8 @@ public class Server {
         ServerKmlResponse ssres = generateKmlResponse(opcode,
                 queryBuilder,
                 queryString,
-                distanceCalculator);
+                distanceCalculator,
+                null);
 
         return gson.toJson(ssres, ServerKmlResponse.class);
     }
@@ -208,9 +238,9 @@ public class Server {
     private ServerKmlResponse generateKmlResponse(String opcode,
                                                   QueryBuilder queryBuilder,
                                                   String queryString,
-                                                  DistanceCalculator distanceCalculator) {
-        ArrayList<Location> locations;
-        locations = checkOpcode(opcode, distanceCalculator);
+                                                  DistanceCalculator distanceCalculator,
+                                                  Location startingLocation) {
+        ArrayList<Location> locations = checkOpcode(opcode, distanceCalculator, startingLocation);
         ArrayList<Location> queryResults = queryBuilder.query(queryString);
         HashMap<String, String> extra = queryResults.get(0).getExtraInfo();
         Object columns[] = extra.keySet().toArray();
@@ -226,20 +256,38 @@ public class Server {
      * @param distanceCalculator mechanism to create ordered list
      * @return ordered list
      */
-    private ArrayList<Location> checkOpcode(String opcode, DistanceCalculator distanceCalculator) {
+    private ArrayList<Location> checkOpcode(String opcode, DistanceCalculator distanceCalculator, Location startingLocation) {
         ArrayList<Location> locations;
         switch (opcode) {
             case "Nearest Neighbor":  //opcode is dependent on trey's code
                 //figure out which method to call... depends on Tim's code
-                locations = distanceCalculator.shortestNearestNeighborTrip();
+                if (startingLocation != null) {
+                    locations = distanceCalculator.shortestNearestNeighborTrip();
+
+                    //method for finding this path
+                } else {
+                    locations = distanceCalculator.shortestNearestNeighborTrip();
+                }
                 break;
             case "2-Opt":
                 //what is this method?
-                locations = distanceCalculator.shortestTwoOptTrip();
+                if (startingLocation != null) {
+                    locations = distanceCalculator.shortestTwoOptTrip();
+
+                    //method for finding this path
+                } else {
+                    locations = distanceCalculator.shortestTwoOptTrip();
+                }
                 break;
             case "3-Opt":
                 //what is this method?
-                locations = distanceCalculator.shortestTwoOptTrip();
+                if (startingLocation != null) {
+                    locations = new ArrayList<>();
+
+                    //method for finding this path
+                } else {
+                    locations = new ArrayList<>();
+                }
                 break;
             default:
                 //opcode is likely "none"
