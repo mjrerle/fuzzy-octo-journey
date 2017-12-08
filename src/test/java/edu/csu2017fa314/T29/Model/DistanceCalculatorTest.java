@@ -90,8 +90,10 @@ public class DistanceCalculatorTest {
 
     @Test
     public void testShortestTwoOptTrip(){
-        assertTrue(distanceCalculator.shortestNearestNeighborTrip().get(12).getDistance() == distanceCalculator.shortestTwoOptTrip().get(12).getDistance());
-        assertTrue(brewDistanceCalculator.shortestNearestNeighborTrip().get(3).getDistance()==brewDistanceCalculator.shortestTwoOptTrip().get(3).getDistance());
+        assertTrue(distanceCalculator.shortestNearestNeighborTrip().get(12).getDistance() ==
+                distanceCalculator.shortestTwoOptTrip().get(12).getDistance());
+        assertTrue(brewDistanceCalculator.shortestNearestNeighborTrip().get(3).getDistance()==
+                brewDistanceCalculator.shortestTwoOptTrip().get(3).getDistance());
     }
 
 
@@ -165,6 +167,7 @@ public class DistanceCalculatorTest {
         Assert.assertTrue(trip.get(0).getDistance() != 0);
         Assert.assertTrue(trip.get(trip.size()-1).getDistance() != 0);
         System.out.println("Distance from last node: " + trip.get(trip.size()-1).getDistance());
+        System.out.println("Total: " + distanceCalculator.getTotal(trip));
     }
 
 }
