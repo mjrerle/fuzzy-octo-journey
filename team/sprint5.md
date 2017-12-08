@@ -61,6 +61,7 @@ Date | Tasks done now | Tasks done next | Impediments | Coverage | Smells | Dupl
 11/29 | #272, #285, #273, #274, #277 | #286, #287, #237, #248 | 3-opt | 54.5% classes, 67.6% line coverage | 20 | 20 | 12.9 
 12/1 | none | #286, #287, #237, #248 | 3-opt | 54.5% classes, 67.6% line coverage | 20 | 20 | 12.9
 12/4 | none | #286, #287, #237, #248 | 3-opt | 54.5% classes, 67.6% line coverage | 20 | 20 | 12.9
+12/6 | #248, #249, #250, #252, #252, #254, #296 | #286, #287, #237, #248 | 3-opt | 50% classes, 69% line coverage | 23 | 20 | 12.9
  
 
 ## Review
