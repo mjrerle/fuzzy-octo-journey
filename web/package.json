@@ -28,6 +28,7 @@
     "react-bootstrap": "^0.31.3",
     "react-dom": "^15.6.2",
     "react-dropzone": "^4.2.1",
+    "react-reorder": "^3.0.0-alpha.4",
     "react-select": "^1.0.0-rc.10",
     "sass-loader": "^3.2.3",
     "svg-inline-react": "^3.0.0"

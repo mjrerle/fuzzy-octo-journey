@@ -3,6 +3,10 @@ import Dropzone from 'react-dropzone';
 import Select from 'react-select';
 import Pair from './Pair/Pair.jsx';
 import InlineSVG from "svg-inline-react";
+import Reorder from 'react-reorder';
+import reorderImmutable from 'react-reorder';
+import reorderFromToImmutable from 'react-reorder';
+import reorder from 'react-reorder'
 
 class Home extends React.Component {
     constructor(props) {
@@ -16,7 +20,9 @@ class Home extends React.Component {
             selectedAttributes: [],
             selectedLocations: [],
             codes:[],
-            uploadBool: false
+            uploadBool: false,
+            startShow: "none",
+            startLocation: ""
         }
     };
 
@@ -71,13 +77,14 @@ class Home extends React.Component {
             />);
     }
 
+
     tripHeader(hideShow) {
         /* A simple header for displaying the trip after locations have been selected */
         return(
-            <footer style={{display: hideShow}}>
+            <section style={{display: hideShow, position: "relative"}}>
                 <h4><strong>My Trip</strong></h4>
                 <button name="show-itinerary" onClick={this.handleShowItinerary.bind(this)}>Show Trip</button>
-            </footer>);
+            </section>);
     }
 
     buttonHandler(type, addClear) {
@@ -86,7 +93,7 @@ class Home extends React.Component {
          * or Location selection, and a string addClear, which specify whether the button adds
          * all or clears all */
         if (type === "Attributes") {
-            if(addClear == "Add") {
+            if(addClear === "Add") {
                 return (
                     <button onClick={this.handleAddAllAttributesButton.bind(this)}>Add All Attributes</button>
                 )
@@ -95,15 +102,27 @@ class Home extends React.Component {
                     <button onClick={this.handleClearAttributesButton.bind(this)}>Clear Attributes</button>
                 )
             }
-        } else if (addClear === "Add"){
+        }
+        if (type === "Locations") {
+            if (addClear === "Add") {
+                return (
+                    <button onClick={this.handleAddAllLocationsButton.bind(this)}>Add All Locations</button>
+                )
+            }
+            else {
+                return (
+                    <button onClick={this.handleClearLocationsButton.bind(this)}>Clear Locations</button>
+                )
+            }
+        }
+        if (type === "Custom Ordering") {
             return (
-                <button onClick={this.handleAddAllLocationsButton.bind(this)}>Add All Locations</button>
+                <button onClick={this.handleCustomOrderButton.bind(this)}>Custom Ordering</button>
             )
         } else {
-            return (
-                <button onClick={this.handleClearLocationsButton.bind(this)}>Clear Locations</button>
-            )
+            console.log("Something went wrong with buttons")
         }
+
     }
 
     itineraryTable(pairs, selectedAttributes) {
@@ -204,6 +223,7 @@ class Home extends React.Component {
         let addAllAttributesButton;
         let clearLocationsButton;
         let addAllLocationsButton;
+        let customOrderButton;
         let showMap;
         let itineraryTable;
         let possibleLocations = this.possibleLocations(hideShow);
@@ -238,6 +258,8 @@ class Home extends React.Component {
             clearLocationsButton = this.buttonHandler("Locations", "Clear");
             addAllLocationsButton = this.buttonHandler("Locations", "Add");
 
+            //customOrderButton = this.buttonHandler("Starting Location", "");
+            customOrderButton = this.buttonHandler("Custom Ordering", "");
 
             let selectedAttributes = this.state.selectedAttributes;
             selectedAttributes.forEach((att) => {
@@ -245,7 +267,10 @@ class Home extends React.Component {
             });
             let selectedLocations = this.state.selectedLocations;
             selectedLocations.forEach((loc) => {
-                displayLocations.push(<li>{loc}</li>)
+                displayLocations.push(<li>{loc}    <label> Choose this as starting Location <input type="radio" value={loc}
+                                                            checked={this.state.startLocation === loc}
+                                                            onChange={this.handleStartingLocation.bind(this)}/></label></li>)
+
             });
 
 
@@ -273,21 +298,57 @@ class Home extends React.Component {
                 {this.webMain(hideShow, extraInfo, addAllAttributesButton, clearAttributesButton, displayAttributes)}
 
                 <section className="searchedFor" style={{clear: "both", position: "relative"}}>
-                    {this.searchedHeaderText(hideShow)}
-                    {possibleLocations}
-                    <br/>
-                    {addAllLocationsButton}
-                    {clearLocationsButton}
-                    {displayLocations}
+                    <section className="rightSide">
+                        {this.searchedHeaderText(hideShow)}
+                        {possibleLocations}
+                        <br/>
+                        {addAllLocationsButton}
+                        {clearLocationsButton}
+                        {customOrderButton}
+                        {displayLocations}
+                    </section>
+
+                    <section id="customOrdering" style={{position: "relative", float: "right", marginRight: "10%"}}>
+                        <h4><strong>Drag and Drop the order you would like!</strong></h4>
+                        <Reorder
+                            reorderId="my-list" // Unique ID that is used internally to track this list (required)
+                            reorderGroup="reorder-group" // A group ID that allows items to be dragged between lists of the same group (optional)
+                            //getRef={this.storeRef.bind(this)} // Function that is passed a reference to the root node when mounted (optional)
+                            component="ul" // Tag name or Component to be used for the wrapping element (optional), defaults to 'div'
+                            placeholderClassName="placeholder" // Class name to be applied to placeholder elements (optional), defaults to 'placeholder'
+                            draggedClassName="dragged" // Class name to be applied to dragged elements (optional), defaults to 'dragged'
+                            lock="horizontal" // Lock the dragging direction (optional): vertical, horizontal (do not use with groups)
+                            holdTime={500} // Default hold time before dragging begins (mouse & touch) (optional), defaults to 0
+                            touchHoldTime={500} // Hold time before dragging begins on touch devices (optional), defaults to holdTime
+                            mouseHoldTime={200} // Hold time before dragging begins with mouse (optional), defaults to holdTime
+                            onReorder={this.onReorder.bind(this)} // Callback when an item is dropped (you will need this to update your state)
+                            autoScroll={true} // Enable auto-scrolling when the pointer is close to the edge of the Reorder component (optional), defaults to true
+                            disabled={false} // Disable reordering (optional), defaults to false
+                            disableContextMenus={true} // Disable context menus when holding on touch devices (optional), defaults to true
+                            placeholder={
+                                <div className="custom-placeholder" /> // Custom placeholder element (optional), defaults to clone of dragged element
+                            }
+
+                        >
+                            {
+                                this.state.selectedLocations.map((item) => (
+                                    <li>
+                                        {item}
+                                    </li>
+                                ))
+                            }
+                        </Reorder>
+
+                    </section>
                 </section>
 
-                <br/><br/>
-                <section id="trip" style={{bottom: 0, position: "relative", height: "10%"}}>
+                <section id="trip" style={{bottom: 0, position: "relative"}}>
                     {tripHeader}
                     {showMap}
                     {itineraryTable}
                     <br/>
                 </section>
+
             </div>
         )
     };
@@ -378,7 +439,6 @@ class Home extends React.Component {
             codeOptions.push({label: <button>{value.extraInfo.name}</button>, value: value.extraInfo.code});
         }
 
-
         this.setState({
             locationCodes: codes,
             locationCodeOptions: codeOptions,
@@ -398,6 +458,14 @@ class Home extends React.Component {
                 op_level: this.state.op_level
             };
         }
+        else if (type === "startingLocation") {
+            clientreq = {
+                request: type,
+                description: input,
+                op_level: this.state.op_level,
+                locationCode: this.state.startLocation
+            }
+        }
         else{
             clientreq = {
                 request: type,
@@ -405,8 +473,6 @@ class Home extends React.Component {
                 op_level:this.state.op_level
             }
         }
-
-
 
         console.log(clientreq);
         try {
@@ -420,6 +486,7 @@ class Home extends React.Component {
                         method: "POST",
                         body: JSON.stringify(clientreq)
                     });
+
             // Wait for server to return and convert it to json.
             let ret = await
                 jsonReturned.json();
@@ -427,6 +494,7 @@ class Home extends React.Component {
                 serverReturned: JSON.parse(ret),
                 tags: JSON.parse(ret).columns,
             });
+
             //(tags isn't really used, it is mostly for debugging purposes)
             /*serverReturned has svg, locations, columns*/
             if (JSON.parse(ret).response == "query" || JSON.parse(ret).response == "upload") {
@@ -450,34 +518,6 @@ class Home extends React.Component {
         }
     }
 
-    async handleClearAttributesButton(event) {
-        event.preventDefault();
-        this.setState({
-            selectedAttributes: [],
-        });
-        //make the selectedAttributes array clear
-    }
-
-    async handleClearLocationsButton(event) {
-        event.preventDefault();
-        this.setState({
-            selectedLocations: [],
-        })
-    }
-
-    async handleAddAllAttributesButton(event) {
-        event.preventDefault();
-        this.setState({
-            selectedAttributes: this.state.serverReturned.columns,
-        })
-    }
-
-    async handleAddAllLocationsButton(event) {
-        event.preventDefault();
-        this.setState({
-            selectedLocations: this.state.locationCodes,
-        })
-    }
     async handleShowItinerary(event) {
         if (!this.state.serverReturned) return;
         event.preventDefault();
@@ -485,7 +525,6 @@ class Home extends React.Component {
 
         if (this.props.uploadBool) {
             selection = this.state.locationCodes;
-            console.log("I ran props.sysFile");
         }
 
         this.fetch("svg", selection);
@@ -500,6 +539,7 @@ class Home extends React.Component {
         let selectedLocations = this.state.selectedLocations;
         let contains = false;
 
+        console.log("Adding a location to selectedLocation, it is currently: " + selectedLocations);
         for (let i = 0; i < selectedLocations.length; i++) {
             if (selectedLocations[i] === input[0].value) {
                 contains = true;
@@ -565,6 +605,20 @@ class Home extends React.Component {
         }
     }
 
+    async onReorder(event, previousIndex, nextIndex, fromId, toId) {
+
+        console.log("This is what being binded: " + event);
+        console.log("This is previousIndex: " + previousIndex);
+        console.log("This is nextIndex: " + nextIndex);
+        console.log("This is fromId: " + fromId);
+        console.log("This is toId: " + toId);
+        this.setState({
+
+            selectedLocations: reorder(this.state.selectedLocations, fromIndex, toIndex),
+
+        })
+    }
+
     async handleOptimization(event) {
         let input = event.target.value;
         //turn on the 2opt/nearest neighbor switch
@@ -572,7 +626,6 @@ class Home extends React.Component {
             op_level: input,
         });
     }
-
 
     async handleSearchEvent() {
         var queryText = document.forms["searchForm"]["textField"].value;
@@ -585,6 +638,50 @@ class Home extends React.Component {
         this.fetch("query",queryText); // Call fetch and pass whatever text is in the input box
     }
 
+    async handleStartingLocation(event) {
+        event.preventDefault();
+
+        this.setState({
+            startLocation: event.target.value,
+        })
+
+        this.fetch("startingLocation", this.state.selectedLocations)
+
+    }
+    /* Section that handles all buttons*/
+    async handleCustomOrderButton(event) {
+        event.preventDefault();
+
+
+    }
+    async handleClearAttributesButton(event) {
+        event.preventDefault();
+        this.setState({
+            selectedAttributes: [],
+        });
+        //make the selectedAttributes array clear
+    }
+
+    async handleClearLocationsButton(event) {
+        event.preventDefault();
+        this.setState({
+            selectedLocations: [],
+        })
+    }
+
+    async handleAddAllAttributesButton(event) {
+        event.preventDefault();
+        this.setState({
+            selectedAttributes: this.state.serverReturned.columns,
+        })
+    }
+
+    async handleAddAllLocationsButton(event) {
+        event.preventDefault();
+        this.setState({
+            selectedLocations: this.state.locationCodes,
+        })
+    }
 
 }
 

@@ -2,15 +2,27 @@ package edu.csu2017fa314.T29.View;
 
 import java.util.ArrayList;
 
-/**
- * Created by sswensen on 10/1/17.
- */
 
+/**
+ * sent from client
+ */
 public class ServerRequest {
     private String request = "";
     private ArrayList<String> description;
 
-    public String getOp_level() {
+    private String locationCode = "";
+
+    public ServerRequest(String request,
+                         ArrayList<String> description,
+                         String optLevel,
+                         String locationCode) {
+        this.request = request;
+        this.description = description;
+        this.locationCode = locationCode;
+        this.op_level = optLevel;
+    }
+
+    String getOp_level() {
         return op_level;
     }
 
@@ -27,9 +39,11 @@ public class ServerRequest {
     public ServerRequest(String request, ArrayList<String> description) {
         this.request = request;
         this.description = description; //description is either a search or an array of destinations
-
     }
 
+    String getLocationCode() {
+        return locationCode;
+    }
 
     public ServerRequest(String request, ArrayList<String> description, String op_level) {
         this.request = request;
@@ -37,7 +51,7 @@ public class ServerRequest {
         this.op_level = op_level;
     }
 
-    public String getRequest() {
+    String getRequest() {
         return request;
     }
 
