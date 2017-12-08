@@ -39,7 +39,7 @@ public class DistanceCalculator {
     }
     public void setLocations(ArrayList<Location> locations) {this.locations = locations;}
 
-    /* Calculates distance between each location, not calculating last distance!*/
+    /** Repeats a distance between the last two legs of each trip*/
     public ArrayList<Location> noOptimization(){
         ArrayList<Location> result = new ArrayList<>(locations);
 	Location temp = new Location(locations.get(0).getExtraInfo());
