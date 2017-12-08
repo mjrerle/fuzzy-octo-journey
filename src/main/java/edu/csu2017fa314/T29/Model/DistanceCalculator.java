@@ -39,20 +39,6 @@ public class DistanceCalculator {
     }
     public void setLocations(ArrayList<Location> locations) {this.locations = locations;}
 
-    /* Calculates distance between each location, not calculating last distance!*/
-    public ArrayList<Location> noOptimization(){
-        ArrayList<Location> result = new ArrayList<>(locations);
-	Location temp = new Location(locations.get(0).getExtraInfo());
-        for(int i = 0; i < result.size()-1; i++){
-		result.get(i).setDistance(calculateGreatCircleDistance(result.get(i), result.get(i+1)));
-        }
-        result.get(result.size()-1).setDistance(calculateGreatCircleDistance(result.get(result.size()-2), result.get(result.size()-1)));
-	result.add(temp);
-	System.out.println("Result -2 " + result.get(result.size()-2));
-	result.get(result.size()-1).setDistance(calculateGreatCircleDistance(result.get(result.size()-2), temp));
-	return result;
-    }
-
     //////////////////////////////////////////////////////////
     // Great Circle Distance calculation                    //
     //////////////////////////////////////////////////////////
@@ -136,6 +122,9 @@ public class DistanceCalculator {
      */
 
     public Pair calculateTrips(Location startNode, int startIndex) {
+        /** For calulateTrips to run without getting a null pointer error
+         * , calculateAllDistances must be called prior.*/
+        calculateAllDistances();
         ArrayList<Location> itinerary = new ArrayList<>();
         Location currentLocation = startNode; // Starting Location
         Location nextLocation = null; // Declaration so IntelliJ stops yelling at me
@@ -497,6 +486,20 @@ public class DistanceCalculator {
         public void setValue( Integer newValue){
             this.value=newValue;
         }
+    }
+
+    /** Repeats a distance between the last two legs of each trip*/
+    public ArrayList<Location> noOptimization(){
+        ArrayList<Location> result = new ArrayList<>(locations);
+        Location temp = new Location(locations.get(0).getExtraInfo());
+        for(int i = 0; i < result.size()-1; i++){
+            result.get(i).setDistance(calculateGreatCircleDistance(result.get(i), result.get(i+1)));
+        }
+        result.get(result.size()-1).setDistance(calculateGreatCircleDistance(result.get(result.size()-2), result.get(result.size()-1)));
+        result.add(temp);
+        System.out.println("Result -2 " + result.get(result.size()-2));
+        result.get(result.size()-1).setDistance(calculateGreatCircleDistance(result.get(result.size()-2), temp));
+        return result;
     }
 }
 
