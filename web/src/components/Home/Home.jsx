@@ -3,6 +3,9 @@ import Dropzone from 'react-dropzone';
 import Select from 'react-select';
 import Pair from './Pair/Pair.jsx';
 import InlineSVG from "svg-inline-react";
+import Reorder from 'react-reorder';
+import reorderImmutable from 'react-reorder';
+import reorderFromToImmutable from 'react-reorder';
 
 class Home extends React.Component {
     constructor(props) {
@@ -111,9 +114,9 @@ class Home extends React.Component {
                 )
             }
         }
-        if (type === "Starting Location") {
+        if (type === "Custom Ordering") {
             return (
-                <button onClick={this.handleStartingLocationButton.bind(this)}>Choose Starting Location</button>
+                <button onClick={this.handleCustomOrderButton.bind(this)}>Custom Ordering</button>
             )
         } else {
             console.log("Something went wrong with buttons")
@@ -219,7 +222,7 @@ class Home extends React.Component {
         let addAllAttributesButton;
         let clearLocationsButton;
         let addAllLocationsButton;
-        let startingLocationButton;
+        let customOrderButton;
         let showMap;
         let itineraryTable;
         let possibleLocations = this.possibleLocations(hideShow);
@@ -254,8 +257,8 @@ class Home extends React.Component {
             clearLocationsButton = this.buttonHandler("Locations", "Clear");
             addAllLocationsButton = this.buttonHandler("Locations", "Add");
 
-            //startingLocationButton = this.buttonHandler("Starting Location", "");
-            startingLocationButton = this.buttonHandler("Starting Location", "");
+            //customOrderButton = this.buttonHandler("Starting Location", "");
+            customOrderButton = this.buttonHandler("Custom Ordering", "");
 
             let selectedAttributes = this.state.selectedAttributes;
             selectedAttributes.forEach((att) => {
@@ -265,7 +268,7 @@ class Home extends React.Component {
             selectedLocations.forEach((loc) => {
                 displayLocations.push(<li>{loc}    <label> Choose this as starting Location <input type="radio" value={loc}
                                                             checked={this.state.startLocation === loc}
-                                                                                               onChange={this.handleStartingLocationButton.bind(this)}/></label></li>)
+                                                            onChange={this.handleStartingLocation.bind(this)}/></label></li>)
 
             });
 
@@ -300,16 +303,33 @@ class Home extends React.Component {
                         <br/>
                         {addAllLocationsButton}
                         {clearLocationsButton}
-                        {startingLocationButton}
+                        {customOrderButton}
                         {displayLocations}
                     </section>
 
-                    <section id="trip" style={{bottom: 0, position: "relative"}}>
-                        {tripHeader}
-                        {showMap}
-                        {itineraryTable}
-                        <br/>
+                    <section id="customOrdering" style={{position: "relative", float: "right", marginRight: "10%"}}>
+                        <h4><strong>Drag and Drop the order you would like!</strong></h4>
+                        <Reorder
+                            reorderId="My-List"
+                            onReorder={this.onReorder.bind(this)}
+                            >
+                            {
+                                this.state.selectedLocations.map((item) => (
+                                    <li>
+                                        {item}
+                                    </li>
+                                ))
+                            }
+                        </Reorder>
+
                     </section>
+                </section>
+
+                <section id="trip" style={{bottom: 0, position: "relative"}}>
+                    {tripHeader}
+                    {showMap}
+                    {itineraryTable}
+                    <br/>
                 </section>
 
             </div>
@@ -568,6 +588,28 @@ class Home extends React.Component {
         }
     }
 
+    async onReorder(event, previousIndex, nextIndex, fromId, toId) {
+        if (fromId === toId) {
+            const list = reorderImmutable(this.state[fromId], previousIndex, nextIndex);
+
+            this.setState({
+                [fromId]: list
+            });
+        } else {
+            const lists = reorderFromToImmutable({
+                from: this.state[fromId],
+                to: this.state[toId]
+            }, previousIndex, nextIndex);
+
+            this.setState({
+                [fromId]: lists.from,
+                [toId]: lists.to
+            })
+        }
+    }
+
+
+
     async handleOptimization(event) {
         let input = event.target.value;
         //turn on the 2opt/nearest neighbor switch
@@ -575,7 +617,6 @@ class Home extends React.Component {
             op_level: input,
         });
     }
-
 
     async handleSearchEvent() {
         var queryText = document.forms["searchForm"]["textField"].value;
@@ -588,8 +629,7 @@ class Home extends React.Component {
         this.fetch("query",queryText); // Call fetch and pass whatever text is in the input box
     }
 
-    /* Section that handles all buttons*/
-    async handleStartingLocationButton(event) {
+    async handleStartingLocation(event) {
         event.preventDefault();
 
         this.setState({
@@ -599,7 +639,12 @@ class Home extends React.Component {
         this.fetch("startingLocation", this.state.selectedLocations)
 
     }
+    /* Section that handles all buttons*/
+    async handleCustomOrderButton(event) {
+        event.preventDefault();
 
+
+    }
     async handleClearAttributesButton(event) {
         event.preventDefault();
         this.setState({
